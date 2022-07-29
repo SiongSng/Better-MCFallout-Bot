@@ -1,6 +1,10 @@
 import { app, BrowserWindow } from "electron";
 import * as path from "path";
 
+if (require("electron-squirrel-startup")) {
+  app.quit();
+}
+
 const createWindow = () => {
   const window = new BrowserWindow({
     width: 800,
