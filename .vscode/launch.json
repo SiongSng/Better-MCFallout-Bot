@@ -9,7 +9,8 @@
             "cwd": "app",
             "request": "launch",
             "type": "dart",
-            "program": "${workspaceFolder}/app/lib/main.dart"
+            "program": "${workspaceFolder}/app/lib/main.dart",
+            "preLaunchTask": "Build core"
         },
         {
             "name": "app (profile mode)",

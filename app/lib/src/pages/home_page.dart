@@ -16,21 +16,39 @@ class _HomePageState extends State<HomePage> {
         title: const Text('首頁'),
         centerTitle: true,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              "請先登入帳號",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 30),
-            ),
-            TextButton.icon(
-                onPressed: () {},
-                label: const Text("啟動機器人"),
-                icon: const Icon(Icons.play_arrow))
-          ],
+      body: Background(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ElevatedButton.icon(
+                  onPressed: () {
+                    if ((appConfig.email?.isEmpty ?? true) ||
+                        (appConfig.password?.isEmpty ?? true)) {
+                      showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: const Text('錯誤'),
+                                content: const Text('請先設定帳號與密碼才能讓機器人登入廢土伺服器'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('確定')),
+                                ],
+                              ));
+                    }
+
+                    print(BotCore.getCoreExecutablePath());
+                  },
+                  label: const Text("啟動機器人"),
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.blue, onPrimary: Colors.white),
+                  icon: const Icon(Icons.play_arrow))
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

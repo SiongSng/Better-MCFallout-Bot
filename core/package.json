@@ -11,13 +11,17 @@
     "build": "tsc",
     "start": "yarn build && node dist/index.js",
     "lint": "eslint src/**/*.ts --fix",
-    "pkg": "yarn build && pkg ."
+    "pkg": "yarn build && pkg .",
+    "pkg:linux": "yarn build && pkg -t linux .",
+    "pkg:windows": "yarn build && pkg -t windows .",
+    "pkg:macos": "yarn build && pkg -t macos ."
   },
   "devDependencies": {
     "@types/node": "^18.6.2",
     "@typescript-eslint/eslint-plugin": "^5.31.0",
     "@typescript-eslint/parser": "^5.31.0",
     "eslint": "^8.20.0",
+    "pkg": "^5.8.0",
     "typescript": "^4.7.4"
   },
   "pkg": {

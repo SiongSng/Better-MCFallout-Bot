@@ -1,0 +1,19 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build core",
+			"type": "shell",
+			"linux": {
+				"command": "${workspaceFolder}/script/build_core_linux.sh",
+			},
+			"windows": {
+				"command": "${workspaceFolder}/script/build_core_windows.bat",
+			},
+			"osx": {
+				"command": "${workspaceFolder}/script/build_core_macos.sh",
+			},
+			"problemMatcher": [],
+		}
+	]
+}
