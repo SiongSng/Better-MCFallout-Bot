@@ -1,6 +1,4 @@
-import 'package:better_mcfallout_bot/src/config/server_region.dart';
-
-import 'config.dart';
+import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
 
 ConfigStorage appConfig = const ConfigStorage();
 
@@ -17,5 +15,24 @@ class ConfigStorage {
   String? get password => ConfigHelper.get('password');
   set password(String? value) => ConfigHelper.set('password', value);
 
-  Map toMap() => {'region': region.name};
+  bool get autoEat => ConfigHelper.get('autoEat') ?? false;
+  set autoEat(bool value) => ConfigHelper.set('autoEat', value);
+
+  bool get autoThrow => ConfigHelper.get('autoThrow') ?? false;
+  set autoThrow(bool value) => ConfigHelper.set('autoThrow', value);
+
+  bool get autoReconnect => ConfigHelper.get('autoReconnect') ?? true;
+  set autoReconnect(bool value) => ConfigHelper.set('autoReconnect', value);
+
+  BotAction get botAction => BotAction.values
+      .byName(ConfigHelper.get('botAction') ?? BotAction.none.name);
+  set botAction(BotAction value) => ConfigHelper.set('botAction', value.name);
+
+  Map toMap() => {
+        'region': region.name,
+        'autoEat': autoEat,
+        'autoThrow': autoThrow,
+        'autoReconnect': autoReconnect,
+        'botAction': botAction.name
+      };
 }

@@ -1,4 +1,4 @@
-import { MinecraftItem } from "@/bot/minecraft_item";
+import { MinecraftItem } from "@/bot/model/minecraft_item";
 import { EventEmitter, Event } from "@/util/event_emitter";
 import { Config } from "@/config";
 import * as mineflayer from "mineflayer";
@@ -9,7 +9,7 @@ export function createBot(config: Config) {
     password: config.password,
     auth: "microsoft",
     host: config.host,
-    port: config.port
+    port: config.port,
   });
 
   bot.once("spawn", () => {
@@ -18,19 +18,21 @@ export function createBot(config: Config) {
       port: config.port,
       game_version: bot.version,
       uuid: bot.player.uuid,
+      name: bot.player.displayName.valueOf(),
     });
 
     // Every second update bot's status
     setInterval(() => {
       EventEmitter.updateStatus(
-        bot.player.ping,
         bot.health,
-        bot.foodSaturation,
+        bot.food,
         bot.time.bigTime.valueOf().toString(),
         bot.inventory.items().map((item) => {
           return new MinecraftItem(
             item.name,
-            item.displayName,
+            (item.customName != null
+              ? JSON.parse(item.customName).extra?.[0]?.text
+              : null) || item.displayName,
             item.stackSize,
             item.type
           );

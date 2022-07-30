@@ -22,6 +22,7 @@ class BotCore {
 
   late Process process;
   late Stream<IEvent>? eventStream;
+  ConnectedEvent? connectedData;
   bool connected = false;
 
   BotCore.createBot({
@@ -37,7 +38,6 @@ class BotCore {
     if (connected) return true;
     try {
       await _connect().timeout(const Duration(seconds: 20));
-      connected = true;
       return true;
     } on TimeoutException {
       return false;
@@ -61,6 +61,14 @@ class BotCore {
     }
   }
 
+  Stream<E> whenEventStream<E extends IEvent>() {
+    return Stream.multi((controller) {
+      whenEvent<E>((event) {
+        controller.add(event);
+      });
+    });
+  }
+
   Future<void> _connect() async {
     final Map config = {
       'host': host,
@@ -72,10 +80,9 @@ class BotCore {
     process = await Process.start(_getExecutablePath(), [json.encode(config)]);
     eventStream = _listen();
 
-    bool connected = false;
-
     whenEvent<ConnectedEvent>((event) {
       connected = true;
+      connectedData = event;
       _logger.info('Connected to $host:$port');
     });
 
@@ -89,13 +96,17 @@ class BotCore {
     late final StreamController<IEvent> controller;
 
     final stdout = process.stdout.listen((data) {
-      final String json = utf8.decode(data).trim();
-      if (json.isEmpty) return;
-      final RawEvent event = RawEvent.fromJson(json);
+      try {
+        final String json = utf8.decode(data).trim();
+        if (json.isEmpty) return;
+        final RawEvent event = RawEvent.fromJson(json);
 
-      final handledEvent = eventHandler(event);
-      if (handledEvent != null) {
-        controller.add(handledEvent);
+        final handledEvent = eventHandler(event);
+        if (handledEvent != null) {
+          controller.add(handledEvent);
+        }
+      } catch (e) {
+        _logger.warning('Failed to parse event: $e');
       }
     });
 

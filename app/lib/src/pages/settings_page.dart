@@ -1,5 +1,4 @@
 import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
-import 'package:better_mcfallout_bot/src/config/server_region.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {

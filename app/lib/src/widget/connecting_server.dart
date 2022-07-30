@@ -29,10 +29,15 @@ class _ConnectingServerState extends State<ConnectingServer> {
               snapshot.data != null) {
             bool successful = snapshot.data!;
             if (successful) {
-              return const AlertDialog(
-                title: Text('連線成功'),
-                actions: [ConfirmButton()],
-              );
+              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const BotStatusPage()));
+              });
+
+              return Container();
             } else {
               return const AlertDialog(
                 title: Text('錯誤'),

@@ -5,6 +5,7 @@ abstract class IConnectedEvent {
   int get port;
   String get gameVersion;
   String get uuid;
+  String get name;
 }
 
 class ConnectedEvent implements IConnectedEvent, IEvent {
@@ -16,10 +17,13 @@ class ConnectedEvent implements IConnectedEvent, IEvent {
   late final int port;
   @override
   late final String uuid;
+  @override
+  late final String name;
 
   ConnectedEvent(RawEvent raw)
       : gameVersion = raw.data['game_version'],
         host = raw.data['host'],
         port = raw.data['port'],
-        uuid = raw.data['uuid'];
+        uuid = raw.data['uuid'],
+        name = raw.data['name'];
 }

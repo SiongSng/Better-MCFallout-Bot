@@ -87,6 +87,6 @@ void main() async {
 
     options.beforeSend = beforeSend;
     options.tracesSampleRate = 1.0;
-    options.debug = true;
+    options.debug = kDebugMode;
   }, appRunner: () => runApp(const App()));
 }

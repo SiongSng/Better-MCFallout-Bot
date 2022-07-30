@@ -1,29 +1,25 @@
 import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
 
 abstract class IStatusEvent {
-  int get ping;
   int get health;
-  double get foodSaturation;
+  double get food;
   Duration get time;
   List<MinecraftItem> get inventoryItems;
 }
 
 class StatusEvent implements IStatusEvent, IEvent {
   @override
-  late final int ping;
-  @override
   late final int health;
   @override
-  late final double foodSaturation;
+  late final double food;
   @override
   late final Duration time;
   @override
   late final List<MinecraftItem> inventoryItems;
 
   StatusEvent(RawEvent raw)
-      : ping = raw.data['ping'],
-        health = raw.data['health'],
-        foodSaturation = raw.data['food_saturation'],
+      : health = raw.data['health'],
+        food = double.parse(raw.data['food'].toString()),
         // in Minecraft, 1 tick is 20 seconds.
         time = Duration(seconds: (int.parse(raw.data['time']).toInt()) ~/ 20),
         inventoryItems = (raw.data['inventory_items'] as List<dynamic>)

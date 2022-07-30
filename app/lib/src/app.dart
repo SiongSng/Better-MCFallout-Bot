@@ -49,6 +49,13 @@ class _AppState extends State<App> {
           primarySwatch: Colors.blue,
           brightness: Brightness.dark,
           fontFamily: 'font',
+          tooltipTheme: TooltipThemeData(
+            textStyle: Theme.of(context)
+                .textTheme
+                .bodyText1
+                ?.copyWith(color: Colors.black, fontSize: 13),
+            waitDuration: const Duration(milliseconds: 250),
+          ),
           useMaterial3: true),
       home: const HomePage(),
     );

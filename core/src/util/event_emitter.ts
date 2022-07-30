@@ -1,4 +1,4 @@
-import { MinecraftItem } from "@/bot/minecraft_item";
+import { MinecraftItem } from "@/bot/model/minecraft_item";
 
 export class EventEmitter {
   static emit(event: Event, data?: unknown) {
@@ -26,16 +26,14 @@ export class EventEmitter {
   }
 
   static updateStatus(
-    ping: number,
     health: number,
-    food_saturation: number,
+    food: number,
     time: string,
     inventory_items: Array<MinecraftItem>
   ) {
     this.emit(Event.status, {
-      ping,
       health,
-      food_saturation,
+      food,
       time,
       inventory_items,
     });
@@ -49,5 +47,5 @@ export enum Event {
   gameMessage = "gameMessage",
   connected = "connected",
   disconnected = "disconnected",
-  status = "status"
+  status = "status",
 }

@@ -1,5 +1,5 @@
 export class ActionHandler {
-  static handle(command: string) {
-    console.log("Received: " + command);
+  static handle(action: string) {
+    console.log("Received: " + action);
   }
 }
