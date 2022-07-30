@@ -8,7 +8,8 @@
   "author": "SiongSng",
   "license": "GPL-3.0",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
+    "build:watch": "concurrently \"tsc -w\" \"tsc-alias -w\"",
     "start": "yarn build && node dist/index.js",
     "lint": "eslint src/**/*.ts --fix",
     "pkg": "yarn build && pkg .",
@@ -22,16 +23,13 @@
     "@typescript-eslint/parser": "^5.31.0",
     "eslint": "^8.20.0",
     "pkg": "^5.8.0",
+    "tsc-alias": "^1.7.0",
     "typescript": "^4.7.4"
   },
   "pkg": {
     "outputPath": "out"
   },
   "dependencies": {
-    "mineflayer": "^4.3.0",
-    "module-alias": "^2.2.2"
-  },
-  "_moduleAliases": {
-    "@": "dist/"
+    "mineflayer": "^4.3.0"
   }
 }

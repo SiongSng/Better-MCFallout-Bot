@@ -23,27 +23,23 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ElevatedButton.icon(
-                  onPressed: () {
+                  onPressed: () async {
                     if ((appConfig.email?.isEmpty ?? true) ||
                         (appConfig.password?.isEmpty ?? true)) {
                       showDialog(
                           context: context,
-                          builder: (context) => AlertDialog(
-                                title: const Text('錯誤'),
-                                content: const Text('請先設定帳號與密碼才能讓機器人登入廢土伺服器'),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text('確定')),
-                                ],
+                          builder: (context) => const AlertDialog(
+                                title: Text('錯誤'),
+                                content: Text('請先設定帳號與密碼才能讓機器人登入廢土伺服器'),
+                                actions: [ConfirmButton()],
                               ));
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (context) => const ConnectingServer());
                     }
-
-                    print(BotCore.getCoreExecutablePath());
                   },
-                  label: const Text("啟動機器人"),
+                  label: const Text('啟動機器人'),
                   style: ElevatedButton.styleFrom(
                       primary: Colors.blue, onPrimary: Colors.white),
                   icon: const Icon(Icons.play_arrow))

@@ -9,14 +9,14 @@ export function createBot(config: Config) {
     password: config.password,
     auth: "microsoft",
     host: config.host,
-    port: config.port,
+    port: config.port
   });
 
   bot.once("spawn", () => {
     EventEmitter.emit(Event.connected, {
       host: config.host,
       port: config.port,
-      gameVersion: bot.version,
+      game_version: bot.version,
       uuid: bot.player.uuid,
     });
 
@@ -26,7 +26,7 @@ export function createBot(config: Config) {
         bot.player.ping,
         bot.health,
         bot.foodSaturation,
-        bot.time.time,
+        bot.time.bigTime.valueOf().toString(),
         bot.inventory.items().map((item) => {
           return new MinecraftItem(
             item.name,

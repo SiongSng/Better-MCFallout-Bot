@@ -1,4 +1,4 @@
-import 'package:better_mcfallout_bot/src/config/config_storage.dart';
+import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
 import 'package:better_mcfallout_bot/src/config/server_region.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +14,7 @@ class _SettingsPageState extends State<SettingsPage> {
   late TextEditingController emailController;
   late TextEditingController passwordController;
 
-  bool showPassword = false;
+  bool hidePassword = true;
 
   @override
   void initState() {
@@ -48,13 +48,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 hintText: '請輸入 Microsoft 帳號的密碼',
                 suffixIcon: IconButton(
                     icon: Icon(
-                        showPassword ? Icons.visibility : Icons.visibility_off),
+                        hidePassword ? Icons.visibility : Icons.visibility_off),
                     onPressed: () {
                       setState(() {
-                        showPassword = !showPassword;
+                        hidePassword = !hidePassword;
                       });
                     })),
-            obscureText: showPassword,
+            obscureText: hidePassword,
             controller: passwordController,
             onChanged: (_) {
               appConfig.password = passwordController.text;
@@ -82,7 +82,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       value: value,
                       alignment: Alignment.center,
                       child: Text(value.getName(),
-                          style: const TextStyle(fontSize: 16),
+                          style:
+                              const TextStyle(fontSize: 16, fontFamily: 'font'),
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis),
                     );
@@ -93,13 +94,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ],
       ),
-      actions: [
-        TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('確定')),
-      ],
+      actions: const [ConfirmButton()],
     );
   }
 }
