@@ -16,4 +16,6 @@ class ConfigStorage {
 
   String? get password => ConfigHelper.get('password');
   set password(String? value) => ConfigHelper.set('password', value);
+
+  Map toMap() => {'region': region.name};
 }

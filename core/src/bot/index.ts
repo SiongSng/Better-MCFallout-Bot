@@ -1,5 +1,5 @@
 import { MinecraftItem } from "@/bot/minecraft_item";
-import { EventEmitter, Event } from "@/util/logger";
+import { EventEmitter, Event } from "@/util/event_emitter";
 import { Config } from "@/config";
 import * as mineflayer from "mineflayer";
 

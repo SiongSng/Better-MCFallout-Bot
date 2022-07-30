@@ -15,7 +15,7 @@ class Background extends StatelessWidget {
           // TODO: 提供使用者自訂背景或每日更換之類的
 
           Image defaultImage = Image.asset(
-            "assets/images/background.png",
+            'assets/images/background.png',
             fit: BoxFit.fill,
           );
 

@@ -30,7 +30,7 @@ export class EventEmitter {
     health: number,
     foodSaturation: number,
     time: number,
-    inventoryItems: Array<any>
+    inventoryItems: Array<MinecraftItem>
   ) {
     this.emit(Event.status, {
       ping,
