@@ -69,6 +69,12 @@ class BotCore {
     });
   }
 
+  void runCommand(String command) {
+    if (!connected) return;
+    _executeAction(BotAction(
+        action: BotActionType.command, argument: {'command': command}));
+  }
+
   Future<void> _connect() async {
     final Map config = {
       'host': host,
@@ -101,7 +107,7 @@ class BotCore {
         if (json.isEmpty) return;
         final RawEvent event = RawEvent.fromJson(json);
 
-        final handledEvent = eventHandler(event);
+        final handledEvent = _eventHandler(event);
         if (handledEvent != null) {
           controller.add(handledEvent);
         }
@@ -124,7 +130,7 @@ class BotCore {
     return controller.stream.asBroadcastStream();
   }
 
-  IEvent? eventHandler(RawEvent event) {
+  IEvent? _eventHandler(RawEvent event) {
     switch (event.event) {
       case EventType.connected:
         return ConnectedEvent(event);
@@ -136,6 +142,10 @@ class BotCore {
         _logger.warning('Unknown event: ${event.event}');
         return null;
     }
+  }
+
+  void _executeAction(BotAction action) {
+    process.stdin.writeln(json.encode(action.toMap()));
   }
 
   String _getExecutablePath() {

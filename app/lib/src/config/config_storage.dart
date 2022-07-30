@@ -24,9 +24,10 @@ class ConfigStorage {
   bool get autoReconnect => ConfigHelper.get('autoReconnect') ?? true;
   set autoReconnect(bool value) => ConfigHelper.set('autoReconnect', value);
 
-  BotAction get botAction => BotAction.values
-      .byName(ConfigHelper.get('botAction') ?? BotAction.none.name);
-  set botAction(BotAction value) => ConfigHelper.set('botAction', value.name);
+  BotActionType get botAction => BotActionType.values
+      .byName(ConfigHelper.get('botAction') ?? BotActionType.none.name);
+  set botAction(BotActionType value) =>
+      ConfigHelper.set('botAction', value.name);
 
   Map toMap() => {
         'region': region.name,

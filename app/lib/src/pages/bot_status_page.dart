@@ -13,7 +13,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
   late bool autoEat;
   late bool autoThrow;
   late bool autoReconnect;
-  late BotAction botAction;
+  late BotActionType botAction;
   late TextEditingController commandController;
 
   @override
@@ -113,20 +113,21 @@ class _BotStatusPageState extends State<BotStatusPage> {
             Align(
               child: SizedBox(
                 width: MediaQuery.of(context).size.width / 5.5,
-                child: DropdownButton<BotAction>(
+                child: DropdownButton<BotActionType>(
                   value: botAction,
                   style: const TextStyle(color: Colors.lightBlue),
-                  onChanged: (BotAction? value) {
+                  onChanged: (BotActionType? value) {
                     setState(() {
                       botAction = value!;
                     });
                     appConfig.botAction = botAction;
                   },
                   isExpanded: true,
-                  items: BotAction.values
-                      .where((e) => e != BotAction.command)
-                      .map<DropdownMenuItem<BotAction>>((BotAction value) {
-                    return DropdownMenuItem<BotAction>(
+                  items: BotActionType.values
+                      .where((e) => e != BotActionType.command)
+                      .map<DropdownMenuItem<BotActionType>>(
+                          (BotActionType value) {
+                    return DropdownMenuItem<BotActionType>(
                       value: value,
                       alignment: Alignment.center,
                       child: Text(value.getName(),
@@ -195,16 +196,13 @@ class _BotStatusPageState extends State<BotStatusPage> {
                         hintText: '請輸入指令',
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10))),
-                    onEditingComplete: () {
-                      // TODO: run command
-                    },
+                    onEditingComplete: () =>
+                        bot.runCommand(commandController.text),
                   ),
                 ),
                 const SizedBox(width: 8),
                 TextButton(
-                    onPressed: () {
-                      // TODO: run command
-                    },
+                    onPressed: () => bot.runCommand(commandController.text),
                     child: const Text('執行')),
               ],
             ),

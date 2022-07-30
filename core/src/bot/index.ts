@@ -2,6 +2,8 @@ import { MinecraftItem } from "@/bot/model/minecraft_item";
 import { EventEmitter, Event } from "@/util/event_emitter";
 import { Config } from "@/config";
 import * as mineflayer from "mineflayer";
+import * as readline from "readline";
+import { ActionHandler } from "@/util/action_handler";
 
 export function createBot(config: Config) {
   const bot = mineflayer.createBot({
@@ -10,6 +12,16 @@ export function createBot(config: Config) {
     auth: "microsoft",
     host: config.host,
     port: config.port,
+  });
+
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    terminal: false,
+  });
+
+  rl.on("line", function (line) {
+    ActionHandler.handle(bot, line);
   });
 
   bot.once("spawn", () => {

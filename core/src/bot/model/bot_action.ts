@@ -1,6 +1,6 @@
 export interface BotAction {
   action: BotActionType;
-  argument: Record<string, unknown>;
+  argument?: Record<string, unknown>;
 }
 
 export enum BotActionType {
