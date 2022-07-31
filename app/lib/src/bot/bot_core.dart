@@ -38,7 +38,6 @@ class BotCore {
     if (connected) return true;
     try {
       await _connect().timeout(const Duration(seconds: 20));
-      _logging();
       return true;
     } on TimeoutException {
       return false;
@@ -86,6 +85,7 @@ class BotCore {
 
     process = await Process.start(_getExecutablePath(), [json.encode(config)]);
     eventStream = _listen();
+    _logging();
 
     whenEvent<ConnectedEvent>((event) {
       connected = true;

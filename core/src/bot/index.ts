@@ -1,5 +1,4 @@
 import { BotHelper } from "@/bot/bot_helper";
-import { MinecraftItem } from "@/bot/model/minecraft_item";
 import { EventEmitter, Event } from "@/util/event_emitter";
 import * as mineflayer from "mineflayer";
 import autoeat from "mineflayer-auto-eat";
@@ -46,42 +45,7 @@ export function createBot(reconnectTimes = 0) {
 }
 
 function listenBotEvent(bot: mineflayer.Bot) {
-  bot.once("spawn", () => {
-    // Auto eat
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (bot as any).autoEat.options = {
-      priority: "foodPoints",
-      startAt: 18, // If the bot has less food points than that number, it will start eating.
-      bannedFood: ["rotten_flesh"],
-    };
-
-    EventEmitter.emit(Event.connected, {
-      host: config.host,
-      port: config.port,
-      game_version: bot.version,
-      uuid: bot.player.uuid,
-      name: bot.player.displayName.valueOf(),
-    });
-
-    // Every second update bot's status
-    setInterval(() => {
-      EventEmitter.updateStatus(
-        bot.health,
-        bot.food,
-        bot.time.bigTime.valueOf().toString(),
-        bot.inventory.items().map((item) => {
-          return new MinecraftItem(
-            item.name,
-            (item.customName != null
-              ? JSON.parse(item.customName).extra?.[0]?.text
-              : null) || item.displayName,
-            item.stackSize,
-            item.type
-          );
-        })
-      );
-    }, 1000);
-  });
+  bot.once("spawn", () => BotHelper.onSpawn(bot, config));
 
   bot.on("message", (message) => {
     EventEmitter.gameMessage(message.valueOf(), new Date().getTime());

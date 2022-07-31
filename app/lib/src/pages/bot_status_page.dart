@@ -1,5 +1,4 @@
 import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
-import 'package:better_mcfallout_bot/src/bot/bot_core.dart';
 import 'package:flutter/material.dart' hide NetworkImage;
 
 class BotStatusPage extends StatefulWidget {
@@ -165,7 +164,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                   title: const Text('自動飲食')),
             ),
             Tooltip(
-              message: '自動丟棄不重要的物品，保留重要物品，像是劍、不死圖騰、裝備，在刷突襲塔的時候很有用。',
+              message: '自動丟棄不重要的物品，保留重要物品，像是武器、不死圖騰、食物、裝備，在刷突襲塔的時候很有用。',
               child: SwitchListTile(
                   value: autoThrow,
                   onChanged: (value) {
