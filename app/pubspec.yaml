@@ -40,6 +40,9 @@ dependencies:
   package_info_plus: ^1.4.3
   logging: ^1.0.2
   flutter_window_close: ^0.2.2
+  url_launcher: ^6.1.5
+  line_icons: ^2.0.1
+  file_picker: ^5.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,8 @@
+import 'dart:io';
+
+import 'package:logging/logging.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+
 class Util {
   static String formatDuration(
     Duration duration, {
@@ -44,5 +49,22 @@ class Util {
     }
 
     return str.trimRight();
+  }
+
+  static Future<void> openUri(String url) async {
+    if (Platform.isLinux) {
+      await xdgOpen(url);
+    } else {
+      await launchUrlString(url).catchError((e) {
+        Logger.root.severe('Failed to open url: $url');
+      });
+    }
+  }
+
+  static Future<ProcessResult?> xdgOpen(String uri) async {
+    if (Platform.isLinux) {
+      return await Process.run('xdg-open', [uri]);
+    }
+    return null;
   }
 }

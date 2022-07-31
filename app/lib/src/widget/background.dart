@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
 import 'package:flutter/material.dart';
 
 class Background extends StatelessWidget {
@@ -12,12 +15,19 @@ class Background extends StatelessWidget {
       ConstrainedBox(
         constraints: const BoxConstraints.expand(),
         child: Builder(builder: (context) {
-          // TODO: 提供使用者自訂背景或每日更換之類的
-
           Image defaultImage = Image.asset(
             'assets/images/background.png',
             fit: BoxFit.fill,
           );
+
+          if (appConfig.backgroundPath != null) {
+            final file = File(appConfig.backgroundPath!);
+            if (file.existsSync()) {
+              defaultImage = Image.file(file, fit: BoxFit.fill);
+            } else {
+              return defaultImage;
+            }
+          }
 
           return defaultImage;
         }),

@@ -112,6 +112,7 @@ class BotCore {
           controller.add(handledEvent);
         }
       } catch (e) {
+        print(json.toString());
         _logger.warning('Failed to parse event: $e');
       }
     });

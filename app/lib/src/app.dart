@@ -56,6 +56,9 @@ class _AppState extends State<App> {
                 ?.copyWith(color: Colors.black, fontSize: 13),
             waitDuration: const Duration(milliseconds: 250),
           ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                  onPrimary: Colors.white, primary: Colors.blue)),
           useMaterial3: true),
       home: const HomePage(),
     );

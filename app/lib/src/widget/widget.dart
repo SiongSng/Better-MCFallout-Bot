@@ -5,3 +5,5 @@ export 'network_image.dart';
 export 'health_indicator.dart';
 export 'hunger_indicator.dart';
 export 'inventory.dart';
+export 'game_message_view.dart';
+export 'background_successful_dialog.dart';

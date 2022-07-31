@@ -29,11 +29,16 @@ class ConfigStorage {
   set botAction(BotActionType value) =>
       ConfigHelper.set('botAction', value.name);
 
+  String? get backgroundPath => ConfigHelper.get('backgroundPath');
+  set backgroundPath(String? value) =>
+      ConfigHelper.set('backgroundPath', value);
+
   Map toMap() => {
         'region': region.name,
         'autoEat': autoEat,
         'autoThrow': autoThrow,
         'autoReconnect': autoReconnect,
-        'botAction': botAction.name
+        'botAction': botAction.name,
+        'backgroundPath': backgroundPath,
       };
 }
