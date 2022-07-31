@@ -1173,6 +1173,11 @@ mimic-response@^2.0.0:
   resolved "https://registry.yarnpkg.com/mimic-response/-/mimic-response-2.1.0.tgz#d13763d35f613d09ec37ebb30bac0469c0ee8f43"
   integrity sha512-wXqjST+SLt7R009ySCglWBCFpjUygmCIfD790/kVbiGmUgfYGuB14PiTd5DwVxSV4NcYHjzMkoj5LjQZwTQLEA==
 
+minecraft-data@^2.93.0:
+  version "2.221.0"
+  resolved "https://registry.yarnpkg.com/minecraft-data/-/minecraft-data-2.221.0.tgz#b6a6629c9c33bc640e540de3ebe94a96d0e8b0bc"
+  integrity sha512-0AhqzbIKb6WqPSF6qBevaPryeWOz545hLxt6q+gfJF8YIQX/YfkyX/nXWhl+pSIS2rTBcQ0RJkRCtTeRzQwHDA==
+
 minecraft-data@^3.0.0:
   version "3.9.1"
   resolved "https://registry.yarnpkg.com/minecraft-data/-/minecraft-data-3.9.1.tgz#f49da3f60501b7d60526f8e22c682535cf146c59"
@@ -1205,6 +1210,13 @@ minecraft-protocol@^1.31.0:
     readable-stream "^4.1.0"
     uuid-1345 "^1.0.1"
     yggdrasil "^1.4.0"
+
+mineflayer-auto-eat@^2.3.3:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/mineflayer-auto-eat/-/mineflayer-auto-eat-2.3.3.tgz#06d5519230ee89b5573eea7162638123fb3bb3a7"
+  integrity sha512-fy0Jjd9dcnjkcucPcs2uN13wYF4KChEby11pO6Iq3SyRDqjHuKa7U/DKbo5MZaTmucBMRPE1+ETl3kWEI/FCjg==
+  dependencies:
+    minecraft-data "^2.93.0"
 
 mineflayer@^4.3.0:
   version "4.3.0"

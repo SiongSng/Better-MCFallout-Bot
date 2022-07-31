@@ -5,3 +5,4 @@ export 'status_event.dart';
 export 'info_log_event.dart';
 export 'warn_log_event.dart';
 export 'error_log_event.dart';
+export 'disconnected_event.dart';

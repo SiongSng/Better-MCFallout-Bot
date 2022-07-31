@@ -45,7 +45,7 @@ class BotCore {
     }
   }
 
-  Future<void> disconnect() async {
+  void disconnect() {
     if (!connected) return;
     _executeAction(const BotAction(action: BotActionType.disconnect));
     process.kill();
@@ -139,6 +139,8 @@ class BotCore {
     switch (event.event) {
       case EventType.connected:
         return ConnectedEvent(event);
+      case EventType.disconnected:
+        return const DisconnectedEvent();
       case EventType.info:
         return InfoLogEvent(event);
       case EventType.warn:
@@ -170,6 +172,10 @@ class BotCore {
 
     whenEvent<ErrorLogEvent>((event) {
       _logger.severe(event.message);
+    });
+
+    whenEvent<DisconnectedEvent>((event) {
+      _logger.info('The bot has disconnected');
     });
   }
 

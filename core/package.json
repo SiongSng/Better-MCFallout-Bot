@@ -30,6 +30,7 @@
     "outputPath": "out"
   },
   "dependencies": {
-    "mineflayer": "^4.3.0"
+    "mineflayer": "^4.3.0",
+    "mineflayer-auto-eat": "^2.3.3"
   }
 }
