@@ -80,6 +80,11 @@ class BotCore {
         argument: {'config': _getConfig()}));
   }
 
+  void raid(BotActionMethod method) {
+    if (!connected) return;
+    _executeAction(BotAction(action: BotActionType.raid, method: method));
+  }
+
   Future<void> _connect() async {
     final config = _getConfig();
 

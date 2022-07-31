@@ -28,6 +28,10 @@ class _BotStatusPageState extends State<BotStatusPage> {
     commandController = TextEditingController();
 
     super.initState();
+
+    if (botAction == BotActionType.raid) {
+      bot.raid(BotActionMethod.start);
+    }
   }
 
   @override
@@ -123,9 +127,18 @@ class _BotStatusPageState extends State<BotStatusPage> {
                   value: botAction,
                   style: const TextStyle(color: Colors.lightBlue),
                   onChanged: (BotActionType? value) {
+                    if (botAction != value) {
+                      if (botAction == BotActionType.raid) {
+                        bot.raid(BotActionMethod.stop);
+                      } else if (value == BotActionType.raid) {
+                        bot.raid(BotActionMethod.start);
+                      }
+                    }
+
                     setState(() {
                       botAction = value!;
                     });
+
                     appConfig.botAction = botAction;
                   },
                   isExpanded: true,
@@ -205,13 +218,18 @@ class _BotStatusPageState extends State<BotStatusPage> {
                         hintText: '請輸入指令',
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10))),
-                    onEditingComplete: () =>
-                        bot.runCommand(commandController.text),
+                    onEditingComplete: () {
+                      bot.runCommand(commandController.text);
+                      commandController.text = '';
+                    },
                   ),
                 ),
                 const SizedBox(width: 8),
                 TextButton(
-                    onPressed: () => bot.runCommand(commandController.text),
+                    onPressed: () {
+                      bot.runCommand(commandController.text);
+                      commandController.text = '';
+                    },
                     child: const Text('執行')),
               ],
             ),

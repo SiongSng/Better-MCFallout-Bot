@@ -69,6 +69,52 @@ export class ActionHandler {
         return EventEmitter.warning("The raid action is already running.");
 
       _isRaiding = true;
+
+      // Auto attack passive mobs
+      setInterval(() => {
+        if (!_isRaiding) return;
+
+        const mob_list = [
+          "blaze",
+          "creeper",
+          "drowned",
+          "elder_guardian",
+          "endermite",
+          "evoker",
+          "ghast",
+          "guardian",
+          "hoglin",
+          "husk",
+          "magma_cube",
+          "phantom",
+          "piglin_brute",
+          "pillager",
+          "ravager",
+          "shulker",
+          "silverfish",
+          "skeleton",
+          "slime",
+          "stray",
+          "vex",
+          "vindicator",
+          "witch",
+          "wither_skeleton",
+          "zoglin",
+          "zombie_villager",
+          "enderman",
+          "piglin",
+          "spider",
+          "cave_spider",
+          "zombified_piglin",
+        ];
+
+        for (const entity_key in bot.entities) {
+          const entity = bot.entities[entity_key];
+          if (entity.name != null && mob_list.includes(entity.name)) {
+            bot.attack(entity);
+          }
+        }
+      }, 1000);
     } else if (action.method == BotActionMethod.stop) {
       if (!_isRaiding)
         return EventEmitter.warning(
