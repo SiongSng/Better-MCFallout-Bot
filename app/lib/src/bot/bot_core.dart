@@ -103,16 +103,19 @@ class BotCore {
 
     final stdout = process.stdout.listen((data) {
       try {
-        final String json = utf8.decode(data).trim();
-        if (json.isEmpty) return;
-        final RawEvent event = RawEvent.fromJson(json);
+        final List<String> jsonList =
+            const LineSplitter().convert(utf8.decode(data));
 
-        final handledEvent = _eventHandler(event);
-        if (handledEvent != null) {
-          controller.add(handledEvent);
+        for (final String json in jsonList) {
+          if (json.isEmpty) return;
+          final RawEvent event = RawEvent.fromJson(json);
+
+          final handledEvent = _eventHandler(event);
+          if (handledEvent != null) {
+            controller.add(handledEvent);
+          }
         }
       } catch (e) {
-        print(json.toString());
         _logger.warning('Failed to parse event: $e');
       }
     });

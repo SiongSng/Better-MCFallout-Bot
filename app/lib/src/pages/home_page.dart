@@ -52,6 +52,7 @@ class _HomePageState extends State<HomePage> {
             } else {
               showDialog(
                   context: context,
+                  barrierDismissible: false,
                   builder: (context) => const ConnectingServer());
             }
           },
