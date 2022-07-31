@@ -26,12 +26,13 @@ void main() async {
     ));
 
     if (record.level == Level.SEVERE) {
-      Sentry.captureException(record.message, stackTrace: record.stackTrace);
+      Sentry.captureException(record.error ?? Exception(record.message),
+          stackTrace: record.stackTrace);
     }
   });
 
   Logger.root.info('App starting');
-  ConfigHelper.init();
+  await ConfigHelper.init();
 
   await SentryFlutter.init((options) {
     options.dsn =

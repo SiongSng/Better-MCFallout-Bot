@@ -11,7 +11,7 @@ class GameMessageEvent implements IGameMessageEvent, IEvent {
   @override
   late final DateTime sentAt;
 
-  GameMessageEvent(RawEvent raw)
-      : message = raw.data['message'],
-        sentAt = DateTime.fromMillisecondsSinceEpoch(raw.data['sent_at']);
+  GameMessageEvent(RawEvent event)
+      : message = event.data['message'],
+        sentAt = DateTime.fromMillisecondsSinceEpoch(event.data['sent_at']);
 }

@@ -42,7 +42,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '廢土伺服器機器人 V1.0.0 Beta',
+      title: '更好的廢土機器人',
       navigatorKey: NavigationService.navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -50,10 +50,8 @@ class _AppState extends State<App> {
           brightness: Brightness.dark,
           fontFamily: 'font',
           tooltipTheme: TooltipThemeData(
-            textStyle: Theme.of(context)
-                .textTheme
-                .bodyText1
-                ?.copyWith(color: Colors.black, fontSize: 13),
+            textStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
+                color: Colors.black, fontSize: 13, fontFamily: 'font'),
             waitDuration: const Duration(milliseconds: 250),
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(

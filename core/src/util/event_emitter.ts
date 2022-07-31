@@ -11,11 +11,15 @@ export class EventEmitter {
   }
 
   static info(message: string) {
-    this.emit(Event.info, message);
+    this.emit(Event.info, { message });
   }
 
   static error(message: unknown) {
-    this.emit(Event.error, message);
+    this.emit(Event.error, { message });
+  }
+
+  static warning(message: string) {
+    this.emit(Event.warn, { message });
   }
 
   static gameMessage(message: string, sent_at: number) {

@@ -1,15 +1,18 @@
 class BotAction {
   final BotActionType action;
-  final Map<String, dynamic> argument;
+  final BotActionMethod method;
+  final Map<String, dynamic>? argument;
 
   const BotAction({
     required this.action,
-    required this.argument,
+    this.method = BotActionMethod.start,
+    this.argument,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'action': action.name,
+      'method': method.name,
       'argument': argument,
     };
   }
@@ -17,15 +20,25 @@ class BotAction {
   factory BotAction.fromMap(Map<String, dynamic> map) {
     return BotAction(
       action: BotActionType.values.byName(map['action']),
-      argument: Map<String, dynamic>.from(map['argument']),
+      method: BotActionMethod.values.byName(map['method']),
+      argument: map['argument'] != null
+          ? Map<String, dynamic>.from(map['argument'])
+          : null,
     );
   }
 }
 
 enum BotActionType {
-  none,
-  command,
-  raid;
+  none(true),
+  command(false),
+  raid(true),
+  updateConfig(false),
+  disconnect(false);
+
+  // If true, this action cannot be executed simultaneously with other actions.
+  final bool only;
+
+  const BotActionType(this.only);
 
   String getName() {
     switch (this) {
@@ -33,8 +46,13 @@ enum BotActionType {
         return '無 (掛機)';
       case BotActionType.raid:
         return '自動刷突襲塔';
-      case BotActionType.command:
+      default:
         return '';
     }
   }
+}
+
+enum BotActionMethod {
+  start,
+  stop,
 }

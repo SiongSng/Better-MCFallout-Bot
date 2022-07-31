@@ -21,8 +21,8 @@ class BotCore {
   final String password;
 
   late Process process;
-  late Stream<IEvent>? eventStream;
-  ConnectedEvent? connectedData;
+  late Stream<IEvent> eventStream;
+  late ConnectedEvent connectedData;
   bool connected = false;
 
   BotCore.createBot({
@@ -38,6 +38,7 @@ class BotCore {
     if (connected) return true;
     try {
       await _connect().timeout(const Duration(seconds: 20));
+      _logging();
       return true;
     } on TimeoutException {
       return false;
@@ -46,19 +47,17 @@ class BotCore {
 
   Future<void> disconnect() async {
     if (!connected) return;
-    // TODO: send disconnect event to core
+    _executeAction(const BotAction(action: BotActionType.disconnect));
     process.kill();
     connected = false;
   }
 
   whenEvent<E extends IEvent>(void Function(E event) callback) {
-    if (eventStream != null) {
-      eventStream!.listen((event) {
-        if (event is E) {
-          callback(event);
-        }
-      });
-    }
+    eventStream.listen((event) {
+      if (event is E) {
+        callback(event);
+      }
+    });
   }
 
   Stream<E> whenEventStream<E extends IEvent>() {
@@ -75,13 +74,15 @@ class BotCore {
         action: BotActionType.command, argument: {'command': command}));
   }
 
+  void updateConfig() {
+    if (!connected) return;
+    _executeAction(BotAction(
+        action: BotActionType.updateConfig,
+        argument: {'config': _getConfig()}));
+  }
+
   Future<void> _connect() async {
-    final Map config = {
-      'host': host,
-      'port': port,
-      'email': email,
-      'password': password,
-    };
+    final config = _getConfig();
 
     process = await Process.start(_getExecutablePath(), [json.encode(config)]);
     eventStream = _listen();
@@ -138,6 +139,12 @@ class BotCore {
     switch (event.event) {
       case EventType.connected:
         return ConnectedEvent(event);
+      case EventType.info:
+        return InfoLogEvent(event);
+      case EventType.warn:
+        return WarnLogEvent(event);
+      case EventType.error:
+        return ErrorLogEvent(event);
       case EventType.gameMessage:
         return GameMessageEvent(event);
       case EventType.status:
@@ -151,6 +158,30 @@ class BotCore {
   void _executeAction(BotAction action) {
     process.stdin.writeln(json.encode(action.toMap()));
   }
+
+  void _logging() {
+    whenEvent<InfoLogEvent>((event) {
+      _logger.info(event.message);
+    });
+
+    whenEvent<WarnLogEvent>((event) {
+      _logger.warning(event.message);
+    });
+
+    whenEvent<ErrorLogEvent>((event) {
+      _logger.severe(event.message);
+    });
+  }
+
+  Map _getConfig() => {
+        'host': host,
+        'port': port,
+        'email': email,
+        'password': password,
+        'autoEat': appConfig.autoEat,
+        'autoThrow': appConfig.autoThrow,
+        'autoReconnect': appConfig.autoReconnect,
+      };
 
   String _getExecutablePath() {
     final String path;

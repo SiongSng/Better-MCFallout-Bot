@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         leadingWidth: 50 * 2,
-        title: const Text('首頁'),
+        title: const Text('更好的廢土機器人'),
         centerTitle: true,
       ),
       body: Background(child: Container()),

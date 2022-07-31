@@ -1,4 +1,5 @@
 import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
+import 'package:better_mcfallout_bot/src/bot/bot_core.dart';
 import 'package:flutter/material.dart' hide NetworkImage;
 
 class BotStatusPage extends StatefulWidget {
@@ -58,16 +59,16 @@ class _BotStatusPageState extends State<BotStatusPage> {
                 children: [
                   NetworkImage(
                       src:
-                          "https://crafatar.com/avatars/${bot.connectedData!.uuid}?overlay",
+                          "https://crafatar.com/avatars/${bot.connectedData.uuid}?overlay",
                       width: 65,
                       height: 65),
                   const SizedBox(width: 12),
-                  Text(bot.connectedData!.name),
+                  Text(bot.connectedData.name),
                   const SizedBox(width: 12),
                   const VerticalDivider(),
                   const SizedBox(width: 12),
                   SelectableText(
-                      '連線位置：${bot.connectedData!.host}\n通訊埠： ${bot.connectedData!.port}\nUUID： ${bot.connectedData!.uuid}\nMinecraft 遊戲版本：${bot.connectedData!.gameVersion}'),
+                      '連線位置：${bot.connectedData.host}\n通訊埠： ${bot.connectedData.port}\nUUID： ${bot.connectedData.uuid}\nMinecraft 遊戲版本：${bot.connectedData.gameVersion}'),
                 ],
               ),
             ),
@@ -130,7 +131,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                   },
                   isExpanded: true,
                   items: BotActionType.values
-                      .where((e) => e != BotActionType.command)
+                      .where((e) => e.only)
                       .map<DropdownMenuItem<BotActionType>>(
                           (BotActionType value) {
                     return DropdownMenuItem<BotActionType>(
@@ -151,7 +152,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                 style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
             const SizedBox(height: 8),
             Tooltip(
-              message: '自動飲食，肉、蔬菜、湯都支援，可以防止餓死',
+              message: '自動飲食，肉、蔬菜、湯都支援，可以防止餓死 (腐肉是黑名單)',
               child: SwitchListTile(
                   value: autoEat,
                   onChanged: (value) {
@@ -159,6 +160,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                       autoEat = value;
                     });
                     appConfig.autoEat = autoEat;
+                    bot.updateConfig();
                   },
                   title: const Text('自動飲食')),
             ),
@@ -171,6 +173,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                       autoThrow = value;
                     });
                     appConfig.autoThrow = autoThrow;
+                    bot.updateConfig();
                   },
                   title: const Text('自動丟棄物品')),
             ),
@@ -184,6 +187,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                       autoReconnect = value;
                     });
                     appConfig.autoReconnect = autoReconnect;
+                    bot.updateConfig();
                   },
                   title: const Text('自動重新連線')),
             ),

@@ -74,6 +74,5 @@ enum EventType {
   gameMessage,
   connected,
   disconnected,
-  status,
-  unauthorized
+  status
 }

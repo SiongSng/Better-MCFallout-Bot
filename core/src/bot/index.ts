@@ -1,11 +1,12 @@
+import { BotHelper } from "@/bot/bot_helper";
 import { MinecraftItem } from "@/bot/model/minecraft_item";
 import { EventEmitter, Event } from "@/util/event_emitter";
-import { Config } from "@/config";
 import * as mineflayer from "mineflayer";
 import * as readline from "readline";
 import { ActionHandler } from "@/util/action_handler";
+import { config } from "@/index";
 
-export function createBot(config: Config) {
+export function createBot(reconnectTimes = 0) {
   const bot = mineflayer.createBot({
     username: config.email,
     password: config.password,
@@ -21,7 +22,11 @@ export function createBot(config: Config) {
   });
 
   rl.on("line", function (line) {
-    ActionHandler.handle(bot, line);
+    try {
+      ActionHandler.handle(bot, line);
+    } catch (error) {
+      EventEmitter.error(`Error while handling action: ${error}`);
+    }
   });
 
   bot.once("spawn", () => {
@@ -59,10 +64,12 @@ export function createBot(config: Config) {
 
   bot.on("kicked", (reason) => {
     EventEmitter.error(reason);
+    BotHelper.reconnect(config, reconnectTimes);
   });
 
   bot.once("end", () => {
     EventEmitter.emit(Event.disconnected);
+    BotHelper.reconnect(config, reconnectTimes);
   });
 
   // Error handling

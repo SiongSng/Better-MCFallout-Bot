@@ -20,10 +20,10 @@ class ConnectedEvent implements IConnectedEvent, IEvent {
   @override
   late final String name;
 
-  ConnectedEvent(RawEvent raw)
-      : gameVersion = raw.data['game_version'],
-        host = raw.data['host'],
-        port = raw.data['port'],
-        uuid = raw.data['uuid'],
-        name = raw.data['name'];
+  ConnectedEvent(RawEvent event)
+      : gameVersion = event.data['game_version'],
+        host = event.data['host'],
+        port = event.data['port'],
+        uuid = event.data['uuid'],
+        name = event.data['name'];
 }

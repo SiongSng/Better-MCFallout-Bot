@@ -8,15 +8,15 @@ First, install [Flutter SDK](https://docs.flutter.dev/get-started/install) and [
 
 Windows
 ```shell
-script/build_windows.bat
+script/dev_windows.bat
 ```
 
 Linux
 ```bash
-bash script/build_linux.sh
+bash script/dev_linux.sh
 ```
 
 macOS
 ```shell
-script/build_macos.sh
+script/dev_macos.sh
 ```
