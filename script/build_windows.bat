@@ -5,6 +5,7 @@ echo "[Info] Building the app"
 flutter build windows --release
 
 cd ..
-mkdir -p app/build/windows/runner/Release/lib; mv core/out/better-mcfallout-bot $_/better-mcfallout-bot-core
+mkdir -p app/build/windows/runner/Release/lib
+move core/out/better-mcfallout-bot app/build/windows/runner/Release/lib/better-mcfallout-bot-core
 
 echo "[Info] Done"

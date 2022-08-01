@@ -1,0 +1,66 @@
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version"
+        type: string
+        required: true
+      body:
+        description: "Release body"
+        type: string
+        required: true
+
+env:
+  version: ${{ github.event.inputs.version }}
+
+jobs:
+  build_linux:
+    uses: ./.github/workflows/build_linux.yml
+    with:
+      version: ${{ env.version }}
+  build_windows:
+    uses: ./.github/workflows/build_windows.yml
+    with:
+      version: ${{ env.version }}
+  build_macos:
+    uses: ./.github/workflows/build_macos.yml
+    with:
+      version: ${{ env.version }}
+
+  build_release:
+    needs:
+      - build_linux
+      - build_windows
+      - build_macos
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download files
+        uses: actions/download-artifact@v3
+
+      - name: Zip Linux
+        uses: thedoctor0/zip-release@master
+        with:
+          type: "zip"
+          filename: "Better-MCFallout-Bot-${{ env.version }}-Linux.zip"
+          path: Better-MCFallout-Bot-${{ env.version }}-Linux
+      - name: Zip Windows
+        uses: thedoctor0/zip-release@master
+        with:
+          type: "zip"
+          filename: "Better-MCFallout-Bot-${{ env.version }}-Windows.zip"
+          path: Better-MCFallout-Bot-${{ env.version }}-Windows
+
+      - name: Release files
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Better MCFallout Bot ${{ env.version }}
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+          tag_name: ${{ env.version }}
+          body: ${{ github.event.inputs.body }}
+          files: |
+            Better-MCFallout-Bot-${{ env.version }}-Linux.zip
+            Better-MCFallout-Bot-${{ env.version }}-Windows.zip
+            Better-MCFallout-Bot-${{ env.version }}-macOS/Better-MCFallout-Bot-${{ env.version }}-macOS.dmg
