@@ -1,7 +1,7 @@
 import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
 
 abstract class IStatusEvent {
-  int get health;
+  double get health;
   double get food;
   Duration get time;
   List<MinecraftItem> get inventoryItems;
@@ -9,7 +9,7 @@ abstract class IStatusEvent {
 
 class StatusEvent implements IStatusEvent, IEvent {
   @override
-  late final int health;
+  late final double health;
   @override
   late final double food;
   @override
@@ -18,7 +18,7 @@ class StatusEvent implements IStatusEvent, IEvent {
   late final List<MinecraftItem> inventoryItems;
 
   StatusEvent(RawEvent event)
-      : health = event.data['health'],
+      : health = double.parse(event.data['health'].toString()),
         food = double.parse(event.data['food'].toString()),
         // in Minecraft, 1 tick is 20 seconds.
         time = Duration(seconds: (int.parse(event.data['time']).toInt()) ~/ 20),

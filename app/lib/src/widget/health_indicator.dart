@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HealthIndicator extends StatefulWidget {
-  final int health;
+  final double health;
   const HealthIndicator({Key? key, required this.health}) : super(key: key);
 
   @override
