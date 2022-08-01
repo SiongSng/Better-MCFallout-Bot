@@ -25,7 +25,7 @@ jobs:
     with:
       version: ${{ github.event.inputs.version }}
 
-  build_release:
+  release:
     needs:
       - build_linux
       - build_windows

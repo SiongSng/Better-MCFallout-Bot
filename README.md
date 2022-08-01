@@ -7,12 +7,16 @@
 詳細功能請看 [這裡](#-功能)  
 祝您使用愉快！
 
-![image](https://user-images.githubusercontent.com/48402225/182120437-a585084e-f3c5-4f83-84fc-fd4e14dc3e71.png)
+![image](https://user-images.githubusercontent.com/48402225/182155275-dc162aae-85ca-44a4-80d6-cef10a9bb55b.png)
 
 ## 🎮 下載
 本軟體支援 Windows、Linux、macOS 作業系統，另外僅支援 64 位元的電腦。
 
 [前我前往下載頁面](https://github.com/SiongSng/Better-MCFallout-Bot/releases/latest)
+
+在下方的 `Assets` 欄位會看到檔案，請選擇對應您電腦的作業系統進行下載。  
+
+![image](https://user-images.githubusercontent.com/48402225/182160712-9317bdf4-b406-4414-834b-1aeca5f06905.png)
 
 ## 🎨 功能
 ### ***自動刷突襲塔***
@@ -32,8 +36,10 @@
 
 ## 🪟 截圖
 ![image](https://user-images.githubusercontent.com/48402225/182106836-05185041-ecea-424f-833c-512fe81abd4a.png)
+![image](https://user-images.githubusercontent.com/48402225/182161060-941173f2-8147-4a29-aee6-b85e9ad03dae.png)
 
 ## ⚙️ 開發
+注意：這是給開發者看的，如果您是使用者請看 [這裡](#-下載)
 
 首先請先安裝 [Flutter SDK](https://docs.flutter.dev/get-started/install) 與 [Node.js](https://nodejs.org/download).
 
