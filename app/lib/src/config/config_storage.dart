@@ -42,6 +42,9 @@ class ConfigStorage {
   set tradePublicity(String? value) =>
       ConfigHelper.set('tradePublicity', value);
 
+  bool get hideHealth => ConfigHelper.get('hideHealth') ?? true;
+  set hideHealth(bool value) => ConfigHelper.set('hideHealth', value);
+
   Map toMap() => {
         'region': region.name,
         'autoEat': autoEat,
@@ -51,5 +54,6 @@ class ConfigStorage {
         'backgroundPath': backgroundPath,
         'warpPublicity': warpPublicity,
         'tradePublicity': tradePublicity,
+        'hideHealth': hideHealth,
       };
 }

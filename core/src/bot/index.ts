@@ -48,6 +48,10 @@ function listenBotEvent(bot: mineflayer.Bot) {
   bot.once("spawn", () => BotHelper.onSpawn(bot, config));
 
   bot.on("message", (message) => {
+    const isHealth = message.valueOf().startsWith("目標生命 : ❤❤❤❤❤❤❤❤❤❤");
+
+    if (isHealth && config.hideHealth) return;
+
     EventEmitter.gameMessage(message.valueOf(), new Date().getTime());
   });
 

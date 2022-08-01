@@ -215,7 +215,7 @@ export class BotHelper {
   static warpPublicity(bot: Bot, config: Config) {
     if (config.warpPublicity?.startsWith("/warp ")) {
       bot.chat(`!${config.warpPublicity}`);
-    } else {
+    } else if (config.warpPublicity != null) {
       EventEmitter.warning("Invalid warp publicity format");
     }
   }
@@ -223,7 +223,7 @@ export class BotHelper {
   static tradePublicity(bot: Bot, config: Config) {
     if ((config.tradePublicity?.trim().length || 0) > 0) {
       bot.chat(`$${config.tradePublicity}`);
-    } else {
+    } else if (config.tradePublicity != null) {
       EventEmitter.warning("Invalid trade publicity format");
     }
   }
