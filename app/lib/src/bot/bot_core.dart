@@ -51,7 +51,7 @@ class BotCore {
     connected = false;
   }
 
-  whenEvent<E extends IEvent>(void Function(E event) callback) {
+  void whenEvent<E extends IEvent>(void Function(E event) callback) {
     eventStream.listen((event) {
       if (event is E) {
         callback(event);
@@ -60,11 +60,13 @@ class BotCore {
   }
 
   Stream<E> whenEventStream<E extends IEvent>() {
-    return Stream.multi((controller) {
-      whenEvent<E>((event) {
-        controller.add(event);
-      });
+    final StreamController<E> controller = StreamController<E>();
+
+    whenEvent<E>((event) {
+      controller.add(event);
     });
+
+    return controller.stream;
   }
 
   void runCommand(String command) {

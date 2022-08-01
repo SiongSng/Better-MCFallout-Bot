@@ -17,10 +17,12 @@ export class BotHelper {
   }
 
   static onSpawn(bot: Bot, config: Config) {
+    let kicked = false;
+
     // Auto eat
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (bot as any).autoEat.options = {
-      priority: "foodPoints",
+      eatingTimeout: 8,
       startAt: 18, // If the bot has less food points than that number, it will start eating.
       bannedFood: ["rotten_flesh", "suspicious_stew"],
     };
@@ -37,6 +39,8 @@ export class BotHelper {
 
     // Every second update bot's status
     setInterval(() => {
+      if (kicked) clearInterval();
+
       EventEmitter.updateStatus(
         bot.health,
         bot.food,
@@ -53,6 +57,10 @@ export class BotHelper {
         })
       );
     }, 1000);
+
+    bot.on("kicked", () => {
+      kicked = true;
+    });
   }
 
   static async throwItems(bot: Bot, config: Config) {
@@ -69,10 +77,7 @@ export class BotHelper {
       "spectral_arrow",
       "tipped_arrow",
       "trident",
-      "crossbow",
       "netherite_sword",
-      "crossbow_arrow",
-      "crossbow_firework",
 
       // Armor
       "turtle_helmet",

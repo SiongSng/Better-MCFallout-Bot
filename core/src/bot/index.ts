@@ -52,22 +52,19 @@ function listenBotEvent(bot: mineflayer.Bot) {
   });
 
   // @ts-ignore
-  bot.on("autoeat_started", () => {
-    EventEmitter.info("Auto Eat started!");
-  });
-
-  // @ts-ignore
-  bot.on("autoeat_stopped", () => {
-    EventEmitter.info("Auto Eat stopped!");
+  bot.on("autoeat_stopped", (err) => {
+    if (err) {
+      EventEmitter.warning(`Auto eat failed: ${err}`);
+    }
   });
 
   bot.on("health", () => {
-    if (bot.food == 20 || !config.autoEat) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (bot as any).autoEat.disable();
-    } else {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (bot as any).autoEat.enable();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const autoEat = (bot as any).autoEat;
+    if ((bot.food == 20 || !config.autoEat) && autoEat.disable == false) {
+      autoEat.disable();
+    } else if (autoEat.disable == true) {
+      autoEat.enable();
     }
   });
 
