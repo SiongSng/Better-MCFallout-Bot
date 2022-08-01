@@ -1,7 +1,7 @@
 {
   "name": "better-mcfallout-bot",
   "version": "1.0.0",
-  "description": "Minecraft Fallout server bot with user interface.",
+  "description": "Feature-rich and easy-to-use Minecraft Fallout server bot.",
   "main": "dist/index.js",
   "bin": "dist/index.js",
   "repository": "https://github.com/SiongSng/Better-MCFallout-Bot",
