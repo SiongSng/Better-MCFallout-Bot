@@ -11,22 +11,19 @@ on:
         type: string
         required: false
 
-env:
-  version: ${{ github.event.inputs.version }}
-
 jobs:
   build_linux:
     uses: ./.github/workflows/build_linux.yml
     with:
-      version: ${{ env.version }}
+      version: ${{ github.event.inputs.version }}
   build_windows:
     uses: ./.github/workflows/build_windows.yml
     with:
-      version: ${{ env.version }}
+      version: ${{ github.event.inputs.version }}
   build_macos:
     uses: ./.github/workflows/build_macos.yml
     with:
-      version: ${{ env.version }}
+      version: ${{ github.event.inputs.version }}
 
   build_release:
     needs:
@@ -43,24 +40,24 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           type: "zip"
-          filename: "Better-MCFallout-Bot-${{ env.version }}-Linux.zip"
-          path: Better-MCFallout-Bot-${{ env.version }}-Linux
+          filename: "Better-MCFallout-Bot-${{ github.event.inputs.version }}-Linux.zip"
+          path: Better-MCFallout-Bot-${{ github.event.inputs.version }}-Linux
       - name: Zip Windows
         uses: thedoctor0/zip-release@master
         with:
           type: "zip"
-          filename: "Better-MCFallout-Bot-${{ env.version }}-Windows.zip"
-          path: Better-MCFallout-Bot-${{ env.version }}-Windows
+          filename: "Better-MCFallout-Bot-${{ github.event.inputs.version }}-Windows.zip"
+          path: Better-MCFallout-Bot-${{ github.event.inputs.version }}-Windows
 
       - name: Release files
         uses: softprops/action-gh-release@v1
         with:
-          name: Better MCFallout Bot ${{ env.version }}
+          name: Better MCFallout Bot ${{ github.event.inputs.version }}
           fail_on_unmatched_files: true
           generate_release_notes: true
-          tag_name: ${{ env.version }}
+          tag_name: ${{ github.event.inputs.version }}
           body: ${{ github.event.inputs.body }}
           files: |
-            Better-MCFallout-Bot-${{ env.version }}-Linux.zip
-            Better-MCFallout-Bot-${{ env.version }}-Windows.zip
-            Better-MCFallout-Bot-${{ env.version }}-macOS/Better-MCFallout-Bot-${{ env.version }}-macOS.dmg
+            Better-MCFallout-Bot-${{ github.event.inputs.version }}-Linux.zip
+            Better-MCFallout-Bot-${{ github.event.inputs.version }}-Windows.zip
+            Better-MCFallout-Bot-${{ github.event.inputs.version }}-macOS/Better-MCFallout-Bot-${{ github.event.inputs.version }}-macOS.dmg

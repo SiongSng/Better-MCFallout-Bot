@@ -8,6 +8,7 @@ on:
 jobs:
   init:
     runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message,'[ci skip]') }}
     outputs:
       github_short_hash: ${{ steps.github_short_hash.outputs.result }}
     steps:
@@ -17,16 +18,19 @@ jobs:
         run: echo "::set-output name=result::$(git rev-parse --short "${{ github.sha }}")"
 
   build_linux:
+    if: ${{ !contains(github.event.head_commit.message,'[ci skip]') }}
     needs: init
     uses: ./.github/workflows/build_linux.yml
     with:
       version: ${{ needs.init.outputs.github_short_hash }}
   build_windows:
+    if: ${{ !contains(github.event.head_commit.message,'[ci skip]') }}
     needs: init
     uses: ./.github/workflows/build_windows.yml
     with:
       version: ${{ needs.init.outputs.github_short_hash }}
   build_macos:
+    if: ${{ !contains(github.event.head_commit.message,'[ci skip]') }}
     needs: init
     uses: ./.github/workflows/build_macos.yml
     with:
