@@ -16,7 +16,7 @@ jobs:
         with:
           channel: "stable"
       - name: Build release
-        run: ./script/build_windows.bat
+        run: ${{ github.workspace }}/script/build_windows.bat
         shell: cmd
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v3
