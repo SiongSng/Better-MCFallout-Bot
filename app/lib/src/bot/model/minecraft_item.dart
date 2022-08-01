@@ -1,13 +1,13 @@
 class MinecraftItem {
   final String name;
   final String displayName;
-  final int stackSize;
+  final int count;
   final int type;
 
   const MinecraftItem({
     required this.name,
     required this.displayName,
-    required this.stackSize,
+    required this.count,
     required this.type,
   });
 
@@ -15,7 +15,7 @@ class MinecraftItem {
     return {
       'name': name,
       'displayName': displayName,
-      'stackSize': stackSize,
+      'count': count,
       'type': type,
     };
   }
@@ -24,7 +24,7 @@ class MinecraftItem {
     return MinecraftItem(
       name: map['name'],
       displayName: map['displayName'],
-      stackSize: map['stackSize'],
+      count: map['count'],
       type: map['type'],
     );
   }
@@ -36,7 +36,7 @@ class MinecraftItem {
     return other is MinecraftItem &&
         other.name == name &&
         other.displayName == displayName &&
-        other.stackSize == stackSize &&
+        other.count == count &&
         other.type == type;
   }
 
@@ -44,7 +44,7 @@ class MinecraftItem {
   int get hashCode {
     return name.hashCode ^
         displayName.hashCode ^
-        stackSize.hashCode ^
+        count.hashCode ^
         type.hashCode;
   }
 }

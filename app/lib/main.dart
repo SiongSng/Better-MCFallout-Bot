@@ -6,31 +6,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 void main() async {
-  Logger.root.onRecord.listen((record) {
-    if (kDebugMode) {
-      print(record.toString());
-    }
-
-    Sentry.addBreadcrumb(Breadcrumb(
-      level: SentryLevel.fromName(record.level.name.toLowerCase()),
-      message: record.message,
-      type: 'log',
-      data: {
-        'stack_trace': record.stackTrace.toString(),
-        'logger_name': record.loggerName,
-      },
-      timestamp: record.time,
-    ));
-
-    if (record.level == Level.SEVERE) {
-      Sentry.captureException(record.error ?? Exception(record.message),
-          stackTrace: record.stackTrace);
-    }
-  });
-
+  await logging();
   Logger.root.info('App starting');
   await ConfigHelper.init();
 
@@ -90,4 +71,42 @@ void main() async {
     options.tracesSampleRate = 1.0;
     options.debug = kDebugMode;
   }, appRunner: () => runApp(const App()));
+}
+
+Future<void> logging() async {
+  final baseDir = await getApplicationSupportDirectory();
+  final time = DateTime.now();
+  final logFile = File(join(baseDir.path, 'logs',
+      '${time.year}-${time.month}-${time.day}-${time.hour}-${time.minute}-${time.second}.log'));
+  Logger.root.onRecord.listen((record) {
+    if (kDebugMode) {
+      print(record.toString());
+    }
+
+    Sentry.addBreadcrumb(Breadcrumb(
+      level: SentryLevel.fromName(record.level.name.toLowerCase()),
+      message: record.message,
+      type: 'log',
+      data: {
+        'stack_trace': record.stackTrace.toString(),
+        'logger_name': record.loggerName,
+      },
+      timestamp: record.time,
+    ));
+
+    if (record.level == Level.SEVERE) {
+      Sentry.captureException(record.error ?? Exception(record.message),
+          stackTrace: record.stackTrace);
+    }
+
+    if (!logFile.existsSync()) {
+      logFile.createSync(recursive: true);
+    }
+    String log = '[${record.time}] ${record.level.name}: ${record.message}';
+    if (record.stackTrace != null) {
+      log += '\n${record.stackTrace}';
+    }
+
+    logFile.writeAsStringSync('$log\n', mode: FileMode.append);
+  });
 }

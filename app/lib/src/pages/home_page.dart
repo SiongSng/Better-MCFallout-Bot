@@ -1,5 +1,6 @@
 import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -24,6 +25,13 @@ class _HomePageState extends State<HomePage> {
                 tooltip: '設定',
                 icon: const Icon(Icons.settings)),
             IconButton(
+                onPressed: () async {
+                  final dir = await getApplicationSupportDirectory();
+                  Util.openFileManager(dir);
+                },
+                tooltip: '開啟資料儲存位置',
+                icon: const Icon(Icons.folder)),
+            IconButton(
                 onPressed: () {
                   showDialog(
                       context: context,
@@ -33,7 +41,7 @@ class _HomePageState extends State<HomePage> {
                 icon: const Icon(Icons.info))
           ],
         ),
-        leadingWidth: 50 * 2,
+        leadingWidth: 50 * 3,
         title: const Text('更好的廢土機器人'),
         centerTitle: true,
       ),

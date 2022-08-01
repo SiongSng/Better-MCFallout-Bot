@@ -67,4 +67,18 @@ class Util {
     }
     return null;
   }
+
+  static openFileManager(FileSystemEntity fse) async {
+    if (fse is Directory) {
+      if (!fse.existsSync()) {
+        fse.createSync(recursive: true);
+      }
+    }
+
+    if (Platform.isMacOS) {
+      Process.run('open', [fse.absolute.path]);
+    } else {
+      openUri(Uri.decodeFull(fse.uri.toString()));
+    }
+  }
 }

@@ -7,7 +7,7 @@
 詳細功能請看 [這裡](#-功能)  
 祝您使用愉快！
 
-![image](https://user-images.githubusercontent.com/48402225/182107013-46ffdf0b-f27c-47d6-862f-e01a2986dd44.png)
+![image](https://user-images.githubusercontent.com/48402225/182120437-a585084e-f3c5-4f83-84fc-fd4e14dc3e71.png)
 
 ## 🎮 下載
 本軟體支援 Windows、Linux、macOS 作業系統，另外僅支援 64 位元的電腦。

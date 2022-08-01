@@ -51,7 +51,7 @@ export class BotHelper {
             (item.customName != null
               ? JSON.parse(item.customName).extra?.[0]?.text
               : null) || item.displayName,
-            item.stackSize,
+            item.count,
             item.type
           );
         })

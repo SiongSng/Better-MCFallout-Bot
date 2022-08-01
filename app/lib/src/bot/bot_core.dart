@@ -199,11 +199,23 @@ class BotCore {
   String _getExecutablePath() {
     final String path;
     if (kReleaseMode) {
-      path = join(dirname(Platform.resolvedExecutable), 'lib',
-          'better-mcfallout-bot-core');
+      final String file;
+      if (Platform.isWindows) {
+        file = 'better-mcfallout-bot-core.exe';
+      } else {
+        file = 'better-mcfallout-bot-core';
+      }
+
+      path = join(dirname(Platform.resolvedExecutable), 'lib', file);
     } else {
-      path = join(dirname(Directory.current.path), 'core', 'out',
-          'better-mcfallout-bot');
+      final String file;
+      if (Platform.isWindows) {
+        file = 'better-mcfallout-bot.exe';
+      } else {
+        file = 'better-mcfallout-bot';
+      }
+
+      path = join(dirname(Directory.current.path), 'core', 'out', file);
     }
 
     return path;

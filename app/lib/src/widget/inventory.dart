@@ -63,7 +63,7 @@ class _InventoryItemState extends State<InventoryItem> {
   @override
   Widget build(BuildContext context) {
     return Tooltip(
-        message: '${widget.item.stackSize} 個 ${widget.item.displayName}',
+        message: '${widget.item.count} 個 ${widget.item.displayName}',
         child: NetworkImage(
             src:
                 'https://raw.githubusercontent.com/SiongSng/mc-icons/master/pics/${widget.item.name}.png',

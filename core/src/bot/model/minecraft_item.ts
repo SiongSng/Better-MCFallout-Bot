@@ -1,19 +1,14 @@
 export class MinecraftItem {
-  constructor(
-    name: string,
-    displayName: string,
-    stackSize: number,
-    type: number
-  ) {
+  constructor(name: string, displayName: string, count: number, type: number) {
     this.name = name;
     this.displayName = displayName;
-    this.stackSize = stackSize;
+    this.count = count;
     this.type = type;
   }
 
   name: string;
   displayName: string;
-  stackSize: number;
+  count: number;
 
   /// Numerical id.
   type: number;
