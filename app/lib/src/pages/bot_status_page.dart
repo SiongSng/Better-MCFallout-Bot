@@ -246,8 +246,12 @@ class _BotStatusPageState extends State<BotStatusPage> {
             const Text('遊戲訊息',
                 style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
             const SizedBox(height: 8),
-            const SizedBox(
-                height: 300, child: Center(child: GameMessageView())),
+            Center(
+              child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.85,
+                  height: 300,
+                  child: const GameMessageView()),
+            ),
             const Divider(),
             const Text('執行指令',
                 style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
