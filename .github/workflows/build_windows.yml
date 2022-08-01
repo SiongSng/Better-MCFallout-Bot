@@ -16,7 +16,8 @@ jobs:
         with:
           channel: "stable"
       - name: Build release
-        run: cmd ./script/build_windows.bat
+        run: ./script/build_windows.bat
+        shell: cmd
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v3
         with:

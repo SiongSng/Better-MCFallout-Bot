@@ -16,9 +16,22 @@ jobs:
         with:
           channel: "stable"
       - name: Build release
-        run: bash script/build_macos.sh
+        run: |
+          bash script/build_macos.sh
+          cd app/build/macos/Build/Products
+          brew install create-dmg
+          create-dmg \
+          --volname "Better MCFallout Bot Installer (${{ inputs.version }})" \
+          --window-pos 200 120 \
+          --window-size 800 529 \
+          --icon "better_mcfallout_bot.app" 260 250 \
+          --hide-extension "better_mcfallout_bot.app" \
+          --app-drop-link 540 250 \
+          --hdiutil-quiet \
+          "Better-MCFallout-Bot-macOS.dmg" \
+          "Release/"
       - name: Upload macOS artifact
         uses: actions/upload-artifact@v3
         with:
           name: Better-MCFallout-Bot-${{ inputs.version }}-macOS
-          path: ${{ github.workspace }}/app/build/macos/Build/Products/Release
+          path: ${{ github.workspace }}/app/build/macos/Build/Products/Better-MCFallout-Bot-macOS.dmg
