@@ -1,3 +1,3 @@
-bash script/build_linux.sh
+bash script/build_core_linux.sh
 
 flutter run --debug

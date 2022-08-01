@@ -18,5 +18,5 @@ bash script/dev_linux.sh
 
 macOS
 ```shell
-script/dev_macos.sh
+bash script/dev_macos.sh
 ```
