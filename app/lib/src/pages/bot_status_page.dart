@@ -76,31 +76,46 @@ class _BotStatusPageState extends State<BotStatusPage> {
               ),
             ),
             const Divider(),
-            const Text('狀態',
-                style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
-            const SizedBox(height: 8),
             StreamBuilder<StatusEvent>(
               stream: bot.whenEventStream<StatusEvent>(),
               builder: (context, snapshot) {
                 if (snapshot.data != null) {
                   final data = snapshot.data!;
 
-                  return Column(
-                    children: [
-                      Tooltip(
-                          message: data.health.toString(),
-                          child: HealthIndicator(health: data.health)),
-                      Tooltip(
-                          message: data.food.toString(),
-                          child: HungerIndicator(hunger: data.food)),
-                      Text('遊戲時間：${Util.formatDuration(data.time)}'),
-                      const Divider(),
-                      const Tooltip(
-                          message: '機器人的物品欄內容 (未按照實際位置編排)',
-                          child: Text('物品欄', style: TextStyle(fontSize: 20))),
-                      const SizedBox(height: 8),
-                      InventoryView(items: data.inventoryItems)
-                    ],
+                  return IntrinsicHeight(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            const Text('狀態',
+                                style: TextStyle(fontSize: 20),
+                                textAlign: TextAlign.center),
+                            const SizedBox(height: 8),
+                            Tooltip(
+                                message: data.health.toString(),
+                                child: HealthIndicator(health: data.health)),
+                            Tooltip(
+                                message: data.food.toString(),
+                                child: HungerIndicator(hunger: data.food)),
+                            Text('遊戲時間：${Util.formatDuration(data.time)}'),
+                          ],
+                        ),
+                        const SizedBox(width: 12),
+                        const VerticalDivider(),
+                        const SizedBox(width: 12),
+                        Column(
+                          children: [
+                            const Tooltip(
+                                message: '機器人的物品欄內容 (未按照實際位置編排)',
+                                child: Text('物品欄',
+                                    style: TextStyle(fontSize: 20))),
+                            const SizedBox(height: 8),
+                            InventoryView(items: data.inventoryItems)
+                          ],
+                        )
+                      ],
+                    ),
                   );
                 } else {
                   return Column(
@@ -112,97 +127,127 @@ class _BotStatusPageState extends State<BotStatusPage> {
               },
             ),
             const Divider(),
+            Column(
+              children: [
+                const Text('機器人動作',
+                    style: TextStyle(fontSize: 20),
+                    textAlign: TextAlign.center),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 9,
+                  child: DropdownButton<BotActionType>(
+                    value: botAction,
+                    style: const TextStyle(color: Colors.lightBlue),
+                    onChanged: (BotActionType? value) {
+                      if (botAction != value) {
+                        if (botAction == BotActionType.raid) {
+                          bot.raid(BotActionMethod.stop);
+                        } else if (value == BotActionType.raid) {
+                          bot.raid(BotActionMethod.start);
+                        }
+                      }
+
+                      setState(() {
+                        botAction = value!;
+                      });
+
+                      appConfig.botAction = botAction;
+                    },
+                    isExpanded: true,
+                    items: BotActionType.values
+                        .where((e) => e.only)
+                        .map<DropdownMenuItem<BotActionType>>(
+                            (BotActionType value) {
+                      return DropdownMenuItem<BotActionType>(
+                        value: value,
+                        alignment: Alignment.center,
+                        child: Text(value.getName(),
+                            style: const TextStyle(
+                                fontSize: 16, fontFamily: 'font'),
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
+            ),
+            const Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    const Text('功能選擇',
+                        style: TextStyle(fontSize: 20),
+                        textAlign: TextAlign.center),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 200,
+                          height: 50,
+                          child: Tooltip(
+                            message: '自動飲食，肉、蔬菜、湯都支援，可以防止餓死 (腐肉是黑名單)',
+                            child: SwitchListTile(
+                                value: autoEat,
+                                onChanged: (value) {
+                                  setState(() {
+                                    autoEat = value;
+                                  });
+                                  appConfig.autoEat = autoEat;
+                                  bot.updateConfig();
+                                },
+                                title: const Text('自動飲食')),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 200,
+                          height: 50,
+                          child: Tooltip(
+                            message:
+                                '自動丟棄不重要的物品，保留重要物品，像是武器、不死圖騰、食物、裝備，在刷突襲塔的時候很有用。',
+                            child: SwitchListTile(
+                                value: autoThrow,
+                                onChanged: (value) {
+                                  setState(() {
+                                    autoThrow = value;
+                                  });
+                                  appConfig.autoThrow = autoThrow;
+                                  bot.updateConfig();
+                                },
+                                title: const Text('自動丟棄物品')),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 200,
+                          height: 50,
+                          child: Tooltip(
+                            message:
+                                '自動重新連線伺服器，如果突然斷線或者廢土伺服器當機，會每 30 秒自動重新連線一次，若失敗超過 10 次則自動暫停。',
+                            child: SwitchListTile(
+                                value: autoReconnect,
+                                onChanged: (value) {
+                                  setState(() {
+                                    autoReconnect = value;
+                                  });
+                                  appConfig.autoReconnect = autoReconnect;
+                                  bot.updateConfig();
+                                },
+                                title: const Text('自動重新連線')),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                )
+              ],
+            ),
+            const Divider(),
             const Text('遊戲訊息',
                 style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
             const SizedBox(height: 8),
             const SizedBox(
                 height: 200, child: Center(child: GameMessageView())),
-            const Divider(),
-            const Text('機器人動作',
-                style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
-            Align(
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width / 5.5,
-                child: DropdownButton<BotActionType>(
-                  value: botAction,
-                  style: const TextStyle(color: Colors.lightBlue),
-                  onChanged: (BotActionType? value) {
-                    if (botAction != value) {
-                      if (botAction == BotActionType.raid) {
-                        bot.raid(BotActionMethod.stop);
-                      } else if (value == BotActionType.raid) {
-                        bot.raid(BotActionMethod.start);
-                      }
-                    }
-
-                    setState(() {
-                      botAction = value!;
-                    });
-
-                    appConfig.botAction = botAction;
-                  },
-                  isExpanded: true,
-                  items: BotActionType.values
-                      .where((e) => e.only)
-                      .map<DropdownMenuItem<BotActionType>>(
-                          (BotActionType value) {
-                    return DropdownMenuItem<BotActionType>(
-                      value: value,
-                      alignment: Alignment.center,
-                      child: Text(value.getName(),
-                          style:
-                              const TextStyle(fontSize: 16, fontFamily: 'font'),
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ),
-            const Divider(),
-            const Text('功能選擇',
-                style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
-            const SizedBox(height: 8),
-            Tooltip(
-              message: '自動飲食，肉、蔬菜、湯都支援，可以防止餓死 (腐肉是黑名單)',
-              child: SwitchListTile(
-                  value: autoEat,
-                  onChanged: (value) {
-                    setState(() {
-                      autoEat = value;
-                    });
-                    appConfig.autoEat = autoEat;
-                    bot.updateConfig();
-                  },
-                  title: const Text('自動飲食')),
-            ),
-            Tooltip(
-              message: '自動丟棄不重要的物品，保留重要物品，像是武器、不死圖騰、食物、裝備，在刷突襲塔的時候很有用。',
-              child: SwitchListTile(
-                  value: autoThrow,
-                  onChanged: (value) {
-                    setState(() {
-                      autoThrow = value;
-                    });
-                    appConfig.autoThrow = autoThrow;
-                    bot.updateConfig();
-                  },
-                  title: const Text('自動丟棄物品')),
-            ),
-            Tooltip(
-              message:
-                  '自動重新連線伺服器，如果突然斷線或者廢土伺服器當機，會每 30 秒自動重新連線一次，若失敗超過 10 次則自動暫停。',
-              child: SwitchListTile(
-                  value: autoReconnect,
-                  onChanged: (value) {
-                    setState(() {
-                      autoReconnect = value;
-                    });
-                    appConfig.autoReconnect = autoReconnect;
-                    bot.updateConfig();
-                  },
-                  title: const Text('自動重新連線')),
-            ),
             const Divider(),
             const Text('執行指令',
                 style: TextStyle(fontSize: 20), textAlign: TextAlign.center),

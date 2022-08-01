@@ -66,9 +66,10 @@ class _InventoryItemState extends State<InventoryItem> {
         message: '${widget.item.stackSize} 個 ${widget.item.displayName}',
         child: NetworkImage(
             src:
-                'https://raw.githubusercontent.com/SiongSng/mc-icons/new/pics/${widget.item.name}.png',
-            width: 32,
-            height: 32,
+                'https://raw.githubusercontent.com/SiongSng/mc-icons/master/pics/${widget.item.name}.png',
+            width: 30,
+            height: 30,
+            fit: BoxFit.contain,
             errorWidget: const Icon(Icons.grid_view)));
   }
 }

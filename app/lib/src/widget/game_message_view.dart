@@ -55,8 +55,9 @@ class _GameMessageViewState extends State<GameMessageView> {
           final message = messages[index];
 
           return ListTile(
-            title: SelectableText(message.message),
-            subtitle: Text(message.sentAt.toString()),
+            title: SelectableText(message.message, textAlign: TextAlign.center),
+            subtitle:
+                Text(message.sentAt.toString(), textAlign: TextAlign.center),
           );
         });
   }

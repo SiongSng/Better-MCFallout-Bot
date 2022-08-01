@@ -25,10 +25,10 @@ class _AppState extends State<App> {
                 title: const Text('資訊'),
                 content: const Text('您確定要關閉本程式嗎？將會導致機器人強制斷線。'),
                 actions: [
-                  TextButton(
+                  ElevatedButton(
                       onPressed: () => Navigator.of(context).pop(false),
                       child: const Text('否')),
-                  TextButton(
+                  ElevatedButton(
                       onPressed: () {
                         BotCore.instance?.disconnect();
                         Navigator.of(context).pop(true);
