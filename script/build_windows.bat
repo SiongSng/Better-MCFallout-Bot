@@ -1,4 +1,4 @@
-bash script/build_core_windows.sh
+bash script/build_core_windows.bat
 
 cd app
 echo "[Info] Building the app"
