@@ -33,6 +33,15 @@ class ConfigStorage {
   set backgroundPath(String? value) =>
       ConfigHelper.set('backgroundPath', value);
 
+  // 公共設施頻道自動宣傳
+  String? get warpPublicity => ConfigHelper.get('warpPublicity');
+  set warpPublicity(String? value) => ConfigHelper.set('warpPublicity', value);
+
+  // 交易頻道自動宣傳
+  String? get tradePublicity => ConfigHelper.get('tradePublicity');
+  set tradePublicity(String? value) =>
+      ConfigHelper.set('tradePublicity', value);
+
   Map toMap() => {
         'region': region.name,
         'autoEat': autoEat,
@@ -40,5 +49,7 @@ class ConfigStorage {
         'autoReconnect': autoReconnect,
         'botAction': botAction.name,
         'backgroundPath': backgroundPath,
+        'warpPublicity': warpPublicity,
+        'tradePublicity': tradePublicity,
       };
 }

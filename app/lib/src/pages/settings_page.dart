@@ -15,6 +15,8 @@ class _SettingsPageState extends State<SettingsPage> {
   late ServerRegion region;
   late TextEditingController emailController;
   late TextEditingController passwordController;
+  late TextEditingController warpPublicityController;
+  late TextEditingController tradePublicityController;
 
   bool hidePassword = true;
 
@@ -23,6 +25,10 @@ class _SettingsPageState extends State<SettingsPage> {
     region = appConfig.region;
     emailController = TextEditingController(text: appConfig.email);
     passwordController = TextEditingController(text: appConfig.password);
+    warpPublicityController =
+        TextEditingController(text: appConfig.warpPublicity);
+    tradePublicityController =
+        TextEditingController(text: appConfig.tradePublicity);
 
     super.initState();
   }
@@ -67,7 +73,7 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
             const SizedBox(height: 12),
-            const Text('其他設定', style: TextStyle(fontSize: 18)),
+            const Text('伺服器設定', style: TextStyle(fontSize: 18)),
             ListTile(
               title: const Text("伺服器區域", style: TextStyle(fontSize: 16)),
               trailing: SizedBox(
@@ -98,6 +104,28 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
             ),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: '公共設施自動宣傳',
+                hintText: '請輸入訊息 (範例格式：/warp <傳送點> <訊息>)',
+              ),
+              controller: warpPublicityController,
+              onChanged: (_) {
+                appConfig.warpPublicity = warpPublicityController.text;
+              },
+            ),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: '交易頻道自動宣傳',
+                hintText: '請輸入訊息 (不用前綴，範例格式：<交易訊息>)',
+              ),
+              controller: tradePublicityController,
+              onChanged: (_) {
+                appConfig.tradePublicity = tradePublicityController.text;
+              },
+            ),
+            const SizedBox(height: 12),
+            const Text('其他設定', style: TextStyle(fontSize: 18)),
             ListTile(
               title: const Text('背景圖片', style: TextStyle(fontSize: 16)),
               subtitle: Builder(builder: (context) {

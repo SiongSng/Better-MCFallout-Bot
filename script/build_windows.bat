@@ -4,6 +4,7 @@ cd app
 echo "[Info] Building the app"
 flutter build windows --release
 
+echo "[Info] Copying the core to the app"
 cd ..
 mkdir app/build/windows/runner/Release/lib
 move core/out/better-mcfallout-bot.exe app/build/windows/runner/Release/lib/better-mcfallout-bot-core.exe

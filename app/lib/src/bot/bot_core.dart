@@ -194,6 +194,8 @@ class BotCore {
         'autoEat': appConfig.autoEat,
         'autoThrow': appConfig.autoThrow,
         'autoReconnect': appConfig.autoReconnect,
+        'warpPublicity': appConfig.warpPublicity,
+        'tradePublicity': appConfig.tradePublicity
       };
 
   String _getExecutablePath() {

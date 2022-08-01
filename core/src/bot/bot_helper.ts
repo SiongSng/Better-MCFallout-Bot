@@ -58,6 +58,18 @@ export class BotHelper {
       );
     }, 1000);
 
+    setInterval(() => {
+      if (end) clearInterval();
+      this.warpPublicity(bot, config);
+    }, 1000 * 60 * 30);
+    this.warpPublicity(bot, config);
+
+    setInterval(() => {
+      if (end) clearInterval();
+      this.tradePublicity(bot, config);
+    }, 1000 * 60 * 10);
+    this.tradePublicity(bot, config);
+
     bot.on("kicked", () => {
       end = true;
     });
@@ -198,5 +210,21 @@ export class BotHelper {
     // Wait for connecting to the server
     await Util.delay(2000);
     await _throw(inventory.items().values());
+  }
+
+  static warpPublicity(bot: Bot, config: Config) {
+    if (config.warpPublicity?.startsWith("/warp ")) {
+      bot.chat(`!${config.warpPublicity}`);
+    } else {
+      EventEmitter.warning("Invalid warp publicity format");
+    }
+  }
+
+  static tradePublicity(bot: Bot, config: Config) {
+    if ((config.tradePublicity?.trim().length || 0) > 0) {
+      bot.chat(`$${config.tradePublicity}`);
+    } else {
+      EventEmitter.warning("Invalid trade publicity format");
+    }
   }
 }

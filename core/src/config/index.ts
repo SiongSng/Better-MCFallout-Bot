@@ -6,7 +6,9 @@ export class Config {
     password: string,
     autoEat: boolean,
     autoThrow: boolean,
-    autoReconnect: boolean
+    autoReconnect: boolean,
+    warpPublicity: string | null,
+    tradePublicity: string | null,
   ) {
     this.host = host;
     this.port = port;
@@ -15,6 +17,8 @@ export class Config {
     this.autoEat = autoEat;
     this.autoThrow = autoThrow;
     this.autoReconnect = autoReconnect;
+    this.warpPublicity = warpPublicity;
+    this.tradePublicity = tradePublicity;
   }
 
   host: string;
@@ -24,4 +28,6 @@ export class Config {
   autoEat: boolean;
   autoThrow: boolean;
   autoReconnect: boolean;
+  warpPublicity: string | null;
+  tradePublicity: string | null;
 }
