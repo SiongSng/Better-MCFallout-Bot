@@ -6,7 +6,6 @@ flutter build windows --release
 
 cd ..
 mkdir app/build/windows/runner/Release/lib
-ls core/out
 move core/out/better-mcfallout-bot.exe app/build/windows/runner/Release/lib/better-mcfallout-bot-core.exe
 
 echo "[Info] Done"

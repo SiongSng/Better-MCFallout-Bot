@@ -9,10 +9,13 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:window_manager/window_manager.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await logging();
   Logger.root.info('App starting');
+  await windowManager.ensureInitialized();
   await ConfigHelper.init();
 
   await SentryFlutter.init((options) {
@@ -69,8 +72,11 @@ void main() async {
 
     options.beforeSend = beforeSend;
     options.tracesSampleRate = 1.0;
+    options.autoAppStart = false;
     options.debug = kDebugMode;
-  }, appRunner: () => runApp(const App()));
+  },
+      appRunner: () => runApp(
+          DefaultAssetBundle(bundle: SentryAssetBundle(), child: const App())));
 }
 
 Future<void> logging() async {
@@ -83,20 +89,20 @@ Future<void> logging() async {
       print(record.toString());
     }
 
-    Sentry.addBreadcrumb(Breadcrumb(
-      level: SentryLevel.fromName(record.level.name.toLowerCase()),
-      message: record.message,
-      type: 'log',
-      data: {
-        'stack_trace': record.stackTrace.toString(),
-        'logger_name': record.loggerName,
-      },
-      timestamp: record.time,
-    ));
-
     if (record.level == Level.SEVERE) {
       Sentry.captureException(record.error ?? Exception(record.message),
           stackTrace: record.stackTrace);
+    } else {
+      Sentry.addBreadcrumb(Breadcrumb(
+        level: SentryLevel.fromName(record.level.name.toLowerCase()),
+        message: record.message,
+        type: 'log',
+        data: {
+          'stack_trace': record.stackTrace.toString(),
+          'logger_name': record.loggerName,
+        },
+        timestamp: record.time,
+      ));
     }
 
     if (!logFile.existsSync()) {

@@ -43,6 +43,7 @@ dependencies:
   line_icons: ^2.0.1
   file_picker: ^5.0.0
   shared_preferences: ^2.0.15
+  window_manager: ^0.2.5
 
 dev_dependencies:
   flutter_test:

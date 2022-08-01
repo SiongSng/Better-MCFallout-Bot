@@ -47,7 +47,7 @@ class BotCore {
   void disconnect() {
     if (!connected) return;
     _executeAction(const BotAction(action: BotActionType.disconnect));
-    process.kill();
+    process.kill(ProcessSignal.sigkill);
     connected = false;
   }
 
