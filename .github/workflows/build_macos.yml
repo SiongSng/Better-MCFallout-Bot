@@ -16,7 +16,7 @@ jobs:
         with:
           channel: "stable"
       - name: Build release
-        run: script/build_macos.bat
+        run: bash script/build_macos.sh
       - name: Upload macOS artifact
         uses: actions/upload-artifact@v3
         with:
