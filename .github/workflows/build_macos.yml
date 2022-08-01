@@ -28,7 +28,7 @@ jobs:
           --hide-extension "better_mcfallout_bot.app" \
           --app-drop-link 540 250 \
           --hdiutil-quiet \
-          "Better-MCFallout-Bot-macOS.dmg" \
+          "Better-MCFallout-Bot-${{ inputs.version }}-macOS.dmg" \
           "Release/"
       - name: Upload macOS artifact
         uses: actions/upload-artifact@v3

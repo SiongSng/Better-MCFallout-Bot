@@ -9,7 +9,7 @@ on:
       body:
         description: "Release body"
         type: string
-        required: true
+        required: false
 
 env:
   version: ${{ github.event.inputs.version }}
