@@ -1,23 +1,27 @@
-import 'dart:io';
-
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfigHelper {
-  static late final Box _box;
+  static late final SharedPreferences _prefs;
 
   static Future<void> init() async {
-    Directory dir = await getApplicationSupportDirectory();
-    Hive.init(dir.path);
-
-    _box = await Hive.openBox('config');
+    _prefs = await SharedPreferences.getInstance();
   }
 
   static dynamic get(String key) {
-    return _box.get(key);
+    return _prefs.get(key);
   }
 
   static Future<void> set(String key, dynamic value) async {
-    await _box.put(key, value);
+    if (value is String) {
+      _prefs.setString(key, value);
+    } else if (value is int) {
+      _prefs.setInt(key, value);
+    } else if (value is double) {
+      _prefs.setDouble(key, value);
+    } else if (value is bool) {
+      _prefs.setBool(key, value);
+    } else {
+      throw Exception('Unsupported config data type');
+    }
   }
 }
