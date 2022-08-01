@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  get_github_short_hash:
+    runs-on: ubuntu-latest
+    outputs:
+      github_short_hash: ${{ steps.github_short_hash.outputs.result }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Get github short hash
+        id: github_short_hash
+        run: echo "::set-output name=result::$(git rev-parse --short "${{ github.sha }}")"
+
+  build_linux:
+    needs: get_github_short_hash
+    uses: ./.github/workflows/build_linux.yml
+    with:
+      version: ${{ needs.get_github_short_hash.outputs.github_short_hash }}
+  build_windows:
+    needs: get_github_short_hash
+    uses: ./.github/workflows/build_windows.yml
+    with:
+      version: ${{ needs.get_github_short_hash.outputs.github_short_hash }}
+  build_macos:
+    needs: get_github_short_hash
+    uses: ./.github/workflows/build_macos.yml
+    with:
+      version: ${{ needs.get_github_short_hash.outputs.github_short_hash }}

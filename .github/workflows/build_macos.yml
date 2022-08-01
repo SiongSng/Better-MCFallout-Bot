@@ -1,0 +1,24 @@
+name: Build application (macOS)
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+
+jobs:
+  build_macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2.6.1
+        with:
+          channel: "stable"
+      - name: Build release
+        run: script/build_macos.bat
+      - name: Upload macOS artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Better-MCFallout-Bot-${{ inputs.version }}-macOS
+          path: ${{ github.workspace }}/app/build/macos/Build/Products/Release

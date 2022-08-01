@@ -1,0 +1,24 @@
+name: Build application (Windows)
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+
+jobs:
+  build_windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2.6.1
+        with:
+          channel: "stable"
+      - name: Build release
+        run: script/build_windows.bat
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Better-MCFallout-Bot-${{ inputs.version }}-Windows
+          path: ${{ github.workspace }}/app/build/windows/runner/Release
