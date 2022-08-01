@@ -16,6 +16,8 @@ class _GameMessageViewState extends State<GameMessageView> {
 
   late final ScrollController scrollController;
 
+  bool autoScroll = true;
+
   @override
   void initState() {
     scrollController = ScrollController();
@@ -34,7 +36,8 @@ class _GameMessageViewState extends State<GameMessageView> {
         // Auto scroll to bottom
         if (scrollController.hasClients &&
             scrollController.position.pixels !=
-                scrollController.position.maxScrollExtent) {
+                scrollController.position.maxScrollExtent &&
+            autoScroll) {
           scrollController.animateTo(
             scrollController.position.maxScrollExtent,
             curve: Curves.easeOut,
@@ -48,17 +51,31 @@ class _GameMessageViewState extends State<GameMessageView> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        controller: scrollController,
-        itemCount: messages.length,
-        itemBuilder: (context, index) {
-          final message = messages[index];
+    return Column(
+      children: [
+        SizedBox(
+            height: 50,
+            width: 250,
+            child: SwitchListTile(
+                value: autoScroll,
+                onChanged: (value) => setState(() => autoScroll = value),
+                title: const Text('自動滾動訊息至底部'))),
+        Expanded(
+          child: ListView.builder(
+              controller: scrollController,
+              itemCount: messages.length,
+              itemBuilder: (context, index) {
+                final message = messages[index];
 
-          return ListTile(
-            title: SelectableText(message.message, textAlign: TextAlign.center),
-            subtitle:
-                Text(message.sentAt.toString(), textAlign: TextAlign.center),
-          );
-        });
+                return ListTile(
+                  title: SelectableText(message.message,
+                      textAlign: TextAlign.center),
+                  subtitle: Text(message.sentAt.toString(),
+                      textAlign: TextAlign.center),
+                );
+              }),
+        ),
+      ],
+    );
   }
 }

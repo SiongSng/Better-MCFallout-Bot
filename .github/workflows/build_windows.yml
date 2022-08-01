@@ -16,7 +16,11 @@ jobs:
         with:
           channel: "stable"
       - name: Build release
-        run: script/build_windows.bat
+        run: |
+          script/build_windows.bat
+
+          mkdir -p app/build/windows/runner/Release/lib; mv core/out/better-mcfallout-bot.exe $_/better-mcfallout-bot-core.exe
+          echo "[Info] Done"
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v3
         with:

@@ -62,7 +62,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                 children: [
                   NetworkImage(
                       src:
-                          "https://crafatar.com/avatars/${bot.connectedData.uuid}?overlay",
+                          'https://crafatar.com/avatars/${bot.connectedData.uuid}?overlay',
                       width: 65,
                       height: 65),
                   const SizedBox(width: 12),
@@ -247,7 +247,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                 style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
             const SizedBox(height: 8),
             const SizedBox(
-                height: 200, child: Center(child: GameMessageView())),
+                height: 300, child: Center(child: GameMessageView())),
             const Divider(),
             const Text('執行指令',
                 style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
