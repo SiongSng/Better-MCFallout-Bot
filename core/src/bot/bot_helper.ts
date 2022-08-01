@@ -17,7 +17,7 @@ export class BotHelper {
   }
 
   static onSpawn(bot: Bot, config: Config) {
-    let kicked = false;
+    let end = false;
 
     // Auto eat
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,7 +39,7 @@ export class BotHelper {
 
     // Every second update bot's status
     setInterval(() => {
-      if (kicked) clearInterval();
+      if (end) clearInterval();
 
       EventEmitter.updateStatus(
         bot.health,
@@ -59,7 +59,10 @@ export class BotHelper {
     }, 1000);
 
     bot.on("kicked", () => {
-      kicked = true;
+      end = true;
+    });
+    bot.once("end", () => {
+      end = true;
     });
   }
 

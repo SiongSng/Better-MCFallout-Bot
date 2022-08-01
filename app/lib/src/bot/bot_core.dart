@@ -124,7 +124,7 @@ class BotCore {
           }
         }
       } catch (e) {
-        _logger.warning('Failed to parse event: $e');
+        _logger.warning('Failed to parse event: $e (${utf8.decode(data)})');
       }
     });
 

@@ -72,7 +72,9 @@ export class ActionHandler {
 
       // Auto attack passive mobs
       setInterval(() => {
-        if (!_isRaiding) return;
+        if (!_isRaiding) clearInterval();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if ((bot as any).autoEat.isEating) return;
 
         const mob_list = [
           "blaze",
