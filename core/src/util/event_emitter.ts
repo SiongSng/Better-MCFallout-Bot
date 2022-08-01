@@ -1,7 +1,7 @@
 import { MinecraftItem } from "@/bot/model/minecraft_item";
 
 export class EventEmitter {
-  static emit(event: Event, data?: unknown) {
+  static emit(event: Event, data: unknown = {}) {
     const _data = {
       event,
       data,

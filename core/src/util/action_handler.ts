@@ -71,7 +71,7 @@ export class ActionHandler {
       _isRaiding = true;
 
       // Auto attack passive mobs
-      setInterval(() => {
+      setInterval(async () => {
         if (!_isRaiding) clearInterval();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if ((bot as any).autoEat.isEating) return;
@@ -110,9 +110,29 @@ export class ActionHandler {
           "zombified_piglin",
         ];
 
+        const swords = ["netherite_sword", "diamond_sword", "iron_sword"];
+
         for (const entity_key in bot.entities) {
           const entity = bot.entities[entity_key];
           if (entity.name != null && mob_list.includes(entity.name)) {
+            const isEquip = bot.player.entity.equipment.some((e) =>
+              swords.includes(e.name)
+            );
+            if (!isEquip) {
+              // Equip the best sword
+              for (const sword of swords) {
+                const bastSword = bot.inventory.findInventoryItem(
+                  sword,
+                  null,
+                  false
+                );
+
+                if (bastSword != null) {
+                  await bot.equip(bastSword, "hand");
+                }
+              }
+            }
+
             bot.attack(entity);
           }
         }
