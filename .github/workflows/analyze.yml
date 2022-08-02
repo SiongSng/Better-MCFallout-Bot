@@ -2,7 +2,7 @@ name: Analyze
 on: [pull_request]
 
 jobs:
-  Analyze:
+  flutter_analyze:
     runs-on: ubuntu-latest
 
     steps:
@@ -11,7 +11,9 @@ jobs:
         with:
           channel: "stable"
           cache: true
-      - run: flutter pub get
+      - run: |
+          cd app
+          flutter pub get
       - name: Analyze the code
         uses: invertase/github-action-dart-analyzer@v1
         with:
@@ -19,3 +21,18 @@ jobs:
           fatal-warnings: true
           annotate: true
           annotate-only: false
+  typescript_eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          cd core
+          yarn install
+      - name: Run eslint on changed files
+        uses: tj-actions/eslint-changed-files@v13
+        with:
+          token: ${{ github.token }}
+          config_path: "core/.eslintrc.js"
+          path: core
+          file_extensions: |
+            **/*.ts
