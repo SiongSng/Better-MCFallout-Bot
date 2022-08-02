@@ -32,7 +32,7 @@ jobs:
         uses: tj-actions/eslint-changed-files@v13
         with:
           token: ${{ github.token }}
-          config_path: "core/.eslintrc.js"
+          config_path: ".eslintrc.js"
           path: core
           file_extensions: |
             **/*.ts
