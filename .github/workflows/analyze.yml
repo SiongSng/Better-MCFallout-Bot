@@ -1,0 +1,21 @@
+name: Analyze
+on: [pull_request]
+
+jobs:
+  Analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2.6.1
+        with:
+          channel: "stable"
+          cache: true
+      - run: flutter pub get
+      - name: Analyze the code
+        uses: invertase/github-action-dart-analyzer@v1
+        with:
+          fatal-infos: true
+          fatal-warnings: true
+          annotate: true
+          annotate-only: false
