@@ -13,9 +13,9 @@
     "start": "yarn build && node dist/index.js",
     "lint": "eslint src/**/*.ts --fix",
     "pkg": "yarn build && pkg .",
-    "pkg:linux": "yarn build && pkg -t linux .",
-    "pkg:windows": "yarn build && pkg -t windows .",
-    "pkg:macos": "yarn build && pkg -t macos ."
+    "pkg:linux": "yarn build && pkg --compress GZip -t linux .",
+    "pkg:windows": "yarn build && pkg --compress GZip -t windows .",
+    "pkg:macos": "yarn build && pkg --compress GZip -t macos ."
   },
   "devDependencies": {
     "@types/node": "^18.6.2",
