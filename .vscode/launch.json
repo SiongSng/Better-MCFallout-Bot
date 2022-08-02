@@ -18,7 +18,8 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
-            "program": "${workspaceFolder}/app/lib/main.dart"
+            "program": "${workspaceFolder}/app/lib/main.dart",
+            "preLaunchTask": "Build core"
         },
         {
             "name": "app (release mode)",
@@ -26,7 +27,8 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
-            "program": "${workspaceFolder}/app/lib/main.dart"
+            "program": "${workspaceFolder}/app/lib/main.dart",
+            "preLaunchTask": "Build core"
         }
     ]
 }

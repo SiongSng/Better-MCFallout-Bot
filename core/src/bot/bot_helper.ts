@@ -1,14 +1,14 @@
 import { Util } from "@/util/util";
 import { createBot } from "@/bot";
-import { Config } from "@/config";
 import { EventEmitter, Event } from "@/util/event_emitter";
 import { Bot } from "mineflayer";
 import { setTimeout } from "timers";
 import { MinecraftItem } from "@/bot/model/minecraft_item";
 import { Item } from "prismarine-item";
+import { config } from "@/index";
 
 export class BotHelper {
-  static reconnect(config: Config, times = 0) {
+  static reconnect(times = 0) {
     if (config.autoReconnect && times <= 10) {
       setTimeout(() => {
         createBot(times++);
@@ -16,7 +16,7 @@ export class BotHelper {
     }
   }
 
-  static onSpawn(bot: Bot, config: Config) {
+  static onSpawn(bot: Bot) {
     let end = false;
 
     // Auto eat
@@ -35,7 +35,7 @@ export class BotHelper {
       name: bot.player.displayName.valueOf(),
     });
 
-    this.throwItems(bot, config);
+    this.throwItems(bot);
 
     // Every second update bot's status
     setInterval(() => {
@@ -60,15 +60,15 @@ export class BotHelper {
 
     setInterval(() => {
       if (end) clearInterval();
-      this.warpPublicity(bot, config);
+      this.warpPublicity(bot);
     }, 1000 * 60 * 30);
-    this.warpPublicity(bot, config);
+    this.warpPublicity(bot);
 
     setInterval(() => {
       if (end) clearInterval();
-      this.tradePublicity(bot, config);
+      this.tradePublicity(bot);
     }, 1000 * 60 * 10);
-    this.tradePublicity(bot, config);
+    this.tradePublicity(bot);
 
     bot.on("kicked", () => {
       end = true;
@@ -78,7 +78,7 @@ export class BotHelper {
     });
   }
 
-  static async throwItems(bot: Bot, config: Config) {
+  static async throwItems(bot: Bot) {
     const inventory = bot.inventory;
 
     const bannedItem = [
@@ -212,7 +212,7 @@ export class BotHelper {
     await _throw(inventory.items().values());
   }
 
-  static warpPublicity(bot: Bot, config: Config) {
+  static warpPublicity(bot: Bot) {
     if (config.warpPublicity?.startsWith("/warp ")) {
       bot.chat(`!${config.warpPublicity}`);
     } else if (config.warpPublicity != null) {
@@ -220,7 +220,7 @@ export class BotHelper {
     }
   }
 
-  static tradePublicity(bot: Bot, config: Config) {
+  static tradePublicity(bot: Bot) {
     if ((config.tradePublicity?.trim().length || 0) > 0) {
       bot.chat(`$${config.tradePublicity}`);
     } else if (config.tradePublicity != null) {

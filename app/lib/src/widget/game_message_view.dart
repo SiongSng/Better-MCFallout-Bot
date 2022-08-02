@@ -24,7 +24,12 @@ class _GameMessageViewState extends State<GameMessageView> {
 
     super.initState();
 
-    BotCore.instance!.whenEventStream<GameMessageEvent>().listen(messages.add);
+    BotCore.instance!.whenEventStream<GameMessageEvent>().listen((event) {
+      bool isHealth = event.message.startsWith('目標生命 : ❤❤❤❤❤❤❤❤❤❤');
+      if (isHealth && appConfig.hideHealth) return;
+
+      messages.add(event);
+    });
 
     Timer.periodic(const Duration(seconds: 1), (timer) {
       if (mounted) {
