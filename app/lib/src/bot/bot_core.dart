@@ -200,25 +200,24 @@ class BotCore {
       };
 
   String _getExecutablePath() {
-    final String path;
-    if (kReleaseMode) {
-      final String file;
-      if (Platform.isWindows) {
-        file = 'better-mcfallout-bot-core.exe';
-      } else {
-        file = 'better-mcfallout-bot-core';
-      }
-
-      path = join(dirname(Platform.resolvedExecutable), 'lib', file);
+    final String file;
+    if (Platform.isWindows) {
+      file = 'better-mcfallout-bot-core.exe';
     } else {
-      final String file;
-      if (Platform.isWindows) {
-        file = 'better-mcfallout-bot.exe';
-      } else {
-        file = 'better-mcfallout-bot';
-      }
+      file = 'better-mcfallout-bot-core';
+    }
 
-      path = join(dirname(Directory.current.path), 'core', 'out', file);
+    final basePath = join('flutter_assets', 'assets', file);
+
+    final String path;
+    if (Platform.isWindows || Platform.isLinux) {
+      path = join(dirname(Platform.resolvedExecutable), 'data', basePath);
+    } else if (Platform.isMacOS) {
+      path = join(dirname(dirname(Platform.resolvedExecutable)), 'Frameworks',
+          'App.framework', 'Versions', 'A', 'Resources', basePath);
+    } else {
+      throw Exception(
+          'Failed to find core executable, unsupported platform: ${Platform.operatingSystem}');
     }
 
     return path;
