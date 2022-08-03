@@ -19,10 +19,6 @@ jobs:
       - name: Build release
         run: |
           script/build_windows.bat
-
-          mkdir app/build/windows/runner/Release/lib
-          move core/out/better-mcfallout-bot.exe app/build/windows/runner/Release/lib/better-mcfallout-bot-core.exe
-          echo "[Info] Done"
       - name: Upload Windows artifact
         uses: actions/upload-artifact@v3
         with:
