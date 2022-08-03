@@ -18,6 +18,7 @@ class _SettingsPageState extends State<SettingsPage> {
   late TextEditingController passwordController;
   late TextEditingController warpPublicityController;
   late TextEditingController tradePublicityController;
+  late TextEditingController allowTpaController;
 
   bool hidePassword = true;
 
@@ -31,6 +32,8 @@ class _SettingsPageState extends State<SettingsPage> {
         TextEditingController(text: appConfig.warpPublicity);
     tradePublicityController =
         TextEditingController(text: appConfig.tradePublicity);
+    allowTpaController =
+        TextEditingController(text: appConfig.allowTpa.join(','));
 
     super.initState();
   }
@@ -131,6 +134,16 @@ class _SettingsPageState extends State<SettingsPage> {
               controller: tradePublicityController,
               onChanged: (_) {
                 appConfig.tradePublicity = tradePublicityController.text;
+              },
+            ),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: '自動接受 Tpa 請求白名單',
+                hintText: '請輸入玩家 ID (如要多個請以 , 分隔，例如：a,b,c)',
+              ),
+              controller: allowTpaController,
+              onChanged: (_) {
+                appConfig.allowTpa = allowTpaController.text.split(',');
               },
             ),
             const SizedBox(height: 12),

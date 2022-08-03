@@ -35,7 +35,7 @@ export function createBot(reconnectTimes = 0) {
 
   bot.once("end", () => {
     EventEmitter.emit(Event.disconnected);
-    BotHelper.reconnect(config, reconnectTimes);
+    BotHelper.reconnect(reconnectTimes);
   });
 
   // Error handling
@@ -45,12 +45,25 @@ export function createBot(reconnectTimes = 0) {
 }
 
 function listenBotEvent(bot: mineflayer.Bot) {
-  bot.once("spawn", () => BotHelper.onSpawn(bot, config));
+  bot.once("spawn", () => BotHelper.onSpawn(bot));
 
-  bot.on("message", (message) => {
-    const isHealth = message.valueOf().startsWith("目標生命 : ❤❤❤❤❤❤❤❤❤❤");
+  bot.on("message", (_message) => {
+    const message = _message.valueOf();
 
-    if (isHealth && config.hideHealth) return;
+    const isTpa =
+      message.startsWith("[系統] ") &&
+      (message.includes("想要你傳送到 該玩家 的位置!") ||
+        message.includes("想要傳送到 你 的位置"));
+
+    if (isTpa) {
+      const playerId = message.split("[系統] ")[1].split("想要")[0].trim();
+
+      if (config.allowTpa.includes(playerId)) {
+        bot.chat("/tok");
+      } else {
+        bot.chat("/tno");
+      }
+    }
 
     EventEmitter.gameMessage(message.valueOf(), new Date().getTime());
   });

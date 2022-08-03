@@ -9,7 +9,7 @@ export class Config {
     autoReconnect: boolean,
     warpPublicity: string | null,
     tradePublicity: string | null,
-    hideHealth: boolean,
+    allowTpa: string[]
   ) {
     this.host = host;
     this.port = port;
@@ -20,7 +20,7 @@ export class Config {
     this.autoReconnect = autoReconnect;
     this.warpPublicity = warpPublicity;
     this.tradePublicity = tradePublicity;
-    this.hideHealth = hideHealth;
+    this.allowTpa = allowTpa;
   }
 
   host: string;
@@ -32,5 +32,5 @@ export class Config {
   autoReconnect: boolean;
   warpPublicity: string | null;
   tradePublicity: string | null;
-  hideHealth: boolean;
+  allowTpa: string[];
 }

@@ -20,6 +20,8 @@ class ConfigHelper {
       _prefs.setDouble(key, value);
     } else if (value is bool) {
       _prefs.setBool(key, value);
+    } else if (value is List<String>) {
+      _prefs.setStringList(key, value);
     } else {
       throw Exception('Unsupported config data type');
     }

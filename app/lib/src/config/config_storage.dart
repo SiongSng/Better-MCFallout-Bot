@@ -45,6 +45,10 @@ class ConfigStorage {
   bool get hideHealth => ConfigHelper.get('hideHealth') ?? true;
   set hideHealth(bool value) => ConfigHelper.set('hideHealth', value);
 
+  List<String> get allowTpa =>
+      ConfigHelper.get('allowTpa').cast<String>() ?? [];
+  set allowTpa(List<String> value) => ConfigHelper.set('allowTpa', value);
+
   Map toMap() => {
         'region': region.name,
         'autoEat': autoEat,
