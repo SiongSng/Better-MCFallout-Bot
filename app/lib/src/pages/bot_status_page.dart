@@ -56,6 +56,15 @@ class _BotStatusPageState extends State<BotStatusPage> {
             const Text('基本資訊',
                 style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
             const SizedBox(height: 8),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('連線狀態：${bot.connected ? '已連線' : '未連線'}'),
+                  Icon(bot.connected ? Icons.check_circle : Icons.error,
+                      color: bot.connected ? Colors.green : Colors.red)
+                ]),
+            const SizedBox(height: 8),
             IntrinsicHeight(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
