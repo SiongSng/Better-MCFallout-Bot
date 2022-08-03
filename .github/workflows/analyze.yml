@@ -25,14 +25,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: |
-          cd core
-          yarn install
+      - run: cd core && yarn install
       - name: Run eslint on changed files
         uses: tj-actions/eslint-changed-files@v13
         with:
           token: ${{ github.token }}
-          config_path: ".eslintrc.js"
           path: core
           file_extensions: |
             **/*.ts
