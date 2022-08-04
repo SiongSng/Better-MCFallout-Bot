@@ -1,5 +1,5 @@
 import { createBot } from "@/bot";
-import { Config } from "@/config";
+import { Config } from "@/model/config";
 import { EventEmitter } from "@/util/event_emitter";
 
 const args = process.argv.slice(2);

@@ -76,13 +76,7 @@ function listenBotEvent(bot: mineflayer.Bot) {
   });
 
   bot.on("health", () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const autoEat = (bot as any).autoEat;
-    if ((bot.food == 20 || !config.autoEat) && autoEat.disable == false) {
-      autoEat.disable();
-    } else if (autoEat.disable == true) {
-      autoEat.enable();
-    }
+    BotHelper.autoEatConfig(bot);
   });
 
   bot.on("kicked", (reason) => {
