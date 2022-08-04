@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 
@@ -205,18 +206,22 @@ class BotCore {
     } else {
       file = 'better-mcfallout-bot-core';
     }
-
-    final basePath = join('flutter_assets', 'assets', file);
-
     final String path;
-    if (Platform.isWindows || Platform.isLinux) {
-      path = join(dirname(Platform.resolvedExecutable), 'data', basePath);
-    } else if (Platform.isMacOS) {
-      path = join(dirname(dirname(Platform.resolvedExecutable)), 'Frameworks',
-          'App.framework', 'Versions', 'A', 'Resources', basePath);
+
+    if (kDebugMode) {
+      path = join(dirname(Directory.current.path), 'core', 'out', file);
     } else {
-      throw Exception(
-          'Failed to find core executable, unsupported platform: ${Platform.operatingSystem}');
+      final basePath = join('flutter_assets', 'assets', file);
+
+      if (Platform.isWindows || Platform.isLinux) {
+        path = join(dirname(Platform.resolvedExecutable), 'data', basePath);
+      } else if (Platform.isMacOS) {
+        path = join(dirname(dirname(Platform.resolvedExecutable)), 'Frameworks',
+            'App.framework', 'Versions', 'A', 'Resources', basePath);
+      } else {
+        throw Exception(
+            'Failed to find core executable, unsupported platform: ${Platform.operatingSystem}');
+      }
     }
 
     return path;

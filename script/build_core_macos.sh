@@ -7,6 +7,6 @@ yarn build
 echo "[Info] Building core to executable"
 yarn pkg:macos
 
-echo "[Info] Moving the core to the app"
+echo "[Info] Copying the core to the app"
 cd ..
-mv core/out/better-mcfallout-bot app/assets/better-mcfallout-bot-core
+cp core/out/better-mcfallout-bot-core app/assets/better-mcfallout-bot-core
