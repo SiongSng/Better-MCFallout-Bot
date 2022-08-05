@@ -147,7 +147,7 @@ class BotCore {
       case EventType.connected:
         return ConnectedEvent(event);
       case EventType.disconnected:
-        return const DisconnectedEvent();
+        return DisconnectedEvent(event);
       case EventType.info:
         return InfoLogEvent(event);
       case EventType.warn:

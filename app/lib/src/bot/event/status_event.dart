@@ -9,13 +9,13 @@ abstract class IStatusEvent {
 
 class StatusEvent implements IStatusEvent, IEvent {
   @override
-  late final double health;
+  final double health;
   @override
-  late final double food;
+  final double food;
   @override
-  late final Duration time;
+  final Duration time;
   @override
-  late final List<MinecraftItem> inventoryItems;
+  final List<MinecraftItem> inventoryItems;
 
   StatusEvent(RawEvent event)
       : health = double.parse(event.data['health'].toString()),

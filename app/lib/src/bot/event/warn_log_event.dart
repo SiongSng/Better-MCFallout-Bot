@@ -6,7 +6,7 @@ abstract class IWarnLogEvent {
 
 class WarnLogEvent implements IWarnLogEvent, IEvent {
   @override
-  late final String message;
+  final String message;
 
   WarnLogEvent(RawEvent event) : message = event.data['message'];
 }

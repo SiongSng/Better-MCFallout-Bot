@@ -6,24 +6,28 @@ abstract class IConnectedEvent {
   String get gameVersion;
   String get uuid;
   String get name;
+  DateTime get startAt;
 }
 
 class ConnectedEvent implements IConnectedEvent, IEvent {
   @override
-  late final String gameVersion;
+  final String gameVersion;
   @override
-  late final String host;
+  final String host;
   @override
-  late final int port;
+  final int port;
   @override
-  late final String uuid;
+  final String uuid;
   @override
-  late final String name;
+  final String name;
+  @override
+  final DateTime startAt;
 
   ConnectedEvent(RawEvent event)
       : gameVersion = event.data['game_version'],
         host = event.data['host'],
         port = event.data['port'],
         uuid = event.data['uuid'],
-        name = event.data['name'];
+        name = event.data['name'],
+        startAt = DateTime.fromMillisecondsSinceEpoch(event.data['start_at']);
 }

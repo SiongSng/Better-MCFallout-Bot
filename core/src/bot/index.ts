@@ -13,6 +13,7 @@ export function createBot(reconnectTimes = 0) {
     auth: "microsoft",
     host: config.host,
     port: config.port,
+    checkTimeoutInterval: 60 * 1000, // 60 seconds
   });
 
   bot.loadPlugin(autoeat);
@@ -33,8 +34,8 @@ export function createBot(reconnectTimes = 0) {
 
   listenBotEvent(bot);
 
-  bot.once("end", () => {
-    EventEmitter.emit(Event.disconnected);
+  bot.once("end", (reason) => {
+    EventEmitter.emit(Event.disconnected, { reason });
     BotHelper.reconnect(reconnectTimes);
   });
 
