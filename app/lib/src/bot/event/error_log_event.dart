@@ -6,7 +6,7 @@ abstract class IErrorLogEvent {
 
 class ErrorLogEvent implements IErrorLogEvent, IEvent {
   @override
-  late final String message;
+  final String message;
 
   ErrorLogEvent(RawEvent event) : message = event.data['message'];
 }

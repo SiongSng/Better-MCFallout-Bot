@@ -6,7 +6,7 @@ abstract class IInfoLogEvent {
 
 class InfoLogEvent implements IInfoLogEvent, IEvent {
   @override
-  late final String message;
+  final String message;
 
   InfoLogEvent(RawEvent event) : message = event.data['message'];
 }

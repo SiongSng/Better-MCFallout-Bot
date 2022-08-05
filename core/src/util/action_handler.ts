@@ -1,7 +1,8 @@
-import { BotActionMethod } from "@/bot/model/bot_action";
-import { Config } from "@/config";
+import { BotHelper } from "@/bot/bot_helper";
+import { BotActionMethod } from "@/model/bot_action";
+import { Config } from "@/model/config";
 import { EventEmitter } from "@/util/event_emitter";
-import { BotAction, BotActionType } from "@/bot/model/bot_action";
+import { BotAction, BotActionType } from "@/model/bot_action";
 import { Bot } from "mineflayer";
 import { config } from "@/index";
 
@@ -21,7 +22,7 @@ export class ActionHandler {
         this._command(bot, action);
         break;
       case BotActionType.updateConfig:
-        this._updateConfig(action);
+        this._updateConfig(bot, action);
         break;
       case BotActionType.disconnect:
         this._disconnect(bot);
@@ -40,15 +41,19 @@ export class ActionHandler {
     }
   }
 
-  static _updateConfig(action: BotAction) {
+  static _updateConfig(bot: Bot, action: BotAction) {
     const _config: Config | unknown = action.argument?.config;
 
     if (typeof _config === "object") {
       try {
-        const _newConfig = _config as Config;
-        config.autoEat = _newConfig.autoEat;
-        config.autoThrow = _newConfig.autoThrow;
-        config.autoReconnect = _newConfig.autoReconnect;
+        const newConfig = _config as Config;
+        config.autoEat = newConfig.autoEat;
+        config.autoThrow = newConfig.autoThrow;
+        config.warpPublicity = newConfig.warpPublicity;
+        config.tradePublicity = newConfig.tradePublicity;
+        config.allowTpa = newConfig.allowTpa;
+
+        BotHelper.autoEatConfig(bot);
 
         EventEmitter.info("Config updated.");
       } catch (error) {

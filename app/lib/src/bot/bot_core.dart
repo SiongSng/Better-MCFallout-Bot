@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 
@@ -18,24 +19,30 @@ class BotCore {
   final int port;
   final String email;
   final String password;
+  final int reconnectTimes;
 
   late Process process;
   late Stream<IEvent> eventStream;
   late ConnectedEvent connectedData;
   bool connected = false;
 
-  BotCore.createBot({
-    required this.host,
-    required this.port,
-    required this.email,
-    required this.password,
-  }) {
+  BotCore.createBot(
+      {required this.host,
+      required this.port,
+      required this.email,
+      required this.password,
+      this.reconnectTimes = 0}) {
     _instance = this;
   }
 
   Future<bool> connect() async {
     if (connected) return true;
     try {
+      // Not the first time to reconnect
+      if (reconnectTimes > 1) {
+        await Future.delayed(const Duration(seconds: 15));
+      }
+
       await _connect().timeout(const Duration(seconds: 20));
       return true;
     } on TimeoutException {
@@ -48,12 +55,19 @@ class BotCore {
     _executeAction(const BotAction(action: BotActionType.disconnect));
     process.kill(ProcessSignal.sigkill);
     connected = false;
+    _logger.info('The bot was manually disconnected');
   }
 
   void whenEvent<E extends IEvent>(void Function(E event) callback) {
-    eventStream.listen((event) {
+    late final StreamSubscription subscription;
+
+    subscription = eventStream.listen((event) {
       if (event is E) {
         callback(event);
+      }
+
+      if (event is DisconnectedEvent) {
+        subscription.cancel();
       }
     });
   }
@@ -146,7 +160,7 @@ class BotCore {
       case EventType.connected:
         return ConnectedEvent(event);
       case EventType.disconnected:
-        return const DisconnectedEvent();
+        return DisconnectedEvent(event);
       case EventType.info:
         return InfoLogEvent(event);
       case EventType.warn:
@@ -179,10 +193,6 @@ class BotCore {
     whenEvent<ErrorLogEvent>((event) {
       _logger.severe(event.message);
     });
-
-    whenEvent<DisconnectedEvent>((event) {
-      _logger.info('The bot has disconnected');
-    });
   }
 
   Map _getConfig() => {
@@ -192,7 +202,6 @@ class BotCore {
         'password': password,
         'autoEat': appConfig.autoEat,
         'autoThrow': appConfig.autoThrow,
-        'autoReconnect': appConfig.autoReconnect,
         'warpPublicity': appConfig.warpPublicity,
         'tradePublicity': appConfig.tradePublicity,
         'allowTpa': appConfig.allowTpa,
@@ -205,18 +214,22 @@ class BotCore {
     } else {
       file = 'better-mcfallout-bot-core';
     }
-
-    final basePath = join('flutter_assets', 'assets', file);
-
     final String path;
-    if (Platform.isWindows || Platform.isLinux) {
-      path = join(dirname(Platform.resolvedExecutable), 'data', basePath);
-    } else if (Platform.isMacOS) {
-      path = join(dirname(dirname(Platform.resolvedExecutable)), 'Frameworks',
-          'App.framework', 'Versions', 'A', 'Resources', basePath);
+
+    if (kDebugMode) {
+      path = join(dirname(Directory.current.path), 'core', 'out', file);
     } else {
-      throw Exception(
-          'Failed to find core executable, unsupported platform: ${Platform.operatingSystem}');
+      final basePath = join('flutter_assets', 'assets', file);
+
+      if (Platform.isWindows || Platform.isLinux) {
+        path = join(dirname(Platform.resolvedExecutable), 'data', basePath);
+      } else if (Platform.isMacOS) {
+        path = join(dirname(dirname(Platform.resolvedExecutable)), 'Frameworks',
+            'App.framework', 'Versions', 'A', 'Resources', basePath);
+      } else {
+        throw Exception(
+            'Failed to find core executable, unsupported platform: ${Platform.operatingSystem}');
+      }
     }
 
     return path;

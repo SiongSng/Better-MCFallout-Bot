@@ -7,9 +7,9 @@ abstract class IGameMessageEvent {
 
 class GameMessageEvent implements IGameMessageEvent, IEvent {
   @override
-  late final String message;
+  final String message;
   @override
-  late final DateTime sentAt;
+  final DateTime sentAt;
 
   GameMessageEvent(RawEvent event)
       : message = event.data['message'],

@@ -1,21 +1,11 @@
 import { Util } from "@/util/util";
-import { createBot } from "@/bot";
 import { EventEmitter, Event } from "@/util/event_emitter";
 import { Bot } from "mineflayer";
-import { setTimeout } from "timers";
-import { MinecraftItem } from "@/bot/model/minecraft_item";
+import { MinecraftItem } from "@/model/minecraft_item";
 import { Item } from "prismarine-item";
 import { config } from "@/index";
 
 export class BotHelper {
-  static reconnect(times = 0) {
-    if (config.autoReconnect && times <= 10) {
-      setTimeout(() => {
-        createBot(times++);
-      }, 1000 * 30);
-    }
-  }
-
   static onSpawn(bot: Bot) {
     let end = false;
 
@@ -33,6 +23,7 @@ export class BotHelper {
       game_version: bot.version,
       uuid: bot.player.uuid,
       name: bot.player.displayName.valueOf(),
+      start_at: new Date().getTime(),
     });
 
     this.throwItems(bot);
@@ -123,7 +114,6 @@ export class BotHelper {
       // Tools
       "iron_shovel",
       "iron_pickaxe",
-      "iron_axe",
       "flint_and_steel",
       "diamond_shovel",
       "diamond_pickaxe",
@@ -193,9 +183,12 @@ export class BotHelper {
       "totem_of_undying",
     ];
 
-    async function _throw(items: IterableIterator<Item>) {
+    async function toss(items: Item[]) {
       for (const item of items) {
-        if (config.autoThrow) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const isEating: boolean = (bot as any).autoEat.isEating;
+
+        if (config.autoThrow && !isEating) {
           if (!bannedItem.includes(item.name)) {
             await bot.tossStack(item);
           }
@@ -204,12 +197,12 @@ export class BotHelper {
 
       // Wait for a while before throwing next items
       await Util.delay(3000);
-      await _throw(inventory.items().values());
+      await toss(inventory.items());
     }
 
     // Wait for connecting to the server
     await Util.delay(2000);
-    await _throw(inventory.items().values());
+    await toss(inventory.items());
   }
 
   static warpPublicity(bot: Bot) {
@@ -225,6 +218,17 @@ export class BotHelper {
       bot.chat(`$${config.tradePublicity}`);
     } else if (config.tradePublicity != null) {
       EventEmitter.warning("Invalid trade publicity format");
+    }
+  }
+
+  static autoEatConfig(bot: Bot) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const autoEat = (bot as any).autoEat;
+
+    if (bot.food == 20 || !config.autoEat) {
+      autoEat.disable();
+    } else if (config.autoEat) {
+      autoEat.enable();
     }
   }
 }

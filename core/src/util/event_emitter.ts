@@ -1,4 +1,4 @@
-import { MinecraftItem } from "@/bot/model/minecraft_item";
+import { MinecraftItem } from "@/model/minecraft_item";
 
 export class EventEmitter {
   static emit(event: Event, data: unknown = {}) {

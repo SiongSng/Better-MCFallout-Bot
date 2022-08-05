@@ -6,13 +6,14 @@ import * as readline from "readline";
 import { ActionHandler } from "@/util/action_handler";
 import { config } from "@/index";
 
-export function createBot(reconnectTimes = 0) {
+export function createBot() {
   const bot = mineflayer.createBot({
     username: config.email,
     password: config.password,
     auth: "microsoft",
     host: config.host,
     port: config.port,
+    checkTimeoutInterval: 60 * 1000, // 60 seconds
   });
 
   bot.loadPlugin(autoeat);
@@ -33,9 +34,8 @@ export function createBot(reconnectTimes = 0) {
 
   listenBotEvent(bot);
 
-  bot.once("end", () => {
-    EventEmitter.emit(Event.disconnected);
-    BotHelper.reconnect(reconnectTimes);
+  bot.once("end", (reason) => {
+    EventEmitter.emit(Event.disconnected, { reason });
   });
 
   // Error handling
@@ -47,8 +47,8 @@ export function createBot(reconnectTimes = 0) {
 function listenBotEvent(bot: mineflayer.Bot) {
   bot.once("spawn", () => BotHelper.onSpawn(bot));
 
-  bot.on("message", (_message) => {
-    const message = _message.valueOf();
+  bot.on("message", (jsonMsg) => {
+    const message = jsonMsg.valueOf();
 
     const isTpa =
       message.startsWith("[系統] ") &&
@@ -76,13 +76,7 @@ function listenBotEvent(bot: mineflayer.Bot) {
   });
 
   bot.on("health", () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const autoEat = (bot as any).autoEat;
-    if ((bot.food == 20 || !config.autoEat) && autoEat.disable == false) {
-      autoEat.disable();
-    } else if (autoEat.disable == true) {
-      autoEat.enable();
-    }
+    BotHelper.autoEatConfig(bot);
   });
 
   bot.on("kicked", (reason) => {

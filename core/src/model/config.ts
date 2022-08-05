@@ -6,7 +6,6 @@ export class Config {
     password: string,
     autoEat: boolean,
     autoThrow: boolean,
-    autoReconnect: boolean,
     warpPublicity: string | null,
     tradePublicity: string | null,
     allowTpa: string[]
@@ -17,7 +16,6 @@ export class Config {
     this.password = password;
     this.autoEat = autoEat;
     this.autoThrow = autoThrow;
-    this.autoReconnect = autoReconnect;
     this.warpPublicity = warpPublicity;
     this.tradePublicity = tradePublicity;
     this.allowTpa = allowTpa;
@@ -29,7 +27,6 @@ export class Config {
   password: string;
   autoEat: boolean;
   autoThrow: boolean;
-  autoReconnect: boolean;
   warpPublicity: string | null;
   tradePublicity: string | null;
   allowTpa: string[];
