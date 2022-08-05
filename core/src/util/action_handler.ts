@@ -49,7 +49,9 @@ export class ActionHandler {
         const newConfig = _config as Config;
         config.autoEat = newConfig.autoEat;
         config.autoThrow = newConfig.autoThrow;
-        config.autoReconnect = newConfig.autoReconnect;
+        config.warpPublicity = newConfig.warpPublicity;
+        config.tradePublicity = newConfig.tradePublicity;
+        config.allowTpa = newConfig.allowTpa;
 
         BotHelper.autoEatConfig(bot);
 

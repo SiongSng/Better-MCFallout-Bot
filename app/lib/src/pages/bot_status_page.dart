@@ -1,15 +1,19 @@
 import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
 import 'package:flutter/material.dart' hide NetworkImage;
+import 'package:logging/logging.dart';
+
+Logger _logger = Logger('bot_status_page');
 
 class BotStatusPage extends StatefulWidget {
-  const BotStatusPage({Key? key}) : super(key: key);
+  final BotCore bot;
+
+  const BotStatusPage({Key? key, required this.bot}) : super(key: key);
 
   @override
   State<BotStatusPage> createState() => _BotStatusPageState();
 }
 
 class _BotStatusPageState extends State<BotStatusPage> {
-  late final BotCore bot;
   late bool autoEat;
   late bool autoThrow;
   late bool autoReconnect;
@@ -18,8 +22,6 @@ class _BotStatusPageState extends State<BotStatusPage> {
 
   @override
   void initState() {
-    bot = BotCore.instance!;
-
     autoEat = appConfig.autoEat;
     autoThrow = appConfig.autoThrow;
     autoReconnect = appConfig.autoReconnect;
@@ -29,9 +31,36 @@ class _BotStatusPageState extends State<BotStatusPage> {
 
     super.initState();
 
+    afterInit();
+  }
+
+  void afterInit() {
     if (botAction == BotActionType.raid) {
-      bot.raid(BotActionMethod.start);
+      widget.bot.raid(BotActionMethod.start);
     }
+
+    widget.bot.whenEvent<DisconnectedEvent>((event) async {
+      _logger.info('The bot has disconnected: ${event.reason}');
+
+      Navigator.pop(context);
+      if (appConfig.autoReconnect) {
+        showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => ConnectingServer(
+                reconnect: true,
+                reconnectTimes: widget.bot.reconnectTimes + 1));
+      } else {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: const Text('錯誤'),
+                  content: Text(
+                      '已與伺服器斷線，由於未啟用重新自動連線功能，因此將不會自動重新連線。\n斷線原因：${event.reason}'),
+                  actions: const [ConfirmButton()],
+                ));
+      }
+    });
   }
 
   @override
@@ -40,7 +69,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            bot.disconnect();
+            widget.bot.disconnect();
             Navigator.pop(context);
           },
           icon: const Icon(Icons.close),
@@ -56,85 +85,25 @@ class _BotStatusPageState extends State<BotStatusPage> {
             const Text('基本資訊',
                 style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
             const SizedBox(height: 8),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('連線狀態：${bot.connected ? '已連線' : '未連線'}'),
-                  Icon(bot.connected ? Icons.check_circle : Icons.error,
-                      color: bot.connected ? Colors.green : Colors.red)
-                ]),
-            const SizedBox(height: 8),
-            IntrinsicHeight(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  NetworkImage(
-                      src:
-                          'https://crafatar.com/avatars/${bot.connectedData.uuid}?overlay',
-                      width: 65,
-                      height: 65),
-                  const SizedBox(width: 12),
-                  Text(bot.connectedData.name),
-                  const SizedBox(width: 12),
-                  const VerticalDivider(),
-                  const SizedBox(width: 12),
-                  SelectableText(
-                      '連線位置：${bot.connectedData.host}\n通訊埠： ${bot.connectedData.port}\nUUID： ${bot.connectedData.uuid}\nMinecraft 遊戲版本：${bot.connectedData.gameVersion}'),
-                ],
-              ),
-            ),
-            const Divider(),
-            StreamBuilder<StatusEvent>(
-              stream: bot.whenEventStream<StatusEvent>(),
-              builder: (context, snapshot) {
-                if (snapshot.data != null) {
-                  final data = snapshot.data!;
-
-                  return IntrinsicHeight(
-                    child: Row(
+            StreamBuilder(
+                stream: widget.bot.whenEventStream<DisconnectedEvent>(),
+                builder: (context, snapshot) {
+                  return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          children: [
-                            const Text('狀態',
-                                style: TextStyle(fontSize: 20),
-                                textAlign: TextAlign.center),
-                            const SizedBox(height: 8),
-                            Tooltip(
-                                message: data.health.toString(),
-                                child: HealthIndicator(health: data.health)),
-                            Tooltip(
-                                message: data.food.toString(),
-                                child: HungerIndicator(hunger: data.food)),
-                            Text('遊戲時間：${Util.formatDuration(data.time)}'),
-                          ],
-                        ),
-                        const SizedBox(width: 12),
-                        const VerticalDivider(),
-                        const SizedBox(width: 12),
-                        Column(
-                          children: [
-                            const Tooltip(
-                                message: '機器人的物品欄內容 (未按照實際位置編排)',
-                                child: Text('物品欄',
-                                    style: TextStyle(fontSize: 20))),
-                            const SizedBox(height: 8),
-                            InventoryView(items: data.inventoryItems)
-                          ],
-                        )
-                      ],
-                    ),
-                  );
-                } else {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [CircularProgressIndicator()],
-                  );
-                }
-              },
-            ),
+                        Text('連線狀態：${widget.bot.connected ? '已連線' : '未連線'}'),
+                        Icon(
+                            widget.bot.connected
+                                ? Icons.check_circle
+                                : Icons.error,
+                            color: widget.bot.connected
+                                ? Colors.green
+                                : Colors.red)
+                      ]);
+                }),
+            const SizedBox(height: 8),
+            _Status(bot: widget.bot),
             const Divider(),
             Column(
               children: [
@@ -149,9 +118,9 @@ class _BotStatusPageState extends State<BotStatusPage> {
                     onChanged: (BotActionType? value) {
                       if (botAction != value) {
                         if (botAction == BotActionType.raid) {
-                          bot.raid(BotActionMethod.stop);
+                          widget.bot.raid(BotActionMethod.stop);
                         } else if (value == BotActionType.raid) {
-                          bot.raid(BotActionMethod.start);
+                          widget.bot.raid(BotActionMethod.start);
                         }
                       }
 
@@ -204,7 +173,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                                     autoEat = value;
                                   });
                                   appConfig.autoEat = autoEat;
-                                  bot.updateConfig();
+                                  widget.bot.updateConfig();
                                 },
                                 title: const Text('自動飲食')),
                           ),
@@ -222,7 +191,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                                     autoThrow = value;
                                   });
                                   appConfig.autoThrow = autoThrow;
-                                  bot.updateConfig();
+                                  widget.bot.updateConfig();
                                 },
                                 title: const Text('自動丟棄物品')),
                           ),
@@ -232,7 +201,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                           height: 50,
                           child: Tooltip(
                             message:
-                                '自動重新連線伺服器，如果突然斷線或者廢土伺服器當機，會每 30 秒自動重新連線一次，若失敗超過 10 次則自動暫停。',
+                                '自動重新連線伺服器，如果突然斷線或者廢土伺服器當機，會每 15 秒自動重新連線一次，若失敗超過 10 次則自動暫停。',
                             child: SwitchListTile(
                                 value: autoReconnect,
                                 onChanged: (value) {
@@ -240,7 +209,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                                     autoReconnect = value;
                                   });
                                   appConfig.autoReconnect = autoReconnect;
-                                  bot.updateConfig();
+                                  widget.bot.updateConfig();
                                 },
                                 title: const Text('自動重新連線')),
                           ),
@@ -277,7 +246,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10))),
                     onEditingComplete: () {
-                      bot.runCommand(commandController.text);
+                      widget.bot.runCommand(commandController.text);
                       commandController.text = '';
                     },
                   ),
@@ -285,7 +254,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                 const SizedBox(width: 8),
                 TextButton(
                     onPressed: () {
-                      bot.runCommand(commandController.text);
+                      widget.bot.runCommand(commandController.text);
                       commandController.text = '';
                     },
                     child: const Text('執行')),
@@ -294,6 +263,101 @@ class _BotStatusPageState extends State<BotStatusPage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _Status extends StatelessWidget {
+  const _Status({
+    Key? key,
+    required this.bot,
+  }) : super(key: key);
+
+  final BotCore bot;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<StatusEvent>(
+      stream: bot.whenEventStream<StatusEvent>(),
+      builder: (context, snapshot) {
+        if (snapshot.data != null) {
+          final data = snapshot.data!;
+
+          return Column(
+            children: [
+              IntrinsicHeight(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    NetworkImage(
+                        src:
+                            'https://crafatar.com/avatars/${bot.connectedData.uuid}?overlay',
+                        width: 65,
+                        height: 65),
+                    const SizedBox(width: 12),
+                    Text(bot.connectedData.name),
+                    const SizedBox(width: 12),
+                    const VerticalDivider(),
+                    const SizedBox(width: 12),
+                    SelectableText.rich(TextSpan(children: [
+                      TextSpan(text: '連線位置：${bot.connectedData.host}\n'),
+                      TextSpan(text: '通訊埠：${bot.connectedData.port}\n'),
+                      TextSpan(text: 'UUID：${bot.connectedData.uuid}\n'),
+                      TextSpan(
+                          text:
+                              'Minecraft 遊戲版本：${bot.connectedData.gameVersion}\n'),
+                      TextSpan(
+                          text:
+                              '已連線時間：${Util.formatDuration(DateTime.now().difference(bot.connectedData.startAt))}')
+                    ])),
+                  ],
+                ),
+              ),
+              const Divider(),
+              IntrinsicHeight(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        const Text('狀態',
+                            style: TextStyle(fontSize: 20),
+                            textAlign: TextAlign.center),
+                        const SizedBox(height: 8),
+                        Tooltip(
+                            message: data.health.toString(),
+                            child: HealthIndicator(health: data.health)),
+                        Tooltip(
+                            message: data.food.toString(),
+                            child: HungerIndicator(hunger: data.food)),
+                        Text('遊戲時間：${Util.formatDuration(data.time)}'),
+                      ],
+                    ),
+                    const SizedBox(width: 12),
+                    const VerticalDivider(),
+                    const SizedBox(width: 12),
+                    Column(
+                      children: [
+                        const Tooltip(
+                            message: '機器人的物品欄內容 (未按照實際位置編排)',
+                            child: Text('物品欄', style: TextStyle(fontSize: 20))),
+                        const SizedBox(height: 8),
+                        InventoryView(items: data.inventoryItems)
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          );
+        } else {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: const [CircularProgressIndicator()],
+          );
+        }
+      },
     );
   }
 }

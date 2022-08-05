@@ -1,21 +1,11 @@
 import { Util } from "@/util/util";
-import { createBot } from "@/bot";
 import { EventEmitter, Event } from "@/util/event_emitter";
 import { Bot } from "mineflayer";
-import { setTimeout } from "timers";
 import { MinecraftItem } from "@/model/minecraft_item";
 import { Item } from "prismarine-item";
 import { config } from "@/index";
 
 export class BotHelper {
-  static reconnect(times = 0) {
-    if (config.autoReconnect && times <= 10) {
-      setTimeout(() => {
-        createBot(times++);
-      }, 1000 * 30);
-    }
-  }
-
   static onSpawn(bot: Bot) {
     let end = false;
 
@@ -33,6 +23,7 @@ export class BotHelper {
       game_version: bot.version,
       uuid: bot.player.uuid,
       name: bot.player.displayName.valueOf(),
+      start_at: new Date().getTime(),
     });
 
     this.throwItems(bot);
@@ -123,7 +114,6 @@ export class BotHelper {
       // Tools
       "iron_shovel",
       "iron_pickaxe",
-      "iron_axe",
       "flint_and_steel",
       "diamond_shovel",
       "diamond_pickaxe",
@@ -235,7 +225,7 @@ export class BotHelper {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const autoEat = (bot as any).autoEat;
 
-    if ((bot.food == 20 || !config.autoEat)) {
+    if (bot.food == 20 || !config.autoEat) {
       autoEat.disable();
     } else if (config.autoEat) {
       autoEat.enable();

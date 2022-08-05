@@ -6,7 +6,7 @@ import * as readline from "readline";
 import { ActionHandler } from "@/util/action_handler";
 import { config } from "@/index";
 
-export function createBot(reconnectTimes = 0) {
+export function createBot() {
   const bot = mineflayer.createBot({
     username: config.email,
     password: config.password,
@@ -36,7 +36,6 @@ export function createBot(reconnectTimes = 0) {
 
   bot.once("end", (reason) => {
     EventEmitter.emit(Event.disconnected, { reason });
-    BotHelper.reconnect(reconnectTimes);
   });
 
   // Error handling
@@ -48,8 +47,8 @@ export function createBot(reconnectTimes = 0) {
 function listenBotEvent(bot: mineflayer.Bot) {
   bot.once("spawn", () => BotHelper.onSpawn(bot));
 
-  bot.on("message", (_message) => {
-    const message = _message.valueOf();
+  bot.on("message", (jsonMsg) => {
+    const message = jsonMsg.valueOf();
 
     const isTpa =
       message.startsWith("[系統] ") &&
