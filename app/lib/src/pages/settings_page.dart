@@ -26,8 +26,6 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     region = appConfig.region;
     hideHealth = appConfig.hideHealth;
-    emailController = TextEditingController(text: appConfig.email);
-    passwordController = TextEditingController(text: appConfig.password);
     warpPublicityController =
         TextEditingController(text: appConfig.warpPublicity);
     tradePublicityController =
@@ -47,37 +45,6 @@ class _SettingsPageState extends State<SettingsPage> {
         width: MediaQuery.of(context).size.width / 3.5,
         child: Column(
           children: [
-            const Text('帳號設定', style: TextStyle(fontSize: 18)),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Minecraft 帳號',
-                hintText: '請輸入 Microsoft 帳號 (Email)',
-              ),
-              controller: emailController,
-              onChanged: (_) {
-                appConfig.email = emailController.text;
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                  labelText: 'Minecraft 密碼',
-                  hintText: '請輸入 Microsoft 帳號的密碼',
-                  suffixIcon: IconButton(
-                      icon: Icon(hidePassword
-                          ? Icons.visibility
-                          : Icons.visibility_off),
-                      onPressed: () {
-                        setState(() {
-                          hidePassword = !hidePassword;
-                        });
-                      })),
-              obscureText: hidePassword,
-              controller: passwordController,
-              onChanged: (_) {
-                appConfig.password = passwordController.text;
-              },
-            ),
-            const SizedBox(height: 12),
             const Text('伺服器設定', style: TextStyle(fontSize: 18)),
             ListTile(
               title: const Text("伺服器區域", style: TextStyle(fontSize: 16)),

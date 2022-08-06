@@ -44,12 +44,12 @@ class _HomePageState extends State<HomePage> {
         leadingWidth: 50 * 3,
         title: const Text('更好的廢土機器人'),
         centerTitle: true,
+        actions: const [AccountManageButton()],
       ),
       body: Background(child: Container()),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            if ((appConfig.email?.isEmpty ?? true) ||
-                (appConfig.password?.isEmpty ?? true)) {
+            if (!accountStorage.hasAnyAccount()) {
               showDialog(
                   context: context,
                   builder: (context) => const AlertDialog(
@@ -58,10 +58,19 @@ class _HomePageState extends State<HomePage> {
                         actions: [ConfirmButton()],
                       ));
             } else {
-              showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) => const ConnectingServer());
+              int count = accountStorage.count;
+
+              if (count > 1) {
+                showDialog(
+                    context: context,
+                    builder: (context) => const SelectAccount());
+              } else {
+                showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) => ConnectingServer(
+                        account: accountStorage.getAll().first));
+              }
             }
           },
           tooltip: '啟動機器人',

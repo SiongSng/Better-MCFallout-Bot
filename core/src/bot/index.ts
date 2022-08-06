@@ -8,9 +8,17 @@ import { config } from "@/index";
 
 export function createBot() {
   const bot = mineflayer.createBot({
-    username: config.email,
-    password: config.password,
-    auth: "microsoft",
+    username: config.username,
+    session: {
+      accessToken: config.token,
+      clientToken: config.token,
+      selectedProfile: {
+        name: config.username,
+        id: config.uuid,
+      },
+    },
+    auth: 'mojang',
+    skipValidation: true,
     host: config.host,
     port: config.port,
     checkTimeoutInterval: 60 * 1000, // 60 seconds

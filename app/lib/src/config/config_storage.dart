@@ -1,63 +1,66 @@
 import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
 
-ConfigStorage appConfig = const ConfigStorage();
+const ConfigStorage appConfig = ConfigStorage();
 
 class ConfigStorage {
   const ConfigStorage();
 
-  ServerRegion get region => ServerRegion.values
-      .byName(ConfigHelper.get('region') ?? ServerRegion.auto.name);
-  set region(ServerRegion value) => ConfigHelper.set('region', value.name);
+  ServerRegion get region =>
+      ServerRegion.values.byName(ConfigHelper.get<String>('region',
+          defaultValue: ServerRegion.auto.name)!);
+  set region(ServerRegion value) =>
+      ConfigHelper.set<String>('region', value.name);
 
-  String? get email => ConfigHelper.get('email');
-  set email(String? value) => ConfigHelper.set('email', value);
+  bool get autoEat => ConfigHelper.get<bool>('auto_eat', defaultValue: false)!;
+  set autoEat(bool value) => ConfigHelper.set<bool>('auto_eat', value);
 
-  String? get password => ConfigHelper.get('password');
-  set password(String? value) => ConfigHelper.set('password', value);
+  bool get autoThrow =>
+      ConfigHelper.get<bool>('auto_throw', defaultValue: false)!;
+  set autoThrow(bool value) => ConfigHelper.set<bool>('auto_throw', value);
 
-  bool get autoEat => ConfigHelper.get('autoEat') ?? false;
-  set autoEat(bool value) => ConfigHelper.set('autoEat', value);
+  bool get autoReconnect =>
+      ConfigHelper.get<bool>('auto_reconnect', defaultValue: true)!;
+  set autoReconnect(bool value) =>
+      ConfigHelper.set<bool>('auto_reconnect', value);
 
-  bool get autoThrow => ConfigHelper.get('autoThrow') ?? false;
-  set autoThrow(bool value) => ConfigHelper.set('autoThrow', value);
-
-  bool get autoReconnect => ConfigHelper.get('autoReconnect') ?? true;
-  set autoReconnect(bool value) => ConfigHelper.set('autoReconnect', value);
-
-  BotActionType get botAction => BotActionType.values
-      .byName(ConfigHelper.get('botAction') ?? BotActionType.none.name);
+  BotActionType get botAction =>
+      BotActionType.values.byName(ConfigHelper.get<String>('bot_action',
+          defaultValue: BotActionType.none.name)!);
   set botAction(BotActionType value) =>
-      ConfigHelper.set('botAction', value.name);
+      ConfigHelper.set<String>('bot_action', value.name);
 
-  String? get backgroundPath => ConfigHelper.get('backgroundPath');
+  String? get backgroundPath => ConfigHelper.get<String>('background_path');
   set backgroundPath(String? value) =>
-      ConfigHelper.set('backgroundPath', value);
+      ConfigHelper.set<String>('background_path', value);
 
   // 公共設施頻道自動宣傳
-  String? get warpPublicity => ConfigHelper.get('warpPublicity');
-  set warpPublicity(String? value) => ConfigHelper.set('warpPublicity', value);
+  String? get warpPublicity => ConfigHelper.get<String>('warp_publicity');
+  set warpPublicity(String? value) =>
+      ConfigHelper.set<String>('warp_publicity', value);
 
   // 交易頻道自動宣傳
-  String? get tradePublicity => ConfigHelper.get('tradePublicity');
+  String? get tradePublicity => ConfigHelper.get<String>('trade_publicity');
   set tradePublicity(String? value) =>
-      ConfigHelper.set('tradePublicity', value);
+      ConfigHelper.set<String>('trade_publicity', value);
 
-  bool get hideHealth => ConfigHelper.get('hideHealth') ?? true;
-  set hideHealth(bool value) => ConfigHelper.set('hideHealth', value);
+  bool get hideHealth =>
+      ConfigHelper.get<bool>('hide_health', defaultValue: true)!;
+  set hideHealth(bool value) => ConfigHelper.set<bool>('hide_health', value);
 
   List<String> get allowTpa =>
-      ConfigHelper.get('allowTpa').cast<String>() ?? [];
-  set allowTpa(List<String> value) => ConfigHelper.set('allowTpa', value);
+      ConfigHelper.get<List>('allow_tpa', defaultValue: [])!.cast();
+  set allowTpa(List<String> value) =>
+      ConfigHelper.set<List<String>>('allow_tpa', value);
 
   Map toMap() => {
         'region': region.name,
-        'autoEat': autoEat,
-        'autoThrow': autoThrow,
-        'autoReconnect': autoReconnect,
-        'botAction': botAction.name,
-        'backgroundPath': backgroundPath,
-        'warpPublicity': warpPublicity,
-        'tradePublicity': tradePublicity,
-        'hideHealth': hideHealth,
+        'auto_eat': autoEat,
+        'auto_throw': autoThrow,
+        'auto_reconnect': autoReconnect,
+        'bot_action': botAction.name,
+        'background_path': backgroundPath,
+        'warp_publicity': warpPublicity,
+        'trade_publicity': tradePublicity,
+        'hide_health': hideHealth,
       };
 }

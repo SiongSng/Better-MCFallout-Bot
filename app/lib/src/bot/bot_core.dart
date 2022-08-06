@@ -8,7 +8,7 @@ import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 
 BotCore? _instance;
-Logger _logger = Logger('bot_core');
+final Logger _logger = Logger('bot_core');
 
 class BotCore {
   static BotCore? get instance {
@@ -17,8 +17,7 @@ class BotCore {
 
   final String host;
   final int port;
-  final String email;
-  final String password;
+  final Account account;
   final int reconnectTimes;
 
   late Process process;
@@ -29,8 +28,7 @@ class BotCore {
   BotCore.createBot(
       {required this.host,
       required this.port,
-      required this.email,
-      required this.password,
+      required this.account,
       this.reconnectTimes = 0}) {
     _instance = this;
   }
@@ -198,8 +196,9 @@ class BotCore {
   Map _getConfig() => {
         'host': host,
         'port': port,
-        'email': email,
-        'password': password,
+        'username': account.username,
+        'token': account.minecraftToken,
+        'uuid': account.uuid,
         'autoEat': appConfig.autoEat,
         'autoThrow': appConfig.autoThrow,
         'warpPublicity': appConfig.warpPublicity,
