@@ -7,6 +7,8 @@
 詳細功能請看 [這裡](#-功能)  
 祝您使用愉快！
 
+## [立即下載](#-下載)   
+
 ![image](https://user-images.githubusercontent.com/48402225/182155275-dc162aae-85ca-44a4-80d6-cef10a9bb55b.png)
 
 ## 🎮 下載
@@ -17,6 +19,16 @@
 在下方的 `Assets` 欄位會看到檔案，請選擇對應您電腦的作業系統進行下載。  
 
 ![image](https://user-images.githubusercontent.com/48402225/182160712-9317bdf4-b406-4414-834b-1aeca5f06905.png)
+
+### 如何使用
+#### Windows
+請先下載後，解壓縮檔案，接著執行 `better_mcfallout_bot.exe` 即可。  
+#### Linux 
+請先下載後，解壓縮檔案，接著執行 `better_mcfallout_bot` 即可。  
+
+#### macOS
+請先下載後檔案後並安裝，再去執行。  
+第一次執行時若出現 「Apple 無法檢查是否包含惡意軟體」等內容，屬於正常現象，因為沒使用 Apple 開發者帳號簽署 (Apple 開發者帳號蠻貴的)，請開啟「系統偏好設定」，進入「安全性與隱私權」類別，選擇強制開啟。
 
 ## 🎨 功能
 ### ***自動刷突襲塔***
