@@ -112,7 +112,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                     style: TextStyle(fontSize: 20),
                     textAlign: TextAlign.center),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width / 9,
+                  width: 180,
                   child: DropdownButton<BotActionType>(
                     value: botAction,
                     style: const TextStyle(color: Colors.lightBlue),
@@ -268,7 +268,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
   }
 }
 
-class _Status extends StatelessWidget {
+class _Status extends StatefulWidget {
   const _Status({
     Key? key,
     required this.bot,
@@ -277,9 +277,14 @@ class _Status extends StatelessWidget {
   final BotCore bot;
 
   @override
+  State<_Status> createState() => _StatusState();
+}
+
+class _StatusState extends State<_Status> {
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder<StatusEvent>(
-      stream: bot.whenEventStream<StatusEvent>(),
+      stream: widget.bot.whenEventStream<StatusEvent>(),
       builder: (context, snapshot) {
         if (snapshot.data != null) {
           final data = snapshot.data!;
@@ -290,22 +295,22 @@ class _Status extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    bot.account.getImage(width: 65, height: 65),
+                    widget.bot.account.getImage(width: 65, height: 65),
                     const SizedBox(width: 12),
-                    Text(bot.account.username),
+                    Text(widget.bot.account.username),
                     const SizedBox(width: 12),
                     const VerticalDivider(),
                     const SizedBox(width: 12),
                     SelectableText.rich(TextSpan(children: [
-                      TextSpan(text: '連線位置：${bot.connectedData.host}\n'),
-                      TextSpan(text: '通訊埠：${bot.connectedData.port}\n'),
-                      TextSpan(text: 'UUID：${bot.account.uuid}\n'),
+                      TextSpan(text: '連線位置：${widget.bot.connectedData.host}\n'),
+                      TextSpan(text: '通訊埠：${widget.bot.connectedData.port}\n'),
+                      TextSpan(text: 'UUID：${widget.bot.account.uuid}\n'),
                       TextSpan(
                           text:
-                              'Minecraft 遊戲版本：${bot.connectedData.gameVersion}\n'),
+                              'Minecraft 遊戲版本：${widget.bot.connectedData.gameVersion}\n'),
                       TextSpan(
                           text:
-                              '已連線時間：${Util.formatDuration(DateTime.now().difference(bot.connectedData.startAt))}')
+                              '已連線時間：${Util.formatDuration(DateTime.now().difference(widget.bot.connectedData.startAt))}')
                     ])),
                   ],
                 ),

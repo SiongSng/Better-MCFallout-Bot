@@ -59,13 +59,13 @@ class BotCore {
   void whenEvent<E extends IEvent>(void Function(E event) callback) {
     late final StreamSubscription subscription;
 
-    subscription = eventStream.listen((event) {
+    subscription = eventStream.listen((event) async {
       if (event is E) {
         callback(event);
       }
 
       if (event is DisconnectedEvent) {
-        subscription.cancel();
+        await subscription.cancel();
       }
     });
   }
@@ -77,7 +77,7 @@ class BotCore {
       controller.add(event);
     });
 
-    return controller.stream;
+    return controller.stream.asBroadcastStream();
   }
 
   void runCommand(String command) {
@@ -123,7 +123,7 @@ class BotCore {
     final stdout = process.stdout.listen((data) {
       try {
         final List<String> jsonList =
-            const LineSplitter().convert(utf8.decode(data));
+            LineSplitter.split(utf8.decode(data)).toList();
 
         for (final String json in jsonList) {
           if (json.isEmpty) return;
