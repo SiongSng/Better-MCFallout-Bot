@@ -32,9 +32,23 @@ class _AccountPageState extends State<AccountPage> {
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog(
-              context: context,
-              builder: (context) => const MicrosoftOauthDialog());
+          final accountCount = accountStorage.count;
+          if (accountCount > 4) {
+            showDialog(
+                context: context,
+                builder: (context) => CheckDialog(
+                      message: '貼心小提醒，廢土伺服器同個 IP 只能同時登入 4 個帳號，您仍然要新增帳號嗎？',
+                      onPressedOK: (context) {
+                        showDialog(
+                            context: context,
+                            builder: (context) => const MicrosoftOauthDialog());
+                      },
+                    ));
+          } else {
+            showDialog(
+                context: context,
+                builder: (context) => const MicrosoftOauthDialog());
+          }
         },
         tooltip: '新增帳號',
         child: const Icon(Icons.add),
