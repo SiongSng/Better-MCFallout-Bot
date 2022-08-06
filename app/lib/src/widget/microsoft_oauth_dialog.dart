@@ -86,7 +86,7 @@ class _MSLoginState extends State<MicrosoftOauthDialog> {
 
     final grant = oauth2.AuthorizationCodeGrant(
       // Azure Application Client ID
-      '6e183ae6-9199-4b02-b5f1-8255c2ad7f7f',
+      MicrosoftOauthHandler.clientID,
       authorizationEndpoint,
       tokenEndpoint,
     );

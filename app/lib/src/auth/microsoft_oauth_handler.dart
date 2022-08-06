@@ -82,12 +82,13 @@ enum MicrosoftAccountStatus {
   }
 }
 
-class MicrosoftOauthHandler {
-  /*
+/*
   API Docs: https://wiki.vg/Microsoft_Authentication_Scheme
   M$ Oauth2: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow
   M$ Register Application: https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app
    */
+class MicrosoftOauthHandler {
+  static const String clientID = '6e183ae6-9199-4b02-b5f1-8255c2ad7f7f';
 
   static Stream<MicrosoftAccountStatus> authorization(
       Credentials credentials) async* {
@@ -169,13 +170,31 @@ class MicrosoftOauthHandler {
   }
 
   /// Verify the microsoft account is able to play minecraft
-  static Future<bool> validate(String accessToken) async {
+  static Future<bool> validate(Account account) async {
     final Response response = await get(
         Uri.parse('https://api.minecraftservices.com/minecraft/profile'),
         headers: _baseHeaders
-          ..addAll({'Authorization': 'Bearer $accessToken'}));
+          ..addAll({'Authorization': 'Bearer ${account.minecraftToken}'}));
 
-    return response.statusCode == 200;
+    if (response.statusCode != 200) {
+      // The token is expired, so we need to refresh it.
+      try {
+        final credentials =
+            await account.credentials.refresh(identifier: clientID);
+        final statusList = await authorization(credentials).toList();
+
+        if (statusList.any((e) => e == MicrosoftAccountStatus.successful)) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch (e) {
+        _logger.severe('Failed to refresh the credentials');
+        return false;
+      }
+    } else {
+      return true;
+    }
   }
 
   /// Authenticate with Xbox Live

@@ -7,8 +7,8 @@ class MicrosoftEntitlements {
   final String requestId;
 
   bool get canPlayMinecraft =>
-      items.any((item) => item.name == "product_minecraft") &&
-      items.any((item) => item.name == "game_minecraft");
+      items.any((item) => item.name == 'product_minecraft') &&
+      items.any((item) => item.name == 'game_minecraft');
 
   const MicrosoftEntitlements({
     required this.items,
