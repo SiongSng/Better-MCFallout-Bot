@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfigHelper {
@@ -7,11 +9,16 @@ class ConfigHelper {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  static dynamic get(String key) {
-    return _prefs.get(key);
+  static T? get<T>(String key, {T? defaultValue}) {
+    Object? value = _prefs.get(key) ?? defaultValue;
+    if (value is T) {
+      return value;
+    } else {
+      return null;
+    }
   }
 
-  static Future<void> set(String key, dynamic value) async {
+  static Future<void> set<T>(String key, T? value) async {
     if (value is String) {
       _prefs.setString(key, value);
     } else if (value is int) {
