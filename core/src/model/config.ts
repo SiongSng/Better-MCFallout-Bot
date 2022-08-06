@@ -2,8 +2,9 @@ export class Config {
   constructor(
     host: string,
     port: number,
-    email: string,
-    password: string,
+    username: string,
+    token: string,
+    uuid: string,
     autoEat: boolean,
     autoThrow: boolean,
     warpPublicity: string | null,
@@ -12,8 +13,9 @@ export class Config {
   ) {
     this.host = host;
     this.port = port;
-    this.email = email;
-    this.password = password;
+    this.username = username;
+    this.token = token;
+    this.uuid = uuid;
     this.autoEat = autoEat;
     this.autoThrow = autoThrow;
     this.warpPublicity = warpPublicity;
@@ -23,8 +25,9 @@ export class Config {
 
   host: string;
   port: number;
-  email: string;
-  password: string;
+  username: string;
+  token: string;
+  uuid: string;
   autoEat: boolean;
   autoThrow: boolean;
   warpPublicity: string | null;

@@ -29,22 +29,18 @@ class _AppState extends State<App> {
 
     FlutterWindowClose.setWindowShouldCloseHandler(() async {
       return await showDialog(
-          context: NavigationService.navigatorKey.currentState!.context,
+          context: NavigationService.navigatorKey.currentContext!,
           builder: (context) {
-            return AlertDialog(
-                title: const Text('資訊'),
-                content: const Text('您確定要關閉本程式嗎？將會導致機器人強制斷線。'),
-                actions: [
-                  ElevatedButton(
-                      onPressed: () => Navigator.of(context).pop(false),
-                      child: const Text('否')),
-                  ElevatedButton(
-                      onPressed: () {
-                        BotCore.instance?.disconnect();
-                        Navigator.of(context).pop(true);
-                      },
-                      child: const Text('是')),
-                ]);
+            return CheckDialog(
+              message: '您確定要關閉本程式嗎？將會導致機器人強制斷線。',
+              onPressedCancel: (context) {
+                Navigator.of(context).pop(false);
+              },
+              onPressedOK: (context) {
+                BotCore.instance?.disconnect();
+                Navigator.of(context).pop(true);
+              },
+            );
           });
     });
   }

@@ -21,8 +21,6 @@ export class BotHelper {
       host: config.host,
       port: config.port,
       game_version: bot.version,
-      uuid: bot.player.uuid,
-      name: bot.player.displayName.valueOf(),
       start_at: new Date().getTime(),
     });
 

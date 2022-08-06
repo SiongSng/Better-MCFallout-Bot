@@ -2,11 +2,15 @@ import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
 import 'package:flutter/material.dart';
 
 class ConnectingServer extends StatefulWidget {
+  final Account account;
   final bool reconnect;
   final int reconnectTimes;
 
   const ConnectingServer(
-      {Key? key, this.reconnect = false, this.reconnectTimes = 0})
+      {Key? key,
+      required this.account,
+      this.reconnect = false,
+      this.reconnectTimes = 0})
       : super(key: key);
 
   @override
@@ -21,8 +25,7 @@ class _ConnectingServerState extends State<ConnectingServer> {
     bot = BotCore.createBot(
         host: appConfig.region.getHost(),
         port: 25565,
-        email: appConfig.email!,
-        password: appConfig.password!,
+        account: widget.account,
         reconnectTimes: widget.reconnectTimes);
 
     super.initState();

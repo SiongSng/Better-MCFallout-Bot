@@ -2,7 +2,7 @@ import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
 import 'package:flutter/material.dart' hide NetworkImage;
 import 'package:logging/logging.dart';
 
-Logger _logger = Logger('bot_status_page');
+final Logger _logger = Logger('bot_status_page');
 
 class BotStatusPage extends StatefulWidget {
   final BotCore bot;
@@ -48,6 +48,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
             context: context,
             barrierDismissible: false,
             builder: (context) => ConnectingServer(
+                account: widget.bot.account,
                 reconnect: true,
                 reconnectTimes: widget.bot.reconnectTimes + 1));
       } else {
@@ -289,20 +290,16 @@ class _Status extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    NetworkImage(
-                        src:
-                            'https://crafatar.com/avatars/${bot.connectedData.uuid}?overlay',
-                        width: 65,
-                        height: 65),
+                    bot.account.getImage(width: 65, height: 65),
                     const SizedBox(width: 12),
-                    Text(bot.connectedData.name),
+                    Text(bot.account.username),
                     const SizedBox(width: 12),
                     const VerticalDivider(),
                     const SizedBox(width: 12),
                     SelectableText.rich(TextSpan(children: [
                       TextSpan(text: '連線位置：${bot.connectedData.host}\n'),
                       TextSpan(text: '通訊埠：${bot.connectedData.port}\n'),
-                      TextSpan(text: 'UUID：${bot.connectedData.uuid}\n'),
+                      TextSpan(text: 'UUID：${bot.account.uuid}\n'),
                       TextSpan(
                           text:
                               'Minecraft 遊戲版本：${bot.connectedData.gameVersion}\n'),

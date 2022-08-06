@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ConfigHelper {
@@ -19,16 +17,18 @@ class ConfigHelper {
   }
 
   static Future<void> set<T>(String key, T? value) async {
-    if (value is String) {
-      _prefs.setString(key, value);
+    if (value == null) {
+      await _prefs.remove(key);
+    } else if (value is String) {
+      await _prefs.setString(key, value);
     } else if (value is int) {
-      _prefs.setInt(key, value);
+      await _prefs.setInt(key, value);
     } else if (value is double) {
-      _prefs.setDouble(key, value);
+      await _prefs.setDouble(key, value);
     } else if (value is bool) {
-      _prefs.setBool(key, value);
+      await _prefs.setBool(key, value);
     } else if (value is List<String>) {
-      _prefs.setStringList(key, value);
+      await _prefs.setStringList(key, value);
     } else {
       throw Exception('Unsupported config data type');
     }

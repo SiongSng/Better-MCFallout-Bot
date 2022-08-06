@@ -7,3 +7,8 @@ export 'hunger_indicator.dart';
 export 'inventory.dart';
 export 'game_message_view.dart';
 export 'background_successful_dialog.dart';
+export 'account_manage_button.dart';
+export 'microsoft_oauth_dialog.dart';
+export 'check_dialog.dart';
+export 'account_view.dart';
+export 'select_account.dart';

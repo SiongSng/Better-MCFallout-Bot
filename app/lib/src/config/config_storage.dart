@@ -11,12 +11,6 @@ class ConfigStorage {
   set region(ServerRegion value) =>
       ConfigHelper.set<String>('region', value.name);
 
-  String? get email => ConfigHelper.get<String>('email');
-  set email(String? value) => ConfigHelper.set<String>('email', value);
-
-  String? get password => ConfigHelper.get<String>('password');
-  set password(String? value) => ConfigHelper.set<String>('password', value);
-
   bool get autoEat => ConfigHelper.get<bool>('auto_eat', defaultValue: false)!;
   set autoEat(bool value) => ConfigHelper.set<bool>('auto_eat', value);
 
