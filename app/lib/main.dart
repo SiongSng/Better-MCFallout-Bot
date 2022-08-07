@@ -23,14 +23,13 @@ void main() async {
         'https://6dcf85d7633043238a39a96b056c81d3@o1068024.ingest.sentry.io/6612655';
 
     FutureOr<SentryEvent?> beforeSend(SentryEvent event, {dynamic hint}) async {
-      MediaQueryData data =
+      final MediaQueryData data =
           MediaQueryData.fromWindow(WidgetsBinding.instance.window);
-      Size size = data.size;
-      SentryEvent newEvent;
-      List<String> githubSourceMap = [];
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      final Size size = data.size;
+      final List<String> githubSourceMap = [];
+      final PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-      List<SentryException>? exceptions = event.exceptions;
+      final List<SentryException>? exceptions = event.exceptions;
       if (exceptions != null) {
         for (final exception in exceptions) {
           if (exception.stackTrace != null) {
@@ -44,7 +43,7 @@ void main() async {
           }
         }
       }
-      newEvent = event.copyWith(
+      final SentryEvent newEvent = event.copyWith(
           user: SentryUser(ipAddress: '{{auto}}'),
           extra: {
             'github_source_map': githubSourceMap,
