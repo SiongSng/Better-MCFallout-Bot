@@ -39,7 +39,7 @@ dependencies:
   flutter_window_close: ^0.2.2
   url_launcher: ^6.1.5
   line_icons: ^2.0.1
-  file_picker: ^5.0.0
+  file_picker: ^5.0.1
   shared_preferences: ^2.0.15
   window_manager: ^0.2.5
   oauth2: ^2.0.0

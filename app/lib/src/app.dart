@@ -64,6 +64,7 @@ class _AppState extends State<App> {
               style: ElevatedButton.styleFrom(
                   onPrimary: Colors.white, primary: Colors.blue)),
           useMaterial3: true),
+      navigatorObservers: [SentryNavigatorObserver(enableAutoTransactions: false)],
       home: const HomePage(),
     );
   }

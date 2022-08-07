@@ -61,7 +61,12 @@ class _MSLoginState extends State<MicrosoftOauthDialog> {
                   }
                 });
           } else if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
+            return AlertDialog(
+              title: const Text('錯誤'),
+              content:
+                  Text('處理登入資料時發生未知錯誤：${snapshot.error}\n請稍後再試，如仍然失敗請聯繫作者'),
+              actions: const [ConfirmButton()],
+            );
           } else {
             return AlertDialog(
                 title: const Text('已開啟 Microsoft 登入網頁，請在瀏覽器中登入帳號...'),
