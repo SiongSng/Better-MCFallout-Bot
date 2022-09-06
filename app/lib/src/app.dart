@@ -62,9 +62,11 @@ class _AppState extends State<App> {
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
-                  onPrimary: Colors.white, primary: Colors.blue)),
+                  foregroundColor: Colors.white, backgroundColor: Colors.blue)),
           useMaterial3: true),
-      navigatorObservers: [SentryNavigatorObserver(enableAutoTransactions: false)],
+      navigatorObservers: [
+        SentryNavigatorObserver(enableAutoTransactions: false)
+      ],
       home: const HomePage(),
     );
   }
