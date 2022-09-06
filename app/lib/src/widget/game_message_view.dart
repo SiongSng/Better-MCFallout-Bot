@@ -66,19 +66,21 @@ class _GameMessageViewState extends State<GameMessageView> {
                 onChanged: (value) => setState(() => autoScroll = value),
                 title: const Text('自動滾動訊息至底部'))),
         Expanded(
-          child: ListView.builder(
-              controller: scrollController,
-              itemCount: messages.length,
-              itemBuilder: (context, index) {
-                final message = messages[index];
-
-                return ListTile(
-                  title: SelectableText(message.message,
-                      textAlign: TextAlign.center),
-                  subtitle: Text(message.sentAt.toString(),
-                      textAlign: TextAlign.center),
-                );
-              }),
+          child: SelectionArea(
+            child: ListView.builder(
+                controller: scrollController,
+                itemCount: messages.length,
+                itemBuilder: (context, index) {
+                  final message = messages[index];
+          
+                  return ListTile(
+                    title: Text(message.message,
+                        textAlign: TextAlign.center),
+                    subtitle: Text(message.sentAt.toString(),
+                        textAlign: TextAlign.center),
+                  );
+                }),
+          ),
         ),
       ],
     );
