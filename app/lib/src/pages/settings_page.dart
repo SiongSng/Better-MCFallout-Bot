@@ -90,7 +90,9 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               controller: warpPublicityController,
               onChanged: (_) {
-                appConfig.warpPublicity = warpPublicityController.text;
+                String value = warpPublicityController.text;
+                if (value.isEmpty) return;
+                appConfig.warpPublicity = value;
               },
             ),
             TextFormField(
@@ -100,7 +102,9 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               controller: tradePublicityController,
               onChanged: (_) {
-                appConfig.tradePublicity = tradePublicityController.text;
+                String value = tradePublicityController.text;
+                if (value.isEmpty) return;
+                appConfig.tradePublicity = value;
               },
             ),
             TextFormField(
