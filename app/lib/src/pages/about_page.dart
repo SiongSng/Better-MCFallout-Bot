@@ -37,7 +37,7 @@ class _AboutPageState extends State<AboutPage> {
           const SizedBox(
             height: 12,
           ),
-          Text('本軟體主要使用的技術\nFlutter\nNode.js\bMineflayer\nTypescript\nDart',
+          Text('本軟體主要使用的技術\nFlutter\nNode.js\nMineflayer\nTypescript\nDart',
               style: titleStyle, textAlign: TextAlign.center),
           Text('版本：$version', style: titleStyle, textAlign: TextAlign.center),
           Text('主要開發者：菘菘', style: titleStyle, textAlign: TextAlign.center),

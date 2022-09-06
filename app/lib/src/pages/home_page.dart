@@ -1,5 +1,6 @@
 import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:path_provider/path_provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -32,6 +33,13 @@ class _HomePageState extends State<HomePage> {
                 tooltip: '開啟資料儲存位置',
                 icon: const Icon(Icons.folder)),
             IconButton(
+              onPressed: () {
+                Util.openUri('https://discord.com/invite/5xApZtgV2u');
+              },
+              icon: const Icon(LineIcons.discord),
+              tooltip: 'RPMTW 社群 Discord 伺服器',
+            ),
+            IconButton(
                 onPressed: () {
                   showDialog(
                       context: context,
@@ -41,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                 icon: const Icon(Icons.info))
           ],
         ),
-        leadingWidth: 50 * 3,
+        leadingWidth: 50 * 4,
         title: const Text('更好的廢土機器人'),
         centerTitle: true,
         actions: const [AccountManageButton()],
