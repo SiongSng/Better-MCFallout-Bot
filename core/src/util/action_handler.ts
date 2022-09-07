@@ -128,7 +128,6 @@ export class ActionHandler {
         const swords = ["netherite_sword", "diamond_sword", "iron_sword"];
 
         for (const entity_key in bot.entities) {
-          EventEmitter.info("test1");
           const entity = bot.entities[entity_key];
 
           if (entity.name != null && mob_list.includes(entity.name)) {

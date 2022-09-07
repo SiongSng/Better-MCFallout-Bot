@@ -18,7 +18,7 @@ class BotCore {
   final String host;
   final int port;
   final Account account;
-  final int reconnectTimes;
+  int reconnectTimes;
 
   late Process process;
   late Stream<IEvent> eventStream;
@@ -42,6 +42,8 @@ class BotCore {
       }
 
       await _connect().timeout(const Duration(seconds: 20));
+      // Successful to reconnect, so reset reconnect times
+      reconnectTimes > 0 ? reconnectTimes-- : reconnectTimes = 0;
       return true;
     } on TimeoutException {
       return false;
@@ -121,9 +123,9 @@ class BotCore {
     late final StreamController<IEvent> controller;
 
     final stdout = process.stdout.listen((data) {
+      final text = utf8.decode(data);
       try {
-        final List<String> jsonList =
-            LineSplitter.split(utf8.decode(data)).toList();
+        final List<String> jsonList = LineSplitter.split(text).toList();
 
         for (final String json in jsonList) {
           if (json.isEmpty) return;
@@ -135,7 +137,12 @@ class BotCore {
           }
         }
       } catch (e) {
-        _logger.warning('Failed to parse event: $e (${utf8.decode(data)})');
+        if (text.contains('write ECONNRESET')) {
+          controller.add(DisconnectedEvent.create(text));
+          return;
+        }
+
+        _logger.warning('Failed to parse event: $e ($text)');
       }
     });
 
