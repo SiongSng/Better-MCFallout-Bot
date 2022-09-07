@@ -35,8 +35,8 @@ class _BotStatusPageState extends State<BotStatusPage> {
   }
 
   void afterInit() {
-    if (botAction == BotActionType.raid) {
-      widget.bot.raid(BotActionMethod.start);
+    if (botAction == BotActionType.attack) {
+      widget.bot.attack(BotActionMethod.start);
     }
 
     widget.bot.whenEvent<DisconnectedEvent>((event) async {
@@ -113,39 +113,42 @@ class _BotStatusPageState extends State<BotStatusPage> {
                     textAlign: TextAlign.center),
                 SizedBox(
                   width: 180,
-                  child: DropdownButton<BotActionType>(
-                    value: botAction,
-                    style: const TextStyle(color: Colors.lightBlue),
-                    onChanged: (BotActionType? value) {
-                      if (botAction != value) {
-                        if (botAction == BotActionType.raid) {
-                          widget.bot.raid(BotActionMethod.stop);
-                        } else if (value == BotActionType.raid) {
-                          widget.bot.raid(BotActionMethod.start);
+                  child: Tooltip(
+                    message: botAction.getTooltip(),
+                    child: DropdownButton<BotActionType>(
+                      value: botAction,
+                      style: const TextStyle(color: Colors.lightBlue),
+                      onChanged: (BotActionType? value) {
+                        if (botAction != value) {
+                          if (botAction == BotActionType.attack) {
+                            widget.bot.attack(BotActionMethod.stop);
+                          } else if (value == BotActionType.attack) {
+                            widget.bot.attack(BotActionMethod.start);
+                          }
                         }
-                      }
 
-                      setState(() {
-                        botAction = value!;
-                      });
+                        setState(() {
+                          botAction = value!;
+                        });
 
-                      appConfig.botAction = botAction;
-                    },
-                    isExpanded: true,
-                    items: BotActionType.values
-                        .where((e) => e.only)
-                        .map<DropdownMenuItem<BotActionType>>(
-                            (BotActionType value) {
-                      return DropdownMenuItem<BotActionType>(
-                        value: value,
-                        alignment: Alignment.center,
-                        child: Text(value.getName(),
-                            style: const TextStyle(
-                                fontSize: 16, fontFamily: 'font'),
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis),
-                      );
-                    }).toList(),
+                        appConfig.botAction = botAction;
+                      },
+                      isExpanded: true,
+                      items: BotActionType.values
+                          .where((e) => e.only)
+                          .map<DropdownMenuItem<BotActionType>>(
+                              (BotActionType value) {
+                        return DropdownMenuItem<BotActionType>(
+                          value: value,
+                          alignment: Alignment.center,
+                          child: Text(value.getName(),
+                              style: const TextStyle(
+                                  fontSize: 16, fontFamily: 'font'),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis),
+                        );
+                      }).toList(),
+                    ),
                   ),
                 ),
               ],
@@ -332,7 +335,7 @@ class _StatusState extends State<_Status> {
                         Tooltip(
                             message: data.food.toString(),
                             child: HungerIndicator(hunger: data.food)),
-                        Text('遊戲時間：${Util.formatDuration(data.time)}'),
+                        Text('遊戲內時間：${Util.formatDuration(data.time)}'),
                       ],
                     ),
                     const SizedBox(width: 12),

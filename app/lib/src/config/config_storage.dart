@@ -24,10 +24,10 @@ class ConfigStorage {
       ConfigHelper.set<bool>('auto_reconnect', value);
 
   BotActionType get botAction =>
-      BotActionType.values.byName(ConfigHelper.get<String>('bot_action',
-          defaultValue: BotActionType.none.name)!);
+      BotActionType.values.byName(ConfigHelper.get<String>('bot_action_type',
+          defaultValue: BotActionType.afk.name)!);
   set botAction(BotActionType value) =>
-      ConfigHelper.set<String>('bot_action', value.name);
+      ConfigHelper.set<String>('bot_action_type', value.name);
 
   String? get backgroundPath => ConfigHelper.get<String>('background_path');
   set backgroundPath(String? value) =>
@@ -52,15 +52,21 @@ class ConfigStorage {
   set allowTpa(List<String> value) =>
       ConfigHelper.set<List<String>>('allow_tpa', value);
 
+  int get attackIntervalTicks =>
+      ConfigHelper.get<int>('attack_interval_ticks', defaultValue: 12)!;
+  set attackIntervalTicks(int value) =>
+      ConfigHelper.set<int>('attack_interval_ticks', value);
+
   Map toMap() => {
         'region': region.name,
         'auto_eat': autoEat,
         'auto_throw': autoThrow,
         'auto_reconnect': autoReconnect,
-        'bot_action': botAction.name,
+        'bot_action_type': botAction.name,
         'background_path': backgroundPath,
         'warp_publicity': warpPublicity,
         'trade_publicity': tradePublicity,
         'hide_health': hideHealth,
+        'attack_interval_ticks': attackIntervalTicks,
       };
 }

@@ -27,8 +27,8 @@ export class BotHelper {
     this.throwItems(bot);
 
     // Every second update bot's status
-    setInterval(() => {
-      if (end) clearInterval();
+    const statusUpdateIntervalID = setInterval(() => {
+      if (end) clearInterval(statusUpdateIntervalID);
 
       EventEmitter.updateStatus(
         bot.health,
@@ -47,14 +47,14 @@ export class BotHelper {
       );
     }, 1000);
 
-    setInterval(() => {
-      if (end) clearInterval();
+    const warpPublicityIntervalID = setInterval(() => {
+      if (end) clearInterval(warpPublicityIntervalID);
       this.warpPublicity(bot);
     }, 1000 * 60 * 30);
     this.warpPublicity(bot);
 
-    setInterval(() => {
-      if (end) clearInterval();
+    const tradePublicityIntervalID = setInterval(() => {
+      if (end) clearInterval(tradePublicityIntervalID);
       this.tradePublicity(bot);
     }, 1000 * 60 * 10);
     this.tradePublicity(bot);
@@ -186,7 +186,7 @@ export class BotHelper {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const isEating: boolean = (bot as any).autoEat.isEating;
 
-        if (config.autoThrow && !isEating) {
+        if (config.auto_throw && !isEating) {
           if (!bannedItem.includes(item.name)) {
             await bot.tossStack(item);
           }
@@ -204,17 +204,17 @@ export class BotHelper {
   }
 
   static warpPublicity(bot: Bot) {
-    if (config.warpPublicity?.startsWith("/warp ")) {
-      bot.chat(`!${config.warpPublicity}`);
-    } else if (config.warpPublicity != null) {
+    if (config.warp_publicity?.startsWith("/warp ")) {
+      bot.chat(`!${config.warp_publicity}`);
+    } else if (config.warp_publicity != null) {
       EventEmitter.warning("Invalid warp publicity format");
     }
   }
 
   static tradePublicity(bot: Bot) {
-    if ((config.tradePublicity?.trim().length || 0) > 0) {
-      bot.chat(`$${config.tradePublicity}`);
-    } else if (config.tradePublicity != null) {
+    if ((config.trade_publicity?.trim().length || 0) > 0) {
+      bot.chat(`$${config.trade_publicity}`);
+    } else if (config.trade_publicity != null) {
       EventEmitter.warning("Invalid trade publicity format");
     }
   }
@@ -223,9 +223,9 @@ export class BotHelper {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const autoEat = (bot as any).autoEat;
 
-    if (bot.food == 20 || !config.autoEat) {
+    if (bot.food == 20 || !config.auto_eat) {
       autoEat.disable();
-    } else if (config.autoEat) {
+    } else if (config.auto_eat) {
       autoEat.enable();
     }
   }

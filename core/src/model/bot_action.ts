@@ -5,8 +5,8 @@ export interface BotAction {
 }
 
 export enum BotActionType {
-  none = "none",
-  raid = "raid",
+  afk = "afk",
+  attack = "attack",
   command = "command",
   updateConfig = "updateConfig",
   disconnect = "disconnect",

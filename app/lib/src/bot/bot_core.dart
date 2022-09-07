@@ -93,9 +93,9 @@ class BotCore {
         argument: {'config': _getConfig()}));
   }
 
-  void raid(BotActionMethod method) {
+  void attack(BotActionMethod method) {
     if (!connected) return;
-    _executeAction(BotAction(action: BotActionType.raid, method: method));
+    _executeAction(BotAction(action: BotActionType.attack, method: method));
   }
 
   Future<void> _connect() async {
@@ -156,8 +156,10 @@ class BotCore {
   IEvent? _eventHandler(RawEvent event) {
     switch (event.event) {
       case EventType.connected:
+        connected = true;
         return ConnectedEvent(event);
       case EventType.disconnected:
+        connected = false;
         return DisconnectedEvent(event);
       case EventType.info:
         return InfoLogEvent(event);
@@ -199,11 +201,12 @@ class BotCore {
         'username': account.username,
         'token': account.minecraftToken,
         'uuid': account.uuid,
-        'autoEat': appConfig.autoEat,
-        'autoThrow': appConfig.autoThrow,
-        'warpPublicity': appConfig.warpPublicity,
-        'tradePublicity': appConfig.tradePublicity,
-        'allowTpa': appConfig.allowTpa,
+        'auto_eat': appConfig.autoEat,
+        'auto_throw': appConfig.autoThrow,
+        'warp_publicity': appConfig.warpPublicity,
+        'trade_publicity': appConfig.tradePublicity,
+        'allow_tpa': appConfig.allowTpa,
+        'attack_interval_ticks': appConfig.attackIntervalTicks,
       };
 
   String _getExecutablePath() {

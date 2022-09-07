@@ -5,22 +5,24 @@ export class Config {
     username: string,
     token: string,
     uuid: string,
-    autoEat: boolean,
-    autoThrow: boolean,
-    warpPublicity: string | null,
-    tradePublicity: string | null,
-    allowTpa: string[]
+    auto_eat: boolean,
+    auto_throw: boolean,
+    warp_publicity: string | null,
+    trade_publicity: string | null,
+    allow_tpa: string[],
+    attack_interval_ticks: number
   ) {
     this.host = host;
     this.port = port;
     this.username = username;
     this.token = token;
     this.uuid = uuid;
-    this.autoEat = autoEat;
-    this.autoThrow = autoThrow;
-    this.warpPublicity = warpPublicity;
-    this.tradePublicity = tradePublicity;
-    this.allowTpa = allowTpa;
+    this.auto_eat = auto_eat;
+    this.auto_throw = auto_throw;
+    this.warp_publicity = warp_publicity;
+    this.trade_publicity = trade_publicity;
+    this.allow_tpa = allow_tpa;
+    this.attack_interval_ticks = attack_interval_ticks;
   }
 
   host: string;
@@ -28,9 +30,10 @@ export class Config {
   username: string;
   token: string;
   uuid: string;
-  autoEat: boolean;
-  autoThrow: boolean;
-  warpPublicity: string | null;
-  tradePublicity: string | null;
-  allowTpa: string[];
+  auto_eat: boolean;
+  auto_throw: boolean;
+  warp_publicity: string | null;
+  trade_publicity: string | null;
+  allow_tpa: string[];
+  attack_interval_ticks: number;
 }
