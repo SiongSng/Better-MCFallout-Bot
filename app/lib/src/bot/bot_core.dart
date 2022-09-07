@@ -137,7 +137,7 @@ class BotCore {
           }
         }
       } catch (e) {
-        if (text.contains('write ECONNRESET')) {
+        if (text.contains('ECONNRESET')) {
           controller.add(DisconnectedEvent.create(text));
           return;
         }
