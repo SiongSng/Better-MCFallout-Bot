@@ -10,13 +10,23 @@ class Util {
     bool forceShowMinutes = false,
     bool forceShowHours = false,
     bool forceShowDays = false,
+    bool forceShowYears = false,
     bool abbreviate = false,
   }) {
     String str = '';
-    final int days = duration.inDays;
+    final int years = duration.inDays ~/ 365;
+    final int days = duration.inDays % 365;
     final int hours = duration.inHours.remainder(Duration.hoursPerDay);
     final int minutes = duration.inMinutes.remainder(Duration.minutesPerHour);
     final int seconds = duration.inSeconds.remainder(Duration.secondsPerMinute);
+
+    if (years > 0 || forceShowYears) {
+      if (abbreviate) {
+        str += '${years}y ';
+      } else {
+        str += '$years 年 ';
+      }
+    }
 
     if (days > 0 || forceShowDays) {
       if (abbreviate) {

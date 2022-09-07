@@ -18,7 +18,7 @@ class BotCore {
   final String host;
   final int port;
   final Account account;
-  final int reconnectTimes;
+  int reconnectTimes;
 
   late Process process;
   late Stream<IEvent> eventStream;
@@ -42,6 +42,8 @@ class BotCore {
       }
 
       await _connect().timeout(const Duration(seconds: 20));
+      // Successful to reconnect, so reset reconnect times
+      reconnectTimes > 0 ? reconnectTimes-- : reconnectTimes = 0;
       return true;
     } on TimeoutException {
       return false;
@@ -93,9 +95,9 @@ class BotCore {
         argument: {'config': _getConfig()}));
   }
 
-  void raid(BotActionMethod method) {
+  void attack(BotActionMethod method) {
     if (!connected) return;
-    _executeAction(BotAction(action: BotActionType.raid, method: method));
+    _executeAction(BotAction(action: BotActionType.attack, method: method));
   }
 
   Future<void> _connect() async {
@@ -121,9 +123,9 @@ class BotCore {
     late final StreamController<IEvent> controller;
 
     final stdout = process.stdout.listen((data) {
+      final text = utf8.decode(data);
       try {
-        final List<String> jsonList =
-            LineSplitter.split(utf8.decode(data)).toList();
+        final List<String> jsonList = LineSplitter.split(text).toList();
 
         for (final String json in jsonList) {
           if (json.isEmpty) return;
@@ -135,7 +137,12 @@ class BotCore {
           }
         }
       } catch (e) {
-        _logger.warning('Failed to parse event: $e (${utf8.decode(data)})');
+        if (text.contains('ECONNRESET')) {
+          controller.add(DisconnectedEvent.create(text));
+          return;
+        }
+
+        _logger.warning('Failed to parse event: $e ($text)');
       }
     });
 
@@ -156,8 +163,10 @@ class BotCore {
   IEvent? _eventHandler(RawEvent event) {
     switch (event.event) {
       case EventType.connected:
+        connected = true;
         return ConnectedEvent(event);
       case EventType.disconnected:
+        connected = false;
         return DisconnectedEvent(event);
       case EventType.info:
         return InfoLogEvent(event);
@@ -199,11 +208,12 @@ class BotCore {
         'username': account.username,
         'token': account.minecraftToken,
         'uuid': account.uuid,
-        'autoEat': appConfig.autoEat,
-        'autoThrow': appConfig.autoThrow,
-        'warpPublicity': appConfig.warpPublicity,
-        'tradePublicity': appConfig.tradePublicity,
-        'allowTpa': appConfig.allowTpa,
+        'auto_eat': appConfig.autoEat,
+        'auto_throw': appConfig.autoThrow,
+        'warp_publicity': appConfig.warpPublicity,
+        'trade_publicity': appConfig.tradePublicity,
+        'allow_tpa': appConfig.allowTpa,
+        'attack_interval_ticks': appConfig.attackIntervalTicks,
       };
 
   String _getExecutablePath() {

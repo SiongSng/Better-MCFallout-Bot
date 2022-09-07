@@ -60,10 +60,20 @@ class _HomePageState extends State<HomePage> {
             if (!accountStorage.hasAnyAccount()) {
               showDialog(
                   context: context,
-                  builder: (context) => const AlertDialog(
-                        title: Text('錯誤'),
-                        content: Text('請先設定帳號與密碼才能讓機器人登入廢土伺服器'),
-                        actions: [ConfirmButton()],
+                  builder: (context) => AlertDialog(
+                        title: const Text('錯誤'),
+                        content: const Text('請先登入帳號才能讓機器人連線廢土伺服器'),
+                        actions: [
+                          ConfirmButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const AccountPage()));
+                            },
+                          )
+                        ],
                       ));
             } else {
               int count = accountStorage.count;

@@ -17,7 +17,7 @@ export function createBot() {
         id: config.uuid,
       },
     },
-    auth: 'mojang',
+    auth: "mojang",
     skipValidation: true,
     host: config.host,
     port: config.port,
@@ -66,7 +66,7 @@ function listenBotEvent(bot: mineflayer.Bot) {
     if (isTpa) {
       const playerId = message.split("[系統] ")[1].split("想要")[0].trim();
 
-      if (config.allowTpa.includes(playerId)) {
+      if (config.allow_tpa.includes(playerId)) {
         bot.chat("/tok");
       } else {
         bot.chat("/tno");

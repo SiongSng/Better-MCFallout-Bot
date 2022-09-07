@@ -6,17 +6,17 @@ import { BotAction, BotActionType } from "@/model/bot_action";
 import { Bot } from "mineflayer";
 import { config } from "@/index";
 
-let _isRaiding = false;
+let _isAttacking = false;
 
 export class ActionHandler {
   static handle(bot: Bot, json: string) {
     const action: BotAction = JSON.parse(json);
 
     switch (action.action) {
-      case BotActionType.none:
+      case BotActionType.afk:
         break;
-      case BotActionType.raid:
-        this._raid(bot, action);
+      case BotActionType.attack:
+        this._attack(bot, action);
         break;
       case BotActionType.command:
         this._command(bot, action);
@@ -47,11 +47,12 @@ export class ActionHandler {
     if (typeof _config === "object") {
       try {
         const newConfig = _config as Config;
-        config.autoEat = newConfig.autoEat;
-        config.autoThrow = newConfig.autoThrow;
-        config.warpPublicity = newConfig.warpPublicity;
-        config.tradePublicity = newConfig.tradePublicity;
-        config.allowTpa = newConfig.allowTpa;
+        config.auto_eat = newConfig.auto_eat;
+        config.auto_throw = newConfig.auto_throw;
+        config.warp_publicity = newConfig.warp_publicity;
+        config.trade_publicity = newConfig.trade_publicity;
+        config.allow_tpa = newConfig.allow_tpa;
+        config.attack_interval_ticks = newConfig.attack_interval_ticks;
 
         BotHelper.autoEatConfig(bot);
 
@@ -68,16 +69,25 @@ export class ActionHandler {
     bot.quit();
   }
 
-  static _raid(bot: Bot, action: BotAction) {
+  static _attack(bot: Bot, action: BotAction) {
     if (action.method == BotActionMethod.start) {
-      if (_isRaiding)
-        return EventEmitter.warning("The raid action is already running.");
+      if (_isAttacking)
+        return EventEmitter.warning("The attack action is already running.");
 
-      _isRaiding = true;
+      _isAttacking = true;
 
+      let interval_ticks = 0;
       // Auto attack passive mobs
-      setInterval(async () => {
-        if (!_isRaiding) clearInterval();
+      bot.on("physicTick", async function listener() {
+        if (!_isAttacking) {
+          bot.removeListener("physicTick", listener);
+          return;
+        }
+
+        interval_ticks++;
+        if (interval_ticks < config.attack_interval_ticks) return;
+        interval_ticks = 0;
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if ((bot as any).autoEat.isEating) return;
 
@@ -119,7 +129,11 @@ export class ActionHandler {
 
         for (const entity_key in bot.entities) {
           const entity = bot.entities[entity_key];
+
           if (entity.name != null && mob_list.includes(entity.name)) {
+            // Skip if the entity is the distance more than 12 from the bot
+            if (bot.entity.position.distanceTo(entity.position) > 12) return;
+
             const isEquip = bot.player.entity.equipment.some((e) =>
               swords.includes(e.name)
             );
@@ -141,14 +155,14 @@ export class ActionHandler {
             bot.attack(entity);
           }
         }
-      }, 1000);
+      });
     } else if (action.method == BotActionMethod.stop) {
-      if (!_isRaiding)
+      if (!_isAttacking)
         return EventEmitter.warning(
-          "The raid action is not running, so it cannot be stopped."
+          "The attack action is not running, so it cannot be stopped."
         );
 
-      _isRaiding = false;
+      _isAttacking = false;
     }
   }
 }

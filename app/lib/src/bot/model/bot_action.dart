@@ -29,9 +29,9 @@ class BotAction {
 }
 
 enum BotActionType {
-  none(true),
+  afk(true),
   command(false),
-  raid(true),
+  attack(true),
   updateConfig(false),
   disconnect(false);
 
@@ -42,12 +42,21 @@ enum BotActionType {
 
   String getName() {
     switch (this) {
-      case BotActionType.none:
-        return '無 (掛機)';
-      case BotActionType.raid:
-        return '自動刷突襲塔';
+      case BotActionType.afk:
+        return '掛機';
+      case BotActionType.attack:
+        return '自動攻擊生物';
       default:
-        return '';
+        return name;
+    }
+  }
+
+  String getTooltip() {
+    switch (this) {
+      case BotActionType.attack:
+        return '自動攻擊敵對生物，可以用在突襲塔、終界使者經驗塔、烈焰使者農場等地方';
+      default:
+        return getName();
     }
   }
 }

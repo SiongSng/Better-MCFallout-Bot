@@ -21,6 +21,13 @@ class RawEvent implements IRawEvent, IEvent {
     this.data,
   );
 
+  factory RawEvent.create({
+    required EventType type,
+    required Map<String, dynamic> data,
+  }) {
+    return RawEvent(type, data);
+  }
+
   RawEvent copyWith({
     EventType? event,
     Map<String, dynamic>? data,

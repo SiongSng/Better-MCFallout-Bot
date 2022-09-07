@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -19,6 +20,7 @@ class _SettingsPageState extends State<SettingsPage> {
   late TextEditingController warpPublicityController;
   late TextEditingController tradePublicityController;
   late TextEditingController allowTpaController;
+  late TextEditingController attackIntervalTicksController;
 
   bool hidePassword = true;
 
@@ -32,6 +34,8 @@ class _SettingsPageState extends State<SettingsPage> {
         TextEditingController(text: appConfig.tradePublicity);
     allowTpaController =
         TextEditingController(text: appConfig.allowTpa.join(','));
+    attackIntervalTicksController =
+        TextEditingController(text: appConfig.attackIntervalTicks.toString());
 
     super.initState();
   }
@@ -42,7 +46,7 @@ class _SettingsPageState extends State<SettingsPage> {
       title: const Text('機器人設定'),
       scrollable: true,
       content: SizedBox(
-        width: MediaQuery.of(context).size.width / 3.5,
+        width: MediaQuery.of(context).size.width / 2.8,
         child: Column(
           children: [
             const Text('伺服器設定', style: TextStyle(fontSize: 18)),
@@ -76,6 +80,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
             ),
+            const Text('機器人設定', style: TextStyle(fontSize: 18)),
             Tooltip(
               message: '隱藏廢土伺服器中遊戲訊息會有的目標生命顯示，讓界面更加簡潔',
               child: SwitchListTile(
@@ -85,36 +90,60 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             TextFormField(
               decoration: const InputDecoration(
+                  labelText: '攻擊敵對生物冷卻時間 (tick)',
+                  hintText: '單位為遊戲刻 (tick)，預設為 12'),
+              controller: attackIntervalTicksController,
+              onChanged: (value) {
+                int? ticks = int.tryParse(value);
+                if (ticks != null) {
+                  appConfig.attackIntervalTicks = ticks;
+                }
+              },
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+            ),
+            TextFormField(
+              decoration: const InputDecoration(
                 labelText: '公共設施自動宣傳',
-                hintText: '請輸入訊息 (範例格式：/warp <傳送點> <訊息>)',
+                hintText: '請輸入訊息 (範例格式：「/warp <傳送點> <訊息內容>」)',
               ),
               controller: warpPublicityController,
-              onChanged: (_) {
-                String value = warpPublicityController.text;
-                if (value.isEmpty) return;
+              onChanged: (value) {
+                if (value.isEmpty) {
+                  appConfig.warpPublicity = null;
+                  return;
+                }
                 appConfig.warpPublicity = value;
               },
             ),
             TextFormField(
               decoration: const InputDecoration(
                 labelText: '交易頻道自動宣傳',
-                hintText: '請輸入訊息 (不用前綴，範例格式：<交易訊息>)',
+                hintText: '請輸入訊息 (不用前綴，範例格式：「收村 1:3w」)',
               ),
               controller: tradePublicityController,
-              onChanged: (_) {
-                String value = tradePublicityController.text;
-                if (value.isEmpty) return;
+              onChanged: (value) {
+                if (value.isEmpty) {
+                  appConfig.tradePublicity = null;
+                  return;
+                }
                 appConfig.tradePublicity = value;
               },
             ),
             TextFormField(
               decoration: const InputDecoration(
                 labelText: '自動接受 Tpa 請求白名單',
-                hintText: '請輸入玩家 ID (如要多個請以 , 分隔，例如：a,b,c)',
+                hintText: '請輸入玩家 ID (如要多個請以 , 分隔，例如：「a,b,c」)',
               ),
               controller: allowTpaController,
-              onChanged: (_) {
-                appConfig.allowTpa = allowTpaController.text.split(',');
+              onChanged: (value) {
+                if (value.isEmpty) {
+                  appConfig.allowTpa = [];
+                  return;
+                }
+                appConfig.allowTpa = value.split(',');
               },
             ),
             const SizedBox(height: 12),
