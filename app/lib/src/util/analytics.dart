@@ -81,15 +81,15 @@ class Analytics {
     final version = await Util.getAppVersion();
 
     if (Platform.isAndroid) {
-      return 'RPMLauncher/$version (Android; Mobile; $locale)';
+      return 'better_mcfallout_bot/$version (Android; Mobile; $locale)';
     } else if (Platform.isIOS) {
-      return 'RPMLauncher/$version (iPhone; U; CPU iPhone OS like Mac OS X; $locale)';
+      return 'better_mcfallout_bot/$version (iPhone; U; CPU iPhone OS like Mac OS X; $locale)';
     } else if (Platform.isMacOS) {
-      return 'RPMLauncher/$version (Macintosh; Intel Mac OS X; Macintosh; $locale)';
+      return 'better_mcfallout_bot/$version (Macintosh; Intel Mac OS X; Macintosh; $locale)';
     } else if (Platform.isWindows) {
-      return 'RPMLauncher/$version (Windows; Windows; Windows; $locale)';
+      return 'better_mcfallout_bot/$version (Windows; Windows; Windows; $locale)';
     } else if (Platform.isLinux) {
-      return 'RPMLauncher/$version (Linux; Linux; Linux; $locale)';
+      return 'better_mcfallout_bot/$version (Linux; Linux; Linux; $locale)';
     } else {
       // Dart/1.8.0 (macos; macos; macos; en_US)
       var os = Platform.operatingSystem;
