@@ -49,12 +49,14 @@ export class BotHelper {
 
     const warpPublicityIntervalID = setInterval(() => {
       if (end) clearInterval(warpPublicityIntervalID);
+      Util.delay(1500); // Delay 1.5s to prevent sending message failed
       this.warpPublicity(bot);
     }, 1000 * 60 * 30);
     this.warpPublicity(bot);
 
     const tradePublicityIntervalID = setInterval(() => {
       if (end) clearInterval(tradePublicityIntervalID);
+      Util.delay(1500); // Delay 1.5s to prevent sending message failed
       this.tradePublicity(bot);
     }, 1000 * 60 * 10);
     this.tradePublicity(bot);
