@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:logging/logging.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class Util {
@@ -90,5 +91,10 @@ class Util {
     } else {
       openUri(Uri.decodeFull(fse.uri.toString()));
     }
+  }
+
+  static Future<String> getAppVersion() async {
+    final info = await PackageInfo.fromPlatform();
+    return info.version;
   }
 }
