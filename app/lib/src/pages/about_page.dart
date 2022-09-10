@@ -1,7 +1,6 @@
 import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({Key? key}) : super(key: key);
@@ -19,13 +18,12 @@ class _AboutPageState extends State<AboutPage> {
     super.initState();
 
     getVersion();
+    analytics.pageView('About');
   }
 
   getVersion() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    setState(() {
-      version = packageInfo.version;
-    });
+    version = await Util.getAppVersion();
+    setState(() {});
   }
 
   @override

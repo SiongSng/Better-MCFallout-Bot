@@ -5,7 +5,6 @@ import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -17,6 +16,7 @@ void main() async {
   Logger.root.info('App starting');
   await windowManager.ensureInitialized();
   await ConfigHelper.init();
+  await analytics.init();
 
   await SentryFlutter.init((options) {
     options.dsn =
@@ -27,7 +27,7 @@ void main() async {
           MediaQueryData.fromWindow(WidgetsBinding.instance.window);
       final Size size = data.size;
       final List<String> githubSourceMap = [];
-      final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      final version = await Util.getAppVersion();
 
       final List<SentryException>? exceptions = event.exceptions;
       if (exceptions != null) {
@@ -37,7 +37,7 @@ void main() async {
               if ((frames.inApp ?? false) &&
                   frames.package == 'better_mcfallout_bot') {
                 githubSourceMap.add(
-                    'https://github.com/SiongSng/Better-MCFallout-Bot/blob/${kDebugMode ? 'main' : packageInfo.version}/app/${frames.absPath?.replaceAll('package:better_mcfallout_bot', 'lib/')}#L${frames.lineNo}');
+                    'https://github.com/SiongSng/Better-MCFallout-Bot/blob/${kDebugMode ? 'main' : version}/app/${frames.absPath?.replaceAll('package:better_mcfallout_bot', 'lib/')}#L${frames.lineNo}');
               }
             }
           }
@@ -54,7 +54,6 @@ void main() async {
           contexts: event.contexts.copyWith(
               device: SentryDevice(
             language: Platform.localeName,
-            name: Platform.localHostname,
             simulator: false,
             screenHeightPixels: size.height.toInt(),
             screenWidthPixels: size.width.toInt(),

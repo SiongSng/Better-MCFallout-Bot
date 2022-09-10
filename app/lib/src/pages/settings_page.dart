@@ -38,6 +38,7 @@ class _SettingsPageState extends State<SettingsPage> {
         TextEditingController(text: appConfig.attackIntervalTicks.toString());
 
     super.initState();
+    analytics.pageView('Settings');
   }
 
   @override
