@@ -33,19 +33,19 @@ class _HomePageState extends State<HomePage> {
                 tooltip: '設定',
                 icon: const Icon(Icons.settings)),
             IconButton(
-                onPressed: () async {
-                  final dir = await getApplicationSupportDirectory();
-                  Util.openFileManager(dir);
-                },
-                tooltip: '開啟資料儲存位置',
-                icon: const Icon(Icons.folder)),
-            IconButton(
               onPressed: () {
                 Util.openUri('https://discord.com/invite/5xApZtgV2u');
               },
               icon: const Icon(LineIcons.discord),
               tooltip: 'RPMTW 社群 Discord 伺服器',
             ),
+            IconButton(
+                onPressed: () async {
+                  final dir = await getApplicationSupportDirectory();
+                  Util.openFileManager(dir);
+                },
+                tooltip: '開啟資料儲存位置',
+                icon: const Icon(Icons.folder)),
             IconButton(
                 onPressed: () {
                   showDialog(
