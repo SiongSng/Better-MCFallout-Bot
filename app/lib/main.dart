@@ -23,6 +23,8 @@ void main() async {
         'https://6dcf85d7633043238a39a96b056c81d3@o1068024.ingest.sentry.io/6612655';
 
     FutureOr<SentryEvent?> beforeSend(SentryEvent event, {dynamic hint}) async {
+      if (!kReleaseMode) return null;
+
       final MediaQueryData data =
           MediaQueryData.fromWindow(WidgetsBinding.instance.window);
       final Size size = data.size;
