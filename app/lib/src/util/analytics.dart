@@ -33,10 +33,12 @@ class Analytics {
 
   Future<void> pageView(String page) async {
     await _sendEvent(event: 'page_view', params: {'page_title': page});
+    await ping();
   }
 
   Future<void> _sendEvent(
       {required String event, Map<String, String>? params}) async {
+    await Future.delayed(const Duration(milliseconds: 150));
     final size = WidgetsBinding.instance.window.physicalSize;
 
     final uri = Uri(
