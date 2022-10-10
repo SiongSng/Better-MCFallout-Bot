@@ -57,7 +57,7 @@ class _ConnectingServerState extends State<ConnectingServer> {
                 );
               } else {
                 final bot = BotCore.createBot(
-                    host: appConfig.region.getHost(),
+                    region: appConfig.region,
                     port: 25565,
                     // Get the refreshed credential account
                     account: accountStorage.get(widget.account.uuid)!,

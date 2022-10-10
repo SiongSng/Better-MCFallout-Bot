@@ -15,18 +15,19 @@ class BotCore {
     return _instance;
   }
 
-  final String host;
+  final ServerRegion region;
   final int port;
   final Account account;
   int reconnectTimes;
 
+  late String host;
   late Process process;
   late Stream<IEvent> eventStream;
   late ConnectedEvent connectedData;
   bool connected = false;
 
   BotCore.createBot(
-      {required this.host,
+      {required this.region,
       required this.port,
       required this.account,
       this.reconnectTimes = 0}) {
@@ -101,6 +102,12 @@ class BotCore {
   }
 
   Future<void> _connect() async {
+    if (region == ServerRegion.auto) {
+      host = await ServerRegion.getBestHost();
+    } else {
+      host = region.host;
+    }
+
     final config = _getConfig();
 
     process = await Process.start(_getExecutablePath(), [json.encode(config)]);

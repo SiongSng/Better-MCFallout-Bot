@@ -57,7 +57,7 @@ Discord: https://discord.gg/5xApZtgV2u
 ## ⚙️ 開發
 注意：這是給開發者看的，如果您是使用者請看 [這裡](#-下載)
 
-首先請先安裝 [Flutter SDK](https://docs.flutter.dev/get-started/install) 與 [Node.js](https://nodejs.org/download).
+首先請先安裝 [Flutter SDK](https://docs.flutter.dev/get-started/install) 與 [Node.js](https://nodejs.org/download) 還有 [Yarn](https://yarnpkg.com/getting-started/install).
 
 ### VSCode
 另外請安裝 [Flutter 的擴充套件](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter)  

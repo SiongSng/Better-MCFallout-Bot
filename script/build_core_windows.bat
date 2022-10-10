@@ -1,12 +1,12 @@
+@echo off
+
 cd core
 echo "[Info] Install dependencies"
-corepack enable
-yarn install
-echo "[Info] Building core typescript to javascript"
-yarn build
+call yarn install
+
 echo "[Info] Building core to executable"
-yarn pkg:windows
+call yarn pkg:windows
 
 echo "[Info] Copying the core to the app"
 cd ..
-cp core/out/better-mcfallout-bot-core.exe app/assets/better-mcfallout-bot-core.exe
+copy "core\out\better-mcfallout-bot-core.exe" "app\assets\better-mcfallout-bot-core.exe"
