@@ -9,6 +9,7 @@ enum ServerRegion {
 
   /// Japan
   japan('jp.mcfallout.net'),
+
   denpa('denpa.mcfallout.net'),
   mercy('mercy.mcfallout.net');
 
@@ -38,7 +39,6 @@ enum ServerRegion {
         'mcfallout.net',
         'na.mcfallout.net',
         'jp.mcfallout.net',
-        'denpa.mcfallout.net',
         'mercy.mcfallout.net'
       ];
 
@@ -47,7 +47,7 @@ enum ServerRegion {
       for (final host in hosts) {
         try {
           final packet =
-              await mc.ping(host, timeout: const Duration(seconds: 3));
+              await mc.ping(host, timeout: const Duration(seconds: 1));
           final ping = packet?.ping;
           if (ping != null) {
             result[host] = ping;
