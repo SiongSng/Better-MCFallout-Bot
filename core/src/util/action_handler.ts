@@ -131,9 +131,7 @@ export class ActionHandler {
           const entity = bot.entities[entity_key];
 
           if (entity.name != null && mob_list.includes(entity.name)) {
-            // Skip if the entity is the distance more than 12 from the bot
-            if (bot.entity.position.distanceTo(entity.position) > 12) return;
-
+            // Check the bot is equipped with a sword
             const isEquip = bot.player.entity.equipment.some((e) =>
               swords.includes(e.name)
             );
