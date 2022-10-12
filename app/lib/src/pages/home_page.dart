@@ -34,10 +34,10 @@ class _HomePageState extends State<HomePage> {
                 icon: const Icon(Icons.settings)),
             IconButton(
               onPressed: () {
-                Util.openUri('https://discord.com/invite/5xApZtgV2u');
+                Util.openUri('https://discord.gg/WJSnhPzcgs');
               },
               icon: const Icon(LineIcons.discord),
-              tooltip: 'RPMTW 社群 Discord 伺服器',
+              tooltip: '更好的廢土機器人 Discord 社群',
             ),
             IconButton(
                 onPressed: () async {

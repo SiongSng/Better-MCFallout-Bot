@@ -6,7 +6,7 @@
 
 詳細功能請看 [這裡](#-功能)  
 祝您使用愉快！  
-Discord: https://discord.gg/5xApZtgV2u  
+Discord 社群: https://discord.gg/WJSnhPzcgs  
 
 ## [立即下載](#-下載)   
 
