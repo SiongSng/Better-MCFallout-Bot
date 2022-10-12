@@ -1,8 +1,8 @@
 import 'package:dart_minecraft/dart_minecraft.dart' as mc;
 
 enum ServerRegion {
-  auto('mcfallout.ne'),
-  initial('mcfallout.ne'),
+  auto('mcfallout.net'),
+  initial('mcfallout.net'),
 
   /// North America
   na('na.mcfallout.net'),
