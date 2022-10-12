@@ -1,6 +1,6 @@
 {
   "name": "better-mcfallout-bot-core",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Feature-rich and easy-to-use Minecraft Fallout server bot.",
   "main": "dist/index.js",
   "bin": "dist/index.js",
