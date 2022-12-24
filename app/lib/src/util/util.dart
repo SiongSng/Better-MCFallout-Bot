@@ -68,6 +68,7 @@ class Util {
     } else {
       await launchUrlString(url).catchError((e) {
         Logger.root.severe('Failed to open url: $url');
+        return true;
       });
     }
   }

@@ -14,7 +14,6 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   late ServerRegion region;
-  late bool hideHealth;
   late TextEditingController emailController;
   late TextEditingController passwordController;
   late TextEditingController warpPublicityController;
@@ -27,7 +26,6 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     region = appConfig.region;
-    hideHealth = appConfig.hideHealth;
     warpPublicityController =
         TextEditingController(text: appConfig.warpPublicity);
     tradePublicityController =
@@ -85,8 +83,12 @@ class _SettingsPageState extends State<SettingsPage> {
             Tooltip(
               message: '隱藏廢土伺服器中遊戲訊息會有的目標生命顯示，讓界面更加簡潔',
               child: SwitchListTile(
-                  value: hideHealth,
-                  onChanged: (value) => setState(() => hideHealth = value),
+                  value: appConfig.hideHealth,
+                  onChanged: (value) {
+                    setState(() {
+                      appConfig.hideHealth = value;
+                    });
+                  },
                   title: const Text('隱藏目標生命顯示')),
             ),
             TextFormField(
@@ -172,10 +174,12 @@ class _SettingsPageState extends State<SettingsPage> {
                             appConfig.backgroundPath = result.files.first.path;
                           });
 
-                          showDialog(
-                              context: context,
-                              builder: (context) =>
-                                  const BackgroundSuccessfulDialog());
+                          if (context.mounted) {
+                            showDialog(
+                                context: context,
+                                builder: (context) =>
+                                    const BackgroundSuccessfulDialog());
+                          }
                         }
                       },
                       child: const Text('選擇')),
