@@ -50,17 +50,13 @@ class _AppState extends State<App> {
       navigatorKey: NavigationService.navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primarySwatch: Colors.blue,
           brightness: Brightness.dark,
           fontFamily: 'font',
           tooltipTheme: TooltipThemeData(
-            textStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
+            textStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: Colors.black, fontSize: 13, fontFamily: 'font'),
             waitDuration: const Duration(milliseconds: 250),
           ),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, backgroundColor: Colors.blue)),
           useMaterial3: true),
       navigatorObservers: [
         SentryNavigatorObserver(enableAutoTransactions: false)

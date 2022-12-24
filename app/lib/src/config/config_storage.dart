@@ -12,7 +12,7 @@ class ConfigStorage {
 
   ServerRegion get region =>
       ServerRegion.values.byName(ConfigHelper.get<String>('region',
-          defaultValue: ServerRegion.auto.name)!);
+          defaultValue: ServerRegion.defaultRegion.name)!);
   set region(ServerRegion value) =>
       ConfigHelper.set<String>('region', value.name);
 

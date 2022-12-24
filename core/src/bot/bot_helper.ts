@@ -6,7 +6,7 @@ import { Item } from "prismarine-item";
 import { config } from "@/index";
 
 export class BotHelper {
-  static onSpawn(bot: Bot) {
+  static async onSpawn(bot: Bot) {
     let end = false;
 
     // Auto eat
@@ -23,6 +23,8 @@ export class BotHelper {
       game_version: bot.version,
       start_at: new Date().getTime(),
     });
+
+    await Util.delay(2000); // Wait for connecting to the server
 
     this.throwItems(bot);
 

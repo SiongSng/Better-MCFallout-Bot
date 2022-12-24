@@ -2,7 +2,7 @@ import 'package:dart_minecraft/dart_minecraft.dart' as mc;
 
 enum ServerRegion {
   auto('mcfallout.net'),
-  initial('mcfallout.net'),
+  defaultRegion('mcfallout.net'),
 
   /// North America
   na('na.mcfallout.net'),
@@ -20,8 +20,8 @@ enum ServerRegion {
     switch (this) {
       case ServerRegion.auto:
         return '自動分配';
-      case ServerRegion.initial:
-        return '初始 (mcfallout.net)';
+      case ServerRegion.defaultRegion:
+        return '預設區域';
       case ServerRegion.na:
         return '北美洲';
       case ServerRegion.japan:
