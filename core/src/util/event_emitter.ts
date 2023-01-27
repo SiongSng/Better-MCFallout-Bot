@@ -1,4 +1,5 @@
 import { MinecraftItem } from "@/model/minecraft_item";
+import { Experience } from "mineflayer";
 
 export class EventEmitter {
   static emit(event: Event, data: unknown = {}) {
@@ -33,13 +34,15 @@ export class EventEmitter {
     health: number,
     food: number,
     time: string,
-    inventory_items: Array<MinecraftItem>
+    inventory_items: Array<MinecraftItem>,
+    experience: Experience
   ) {
     this.emit(Event.status, {
       health,
       food,
       time,
       inventory_items,
+      experience,
     });
   }
 }

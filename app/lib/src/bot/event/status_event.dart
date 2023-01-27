@@ -1,10 +1,12 @@
 import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
+import 'package:better_mcfallout_bot/src/bot/model/experience.dart';
 
 abstract class IStatusEvent {
   double get health;
   double get food;
   Duration get time;
   List<MinecraftItem> get inventoryItems;
+  Experience get experience;
 }
 
 class StatusEvent implements IStatusEvent, IEvent {
@@ -16,6 +18,8 @@ class StatusEvent implements IStatusEvent, IEvent {
   final Duration time;
   @override
   final List<MinecraftItem> inventoryItems;
+  @override
+  final Experience experience;
 
   StatusEvent(RawEvent event)
       : health = double.parse(event.data['health'].toString()),
@@ -24,5 +28,6 @@ class StatusEvent implements IStatusEvent, IEvent {
         time = Duration(seconds: (int.parse(event.data['time']).toInt()) ~/ 20),
         inventoryItems = (event.data['inventory_items'] as List<dynamic>)
             .map((item) => MinecraftItem.fromMap(item))
-            .toList();
+            .toList(),
+        experience = Experience.fromMap(event.data['experience']);
 }

@@ -45,7 +45,8 @@ export class BotHelper {
             item.count,
             item.type
           );
-        })
+        }),
+        bot.experience
       );
     }, 1000);
 

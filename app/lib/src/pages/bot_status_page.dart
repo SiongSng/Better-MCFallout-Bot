@@ -1,4 +1,5 @@
 import 'package:better_mcfallout_bot/src/better_mcfallout_bot.dart';
+import 'package:better_mcfallout_bot/src/widget/experience_indicator.dart';
 import 'package:flutter/material.dart' hide NetworkImage;
 import 'package:logging/logging.dart';
 
@@ -167,7 +168,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                     Row(
                       children: [
                         SizedBox(
-                          width: 200,
+                          width: 170,
                           height: 50,
                           child: Tooltip(
                             message: '自動飲食，肉、蔬菜、湯都支援，可以防止餓死 (腐肉是黑名單)',
@@ -184,7 +185,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                           ),
                         ),
                         SizedBox(
-                          width: 200,
+                          width: 205,
                           height: 50,
                           child: Tooltip(
                             message:
@@ -202,7 +203,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                           ),
                         ),
                         SizedBox(
-                          width: 200,
+                          width: 205,
                           height: 50,
                           child: Tooltip(
                             message:
@@ -336,6 +337,14 @@ class _StatusState extends State<_Status> {
                         Tooltip(
                             message: data.food.toString(),
                             child: HungerIndicator(hunger: data.food)),
+                        Tooltip(
+                          message: '共計 ${data.experience.points} 點經驗值',
+                          child: SizedBox(
+                              height: 50,
+                              width: 300,
+                              child: ExperienceIndicator(
+                                  experience: data.experience)),
+                        ),
                         Text('遊戲內時間：${Util.formatDuration(data.time)}'),
                       ],
                     ),

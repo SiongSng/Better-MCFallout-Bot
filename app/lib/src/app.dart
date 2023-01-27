@@ -51,10 +51,12 @@ class _AppState extends State<App> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           brightness: Brightness.dark,
-          fontFamily: 'font',
+          fontFamilyFallback: const ['font'],
           tooltipTheme: TooltipThemeData(
-            textStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Colors.black, fontSize: 13, fontFamily: 'font'),
+            textStyle: Theme.of(context)
+                .textTheme
+                .bodyLarge
+                ?.copyWith(color: Colors.black, fontWeight: FontWeight.bold),
             waitDuration: const Duration(milliseconds: 250),
           ),
           useMaterial3: true),
