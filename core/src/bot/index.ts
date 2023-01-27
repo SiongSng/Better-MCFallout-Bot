@@ -1,7 +1,7 @@
 import { BotHelper } from "@/bot/bot_helper";
 import { EventEmitter, Event } from "@/util/event_emitter";
 import * as mineflayer from "mineflayer";
-import autoeat from "mineflayer-auto-eat";
+import * as autoeat from "mineflayer-auto-eat";
 import * as readline from "readline";
 import { ActionHandler } from "@/util/action_handler";
 import { config } from "@/index";
@@ -9,22 +9,34 @@ import { config } from "@/index";
 export function createBot() {
   const bot = mineflayer.createBot({
     username: config.username,
-    session: {
-      accessToken: config.token,
-      clientToken: config.token,
-      selectedProfile: {
-        name: config.username,
-        id: config.uuid,
-      },
+    auth: async (client, options) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (options as any).haveCredentials = true;
+
+      const session = {
+        accessToken: config.token,
+        selectedProfile: {
+          name: config.username,
+          id: config.uuid,
+        },
+      };
+
+      client.session = session;
+      client.username = session.selectedProfile.name;
+      options.accessToken = session.accessToken;
+      client.emit("session", session);
+
+      options.connect?.(client);
     },
-    auth: "mojang",
-    skipValidation: true,
+    version: "1.19.2",
     host: config.host,
     port: config.port,
     checkTimeoutInterval: 60 * 1000, // 60 seconds
   });
 
-  bot.loadPlugin(autoeat);
+  bot.loadPlugin(autoeat.plugin);
+
+  EventEmitter.info("Bot created");
 
   const rl = readline.createInterface({
     input: process.stdin,
@@ -77,7 +89,7 @@ function listenBotEvent(bot: mineflayer.Bot) {
   });
 
   // @ts-ignore
-  bot.on("autoeat_stopped", (err) => {
+  bot.on("autoeat_error", (err) => {
     if (err) {
       EventEmitter.warning(`Auto eat failed: ${err}`);
     }

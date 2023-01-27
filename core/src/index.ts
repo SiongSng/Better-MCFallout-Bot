@@ -8,5 +8,5 @@ export const config: Config = JSON.parse(args[0]);
 try {
   createBot();
 } catch (err) {
-  EventEmitter.error(err);
+  EventEmitter.error(`Error while creating the bot: ${err}`);
 }

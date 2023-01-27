@@ -9,8 +9,7 @@
             "cwd": "app",
             "request": "launch",
             "type": "dart",
-            "program": "${workspaceFolder}/app/lib/main.dart",
-            "preLaunchTask": "Build core"
+            "program": "${workspaceFolder}/app/lib/main.dart"
         },
         {
             "name": "app (profile mode)",
@@ -18,8 +17,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
-            "program": "${workspaceFolder}/app/lib/main.dart",
-            "preLaunchTask": "Build core"
+            "program": "${workspaceFolder}/app/lib/main.dart"
         },
         {
             "name": "app (release mode)",
@@ -27,8 +25,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release",
-            "program": "${workspaceFolder}/app/lib/main.dart",
-            "preLaunchTask": "Build core"
+            "program": "${workspaceFolder}/app/lib/main.dart"
         }
     ]
 }

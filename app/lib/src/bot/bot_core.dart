@@ -110,7 +110,18 @@ class BotCore {
 
     final config = _getConfig();
 
-    process = await Process.start(_getExecutablePath(), [json.encode(config)]);
+    if (kDebugMode) {
+      /// Run the core in debug mode (without compiling to the executable)
+      final workingDirectory = join(dirname(Directory.current.path), 'core');
+      await Process.run('yarn', ['build'],
+          workingDirectory: workingDirectory);
+      process = await Process.start(
+          'node', ['dist/index.js', json.encode(config)],
+          workingDirectory: workingDirectory);
+    } else {
+      process =
+          await Process.start(_getExecutablePath(), [json.encode(config)]);
+    }
     eventStream = _listen();
     _logging();
 
@@ -230,24 +241,17 @@ class BotCore {
     } else {
       file = 'better-mcfallout-bot-core';
     }
-    final String path;
 
-    if (kDebugMode) {
-      path = join(dirname(Directory.current.path), 'core', 'out', file);
+    final basePath = join('flutter_assets', 'assets', file);
+
+    if (Platform.isWindows || Platform.isLinux) {
+      return join(dirname(Platform.resolvedExecutable), 'data', basePath);
+    } else if (Platform.isMacOS) {
+      return join(dirname(dirname(Platform.resolvedExecutable)), 'Frameworks',
+          'App.framework', 'Versions', 'A', 'Resources', basePath);
     } else {
-      final basePath = join('flutter_assets', 'assets', file);
-
-      if (Platform.isWindows || Platform.isLinux) {
-        path = join(dirname(Platform.resolvedExecutable), 'data', basePath);
-      } else if (Platform.isMacOS) {
-        path = join(dirname(dirname(Platform.resolvedExecutable)), 'Frameworks',
-            'App.framework', 'Versions', 'A', 'Resources', basePath);
-      } else {
-        throw Exception(
-            'Failed to find core executable, unsupported platform: ${Platform.operatingSystem}');
-      }
+      throw Exception(
+          'Failed to find core executable, unsupported platform: ${Platform.operatingSystem}');
     }
-
-    return path;
   }
 }
