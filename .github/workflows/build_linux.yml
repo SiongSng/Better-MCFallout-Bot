@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2.6.1
+      - uses: subosito/flutter-action@v2.8.0
         with:
           channel: "beta"
-          version: "3.7.0-1.2.pre"
+          flutter-version: "3.7.0-1.5.pre"
           cache: true
       - name: Install Linux dependencies
         run: |
