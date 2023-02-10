@@ -10,10 +10,18 @@ class Experience {
   });
 
   factory Experience.fromMap(Map<String, dynamic> map) {
+    double progress;
+    dynamic progressValue = map['progress'];
+
+    if (progressValue is int) {
+      progress = progressValue.toDouble();
+    } else {
+      progress = progressValue as double;
+    }
+
     return Experience(
-      level: map['level'] as int,
-      points: map['points'] as int,
-      progress: map['progress'] as double,
-    );
+        level: map['level'] as int,
+        points: map['points'] as int,
+        progress: progress);
   }
 }
