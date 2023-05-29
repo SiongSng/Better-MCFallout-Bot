@@ -223,22 +223,6 @@ export class BotHelper {
 
       // Wait for a while before throwing next items
       await Util.delay(3000);
-      EventEmitter.updateStatus(
-        bot.health,
-        bot.food,
-        bot.time.bigTime.valueOf().toString(),
-        bot.inventory.items().map((item) => {
-          return new MinecraftItem(
-            item.name,
-            (item.customName != null
-              ? JSON.parse(item.customName).extra?.[0]?.text
-              : null) || item.displayName,
-            item.count,
-            item.type
-          );
-        }),
-        bot.experience
-      );
       await toss(inventory.items());
     }
 
