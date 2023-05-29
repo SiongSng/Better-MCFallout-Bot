@@ -12,7 +12,6 @@ export class BotHelper {
     let end = false;
 
     // Auto eat
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (bot as any).autoEat.options = {
       eatingTimeout: 8,
       startAt: 18, // If the bot has less food points than that number, it will start eating.
@@ -193,6 +192,10 @@ export class BotHelper {
       if (config.auto_deposit && !bannedItem.includes("emerald")){
         bannedItem.push("emerald")
       }
+      else if (!config.auto_deposit && bannedItem.includes("emerald"))
+      {
+        delete bannedItem[bannedItem.indexOf("emerald")]
+      }
       for (const item of items) {
         const isEating: boolean = (bot as any).autoEat.isEating;
 
@@ -213,7 +216,6 @@ export class BotHelper {
           if (emerald_count >= 1728){
             bot.chat("/bank");
             bot.once("windowOpen", (window) => {
-              // @ts-ignore
               bot.simpleClick.leftMouse(30)
               // @ts-ignore
               window.close();
@@ -250,7 +252,6 @@ export class BotHelper {
   }
 
   static autoEatConfig(bot: Bot) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const autoEat = (bot as any).autoEat;
 
     if (bot.food == 20 || !config.auto_eat) {
