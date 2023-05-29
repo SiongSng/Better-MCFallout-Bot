@@ -53,6 +53,7 @@ export class ActionHandler {
         config.trade_publicity = newConfig.trade_publicity;
         config.allow_tpa = newConfig.allow_tpa;
         config.attack_interval_ticks = newConfig.attack_interval_ticks;
+        config.auto_deposit = newConfig.auto_deposit;
 
         BotHelper.autoEatConfig(bot);
 

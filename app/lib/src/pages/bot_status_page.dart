@@ -18,6 +18,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
   late bool autoEat;
   late bool autoThrow;
   late bool autoReconnect;
+  late bool autoDeposit;
   late BotActionType botAction;
   late TextEditingController commandController;
 
@@ -27,6 +28,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
     autoThrow = appConfig.autoThrow;
     autoReconnect = appConfig.autoReconnect;
     botAction = appConfig.botAction;
+    autoDeposit = appConfig.autoDeposit;
 
     commandController = TextEditingController();
 
@@ -218,6 +220,24 @@ class _BotStatusPageState extends State<BotStatusPage> {
                                   widget.bot.updateConfig();
                                 },
                                 title: const Text('自動重新連線')),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 205,
+                          height: 50,
+                          child: Tooltip(
+                            message:
+                                '自動使用/bank存入綠寶石',
+                            child: SwitchListTile(
+                                value: autoDeposit,
+                                onChanged: (value) {
+                                  setState(() {
+                                    autoDeposit = value;
+                                  });
+                                  appConfig.autoDeposit = autoDeposit;
+                                  widget.bot.updateConfig();
+                                },
+                                title: const Text('自動存入')),
                           ),
                         ),
                       ],

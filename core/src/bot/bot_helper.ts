@@ -4,6 +4,8 @@ import { Bot } from "mineflayer";
 import { MinecraftItem } from "@/model/minecraft_item";
 import { Item } from "prismarine-item";
 import { config } from "@/index";
+import { Window } from "prismarine-windows"
+
 
 export class BotHelper {
   static async onSpawn(bot: Bot) {
@@ -75,7 +77,7 @@ export class BotHelper {
   static async throwItems(bot: Bot) {
     const inventory = bot.inventory;
 
-    const bannedItem = [
+    var bannedItem = [
       // Weapons
       "bow",
       "arrow",
@@ -187,19 +189,56 @@ export class BotHelper {
     ];
 
     async function toss(items: Item[]) {
+      let emerald_count = 0
+      if (!config.auto_deposit && !bannedItem.includes("emerald")){
+        bannedItem.push("emerald")
+      }
       for (const item of items) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const isEating: boolean = (bot as any).autoEat.isEating;
 
         if (config.auto_throw && !isEating) {
           if (!bannedItem.includes(item.name)) {
             await bot.tossStack(item);
           }
+          else if (item.name == "totem_of_undying"){
+            var totems = items.filter((item)=>item.name=="totem_of_undying");
+            var totem_count = totems.length
+            if (config.auto_deposit && totem_count >= 9){
+              await bot.tossStack(item);
+            }
+          }
+        }
+        else if (item.name == "emerald"){
+          emerald_count += item.count;
+          if (emerald_count >= 1728){
+            bot.chat("/bank");
+            bot.once("windowOpen", (window) => {
+              // @ts-ignore
+              window.withdraw(226);
+            });
+            emerald_count = 0
+          }
         }
       }
 
       // Wait for a while before throwing next items
       await Util.delay(3000);
+      EventEmitter.updateStatus(
+        bot.health,
+        bot.food,
+        bot.time.bigTime.valueOf().toString(),
+        bot.inventory.items().map((item) => {
+          return new MinecraftItem(
+            item.name,
+            (item.customName != null
+              ? JSON.parse(item.customName).extra?.[0]?.text
+              : null) || item.displayName,
+            item.count,
+            item.type
+          );
+        }),
+        bot.experience
+      );
       await toss(inventory.items());
     }
 

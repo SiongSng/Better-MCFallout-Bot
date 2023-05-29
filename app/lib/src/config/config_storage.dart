@@ -23,6 +23,10 @@ class ConfigStorage {
       ConfigHelper.get<bool>('auto_throw', defaultValue: false)!;
   set autoThrow(bool value) => ConfigHelper.set<bool>('auto_throw', value);
 
+  bool get autoDeposit =>
+      ConfigHelper.get<bool>('auto_deposit',defaultValue: false)!;
+  set autoDeposit(bool value) => ConfigHelper.set<bool>('auto_deposit',value);
+
   bool get autoReconnect =>
       ConfigHelper.get<bool>('auto_reconnect', defaultValue: true)!;
   set autoReconnect(bool value) =>
