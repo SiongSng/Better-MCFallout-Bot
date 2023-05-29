@@ -215,6 +215,8 @@ export class BotHelper {
             bot.once("windowOpen", (window) => {
               // @ts-ignore
               window.withdraw(226);
+              // @ts-ignore
+              window.close();
             });
             emerald_count = 0
           }
