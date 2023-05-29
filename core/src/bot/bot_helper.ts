@@ -190,7 +190,7 @@ export class BotHelper {
 
     async function toss(items: Item[]) {
       let emerald_count = 0
-      if (!config.auto_deposit && !bannedItem.includes("emerald")){
+      if (config.auto_deposit && !bannedItem.includes("emerald")){
         bannedItem.push("emerald")
       }
       for (const item of items) {
