@@ -208,13 +208,13 @@ export class BotHelper {
             }
           }
         }
-        else if (item.name == "emerald"){
+        if (item.name == "emerald"){
           emerald_count += item.count;
           if (emerald_count >= 1728){
             bot.chat("/bank");
             bot.once("windowOpen", (window) => {
               // @ts-ignore
-              window.withdraw(226);
+              bot.simpleClick.leftMouse(30)
               // @ts-ignore
               window.close();
             });

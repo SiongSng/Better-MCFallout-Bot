@@ -154,6 +154,7 @@ class BotCore {
         for (final String json in jsonList) {
           if (json.isEmpty) return;
           final RawEvent event = RawEvent.fromJson(json);
+          _logger.info(event);
 
           final handledEvent = _eventHandler(event);
           if (handledEvent != null) {
