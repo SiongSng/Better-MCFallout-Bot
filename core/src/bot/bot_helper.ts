@@ -4,7 +4,6 @@ import { Bot } from "mineflayer";
 import { MinecraftItem } from "@/model/minecraft_item";
 import { Item } from "prismarine-item";
 import { config } from "@/index";
-import { Window } from "prismarine-windows"
 
 
 export class BotHelper {
@@ -77,12 +76,15 @@ export class BotHelper {
     const inventory = bot.inventory;
 
     var bannedItem = [
+      // Valuables
+
+      "enchanted_book",
+
       // Weapons
       "bow",
       "arrow",
       "iron_sword",
       "diamond_sword",
-      "golden_sword",
       "spectral_arrow",
       "tipped_arrow",
       "trident",
@@ -205,7 +207,7 @@ export class BotHelper {
           }
           else if (item.name == "totem_of_undying"){
             var totems = items.filter((item)=>item.name=="totem_of_undying");
-            var totem_count = totems.length
+            var totem_count = totems.length;
             if (config.auto_deposit && totem_count >= 9){
               await bot.tossStack(item);
             }

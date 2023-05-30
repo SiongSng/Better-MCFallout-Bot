@@ -54,7 +54,8 @@ class _BotStatusPageState extends State<BotStatusPage> {
             builder: (context) => ConnectingServer(
                 account: widget.bot.account,
                 reconnect: true,
-                reconnectTimes: widget.bot.reconnectTimes + 1));
+                reconnectTimes: widget.bot.reconnectTimes + 1,
+                disconnectReason: event.reason,));
       } else {
         showDialog(
             context: context,
@@ -272,7 +273,11 @@ class _BotStatusPageState extends State<BotStatusPage> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10))),
                     onEditingComplete: () {
-                      widget.bot.runCommand(commandController.text);
+                      if (commandController.text == ".leave" || commandController.text == ".quit"){
+                        widget.bot.disconnect();
+                        Navigator.pop(context);
+                      }
+                      else {widget.bot.runCommand(commandController.text);}
                       commandController.text = '';
                     },
                   ),
@@ -280,7 +285,11 @@ class _BotStatusPageState extends State<BotStatusPage> {
                 const SizedBox(width: 8),
                 TextButton(
                     onPressed: () {
-                      widget.bot.runCommand(commandController.text);
+                      if (commandController.text == ".leave" || commandController.text == ".quit"){
+                        widget.bot.disconnect();
+                        Navigator.pop(context);
+                      }
+                      else {widget.bot.runCommand(commandController.text);}
                       commandController.text = '';
                     },
                     child: const Text('執行')),

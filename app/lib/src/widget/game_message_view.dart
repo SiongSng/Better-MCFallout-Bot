@@ -25,9 +25,9 @@ class _GameMessageViewState extends State<GameMessageView> {
     super.initState();
 
     BotCore.instance!.whenEventStream<GameMessageEvent>().listen((event) {
-      /*
-      bool isHealth = event.message.startsWith('目標生命 : ❤❤❤❤❤❤❤❤❤❤');
-      if (isHealth && appConfig.hideHealth) return;*/
+      
+      bool isWarn = event.message.contains('你的道具欄至少要有 2格 的空格，才能在不具有容器權限的私人領地 撿取或合成物品');
+      if (isWarn && appConfig.hideWarn) return;
 
       messages.add(event);
     });

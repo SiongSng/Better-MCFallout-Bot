@@ -52,9 +52,9 @@ class ConfigStorage {
   set tradePublicity(String? value) =>
       ConfigHelper.set<String>('trade_publicity', value);
 
-  /*bool get hideHealth =>
+  bool get hideWarn =>
       ConfigHelper.get<bool>('hide_health', defaultValue: true)!;
-  set hideHealth(bool value) => ConfigHelper.set<bool>('hide_health', value);*/
+  set hideWarn(bool value) => ConfigHelper.set<bool>('hide_warn', value);
 
   List<String> get allowTpa =>
       ConfigHelper.get<List>('allow_tpa', defaultValue: [])!.cast();
@@ -75,7 +75,7 @@ class ConfigStorage {
         'background_path': backgroundPath,
         'warp_publicity': warpPublicity,
         'trade_publicity': tradePublicity,
-        'hide_health': hideHealth,
+        //'hide_health': hideHealth,
         'attack_interval_ticks': attackIntervalTicks,
       };
 }
