@@ -55,9 +55,17 @@ export class ActionHandler {
       }
       else if (command.startsWith(".debug")){
         if (command.split(" ")[1] == "throw"){
-          throw new Error("Debug throw using .debug throw")
+          throw new Error("Debug error using .debug throw")
       }
     }
+      else if (command.startsWith(".count")){
+        let payload:string[] = command.split(" ");
+        let itemid:number = mcdata.itemsByName[payload[1]].id;
+        EventEmitter.gameMessage("You have "+bot.inventory.count(itemid,null)+" of "+payload[1],new Date().getTime());
+      }
+      else if (command.startsWith(".selfkick")){
+        bot.attack(bot.entity);
+      }
       else bot.chat(command);
 
       EventEmitter.info(`Executed the command: ${command}`);
@@ -176,7 +184,7 @@ export class ActionHandler {
                 }
               }
             }
-            
+
             let botpos = bot.entity.position;
             position(bot,botpos.x,botpos.y+0.625,botpos.z,true);
             bot.attack(entity);

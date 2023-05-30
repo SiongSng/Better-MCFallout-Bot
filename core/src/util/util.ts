@@ -5,13 +5,13 @@ export class Util {
   }
 }
 
-export function position(bot:Bot,x:number|null=null,y:number|null=null,z:number|null=null,onGround:boolean|null=null){
+export function position(bot:Bot,x:number|undefined=undefined,y:number|undefined=undefined,z:number|undefined=undefined,onGround:boolean|undefined=undefined){
   bot._client.write(
     "position",{
       x:x ? x : bot.entity.position.x,
       y:y ? y : bot.entity.position.y,
       z:z ? z : bot.entity.position.z,
-      onGround:(onGround != null) ? onGround : bot.entity.onGround
+      onGround:(onGround != undefined) ? onGround : bot.entity.onGround
     }
   )
 }

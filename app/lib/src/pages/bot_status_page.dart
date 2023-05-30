@@ -54,7 +54,8 @@ class _BotStatusPageState extends State<BotStatusPage> {
             builder: (context) => ConnectingServer(
                 account: widget.bot.account,
                 reconnect: true,
-                reconnectTimes: widget.bot.reconnectTimes + 1));
+                reconnectTimes: widget.bot.reconnectTimes + 1,
+                disconnectReason: event.reason,));
       } else {
         showDialog(
             context: context,
