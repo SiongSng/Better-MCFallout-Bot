@@ -7,6 +7,8 @@ import { Bot } from "mineflayer";
 import { config } from "@/index";
 import { assert } from "console";
 import minecraftData from 'minecraft-data';
+import { position } from "./util";
+import Vec3 from 'vec3'
 const mcdata = minecraftData(1.19)
 
 let _isAttacking = false;
@@ -174,8 +176,13 @@ export class ActionHandler {
                 }
               }
             }
-
+            
+            let botpos = bot.entity.position;
+            position(bot,botpos.x,botpos.y+0.625,botpos.z,true);
             bot.attack(entity);
+            position(bot,botpos.x,botpos.y,botpos.z,false);
+            position(bot,botpos.x,botpos.y+0.000011,botpos.z,false);
+            position(bot,botpos.x,botpos.y,botpos.z,false);
           }
         }
       });
