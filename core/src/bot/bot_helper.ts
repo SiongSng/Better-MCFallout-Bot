@@ -4,7 +4,6 @@ import { Bot } from "mineflayer";
 import { MinecraftItem } from "@/model/minecraft_item";
 import { Item } from "prismarine-item";
 import { config } from "@/index";
-import { Window } from "prismarine-windows"
 
 
 export class BotHelper {
@@ -77,6 +76,10 @@ export class BotHelper {
     const inventory = bot.inventory;
 
     var bannedItem = [
+      // Valuables
+
+      "enchanted_book",
+
       // Weapons
       "bow",
       "arrow",
