@@ -84,7 +84,9 @@ function listenBotEvent(bot: mineflayer.Bot) {
         bot.chat("/tno");
       }
     }
-
+    if (message.includes("目標生命 : ❤❤❤❤❤❤❤❤❤❤")){
+      return;
+    }
     EventEmitter.gameMessage(message.valueOf(), new Date().getTime());
   });
 

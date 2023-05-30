@@ -111,6 +111,7 @@ class BotCore {
     final config = _getConfig();
 
     if (kDebugMode) {
+      _logger.info(account.toJson().toString());
       /// Run the core in debug mode (without compiling to the executable)
       final workingDirectory = join(dirname(Directory.current.path), 'core');
       // Fixed not being able to call yarn shell script
