@@ -75,7 +75,7 @@ class ConfigStorage {
         'background_path': backgroundPath,
         'warp_publicity': warpPublicity,
         'trade_publicity': tradePublicity,
-        'hide_health': hideHealth,
+        //'hide_health': hideHealth,
         'attack_interval_ticks': attackIntervalTicks,
       };
 }
