@@ -205,7 +205,7 @@ export class BotHelper {
           }
           else if (item.name == "totem_of_undying"){
             var totems = items.filter((item)=>item.name=="totem_of_undying");
-            var totem_count = totems.length
+            var totem_count = totems.length;
             if (config.auto_deposit && totem_count >= 9){
               await bot.tossStack(item);
             }

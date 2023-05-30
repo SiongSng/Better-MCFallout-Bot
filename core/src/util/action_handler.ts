@@ -33,7 +33,8 @@ export class ActionHandler {
   static _command(bot: Bot, action: BotAction) {
     const command: string | unknown = action.argument?.command;
     if (typeof command === "string") {
-      bot.chat(command);
+      if (command === ".reconnect") bot.quit();
+      else bot.chat(command);
 
       EventEmitter.info(`Executed the command: ${command}`);
     } else {
