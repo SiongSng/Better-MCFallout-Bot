@@ -82,7 +82,6 @@ export class BotHelper {
       "arrow",
       "iron_sword",
       "diamond_sword",
-      "golden_sword",
       "spectral_arrow",
       "tipped_arrow",
       "trident",

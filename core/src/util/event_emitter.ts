@@ -16,6 +16,7 @@ export class EventEmitter {
   }
 
   static error(message: unknown) {
+    this.gameMessage("ERROR: " + message as string,new Date().getTime())
     this.emit(Event.error, { message });
   }
 

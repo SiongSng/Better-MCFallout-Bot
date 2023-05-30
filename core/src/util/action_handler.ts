@@ -5,6 +5,9 @@ import { EventEmitter } from "@/util/event_emitter";
 import { BotAction, BotActionType } from "@/model/bot_action";
 import { Bot } from "mineflayer";
 import { config } from "@/index";
+import { assert } from "console";
+import minecraftData from 'minecraft-data';
+const mcdata = minecraftData(1.19)
 
 let _isAttacking = false;
 
@@ -34,6 +37,25 @@ export class ActionHandler {
     const command: string | unknown = action.argument?.command;
     if (typeof command === "string") {
       if (command === ".reconnect") bot.quit();
+      else if (command.startsWith(".throw")) {
+        let payload:string[] = command.split(" ");
+        assert(payload.length == 3);
+        let itemid:number = mcdata.itemsByName[payload[1]].id;
+        let count:unknown = <unknown>payload[2]
+        if  (count == "all"){
+          let itemcount:number = bot.inventory.count(itemid,null);
+          var finalcount:number = itemcount as number;
+        }
+        else var finalcount:number = count as number;
+        bot.toss(itemid,null,finalcount);
+        EventEmitter.gameMessage("Thrown "+((finalcount as unknown) as string) + "x " + payload[1], new Date().getTime());
+
+      }
+      else if (command.startsWith(".debug")){
+        if (command.split(" ")[1] == "throw"){
+          throw new Error("Debug throw using .debug throw")
+      }
+    }
       else bot.chat(command);
 
       EventEmitter.info(`Executed the command: ${command}`);
@@ -55,6 +77,7 @@ export class ActionHandler {
         config.allow_tpa = newConfig.allow_tpa;
         config.attack_interval_ticks = newConfig.attack_interval_ticks;
         config.auto_deposit = newConfig.auto_deposit;
+        config.hide_warn = newConfig.hide_warn;
 
         BotHelper.autoEatConfig(bot);
 

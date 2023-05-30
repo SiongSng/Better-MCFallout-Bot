@@ -618,6 +618,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.31.0
     "@typescript-eslint/parser": ^5.31.0
     eslint: ^8.20.0
+    minecraft-data: 3.33.0
     mineflayer: 4.7.0
     mineflayer-auto-eat: 3.3.1
     pkg: ^5.8.0
@@ -1959,6 +1960,13 @@ __metadata:
   version: 2.1.0
   resolution: "mimic-response@npm:2.1.0"
   checksum: 014fad6ab936657e5f2f48bd87af62a8e928ebe84472aaf9e14fec4fcb31257a5edff77324d8ac13ddc6685ba5135cf16e381efac324e5f174fb4ddbf902bf07
+  languageName: node
+  linkType: hard
+
+"minecraft-data@npm:3.33.0":
+  version: 3.33.0
+  resolution: "minecraft-data@npm:3.33.0"
+  checksum: 2deb95635da8de9f5cbae6176f11f38edc2edb8193d03843e86e1cfaa3f47e789a7b1b194d6b31358b864ad11c2f95c3f16048858551ca17fe6cac6889593f3a
   languageName: node
   linkType: hard
 

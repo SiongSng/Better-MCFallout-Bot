@@ -30,6 +30,7 @@
     "outputPath": "out"
   },
   "dependencies": {
+    "minecraft-data": "3.33.0",
     "mineflayer": "4.7.0",
     "mineflayer-auto-eat": "3.3.1"
   }

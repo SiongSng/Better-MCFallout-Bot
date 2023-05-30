@@ -80,18 +80,18 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             const Text('機器人設定', style: TextStyle(fontSize: 18)),
-            /*
+            
             Tooltip(
-              message: '隱藏廢土伺服器中遊戲訊息會有的目標生命顯示，讓界面更加簡潔',
+              message: '隱藏"你的道具欄至少要有 2格 的空格，才能在不具有容器權限的私人領地 撿取或合成物品"',
               child: SwitchListTile(
-                  value: appConfig.hideHealth,
+                  value: appConfig.hideWarn,
                   onChanged: (value) {
                     setState(() {
-                      appConfig.hideHealth = value;
+                      appConfig.hideWarn = value;
                     });
                   },
-                  title: const Text('隱藏目標生命顯示')),
-            ),*/
+                  title: const Text('隱藏警告')),
+            ),
             Tooltip(
               message: '自動存入綠寶石',
               child: SwitchListTile(

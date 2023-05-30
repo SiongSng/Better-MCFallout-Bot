@@ -12,6 +12,7 @@ export class Config {
     allow_tpa: string[],
     attack_interval_ticks: number,
     auto_deposit: boolean,
+    hide_warn: boolean
   ) {
     this.host = host;
     this.port = port;
@@ -25,6 +26,7 @@ export class Config {
     this.allow_tpa = allow_tpa;
     this.attack_interval_ticks = attack_interval_ticks;
     this.auto_deposit = auto_deposit;
+    this.hide_warn = hide_warn
   }
 
   host: string;
@@ -39,4 +41,5 @@ export class Config {
   allow_tpa: string[];
   attack_interval_ticks: number;
   auto_deposit: boolean;
+  hide_warn: boolean;
 }
