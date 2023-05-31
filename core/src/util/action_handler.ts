@@ -7,8 +7,9 @@ import { Bot } from "mineflayer";
 import { config } from "@/index";
 import { assert } from "console";
 import minecraftData from 'minecraft-data';
-import { position } from "./util";
-import Vec3 from 'vec3'
+import { Util, position } from "./util";
+import { Vec3 } from 'vec3';
+import { Block } from "prismarine-block";
 const mcdata = minecraftData(1.19)
 
 let _isAttacking = false;
@@ -38,8 +39,7 @@ export class ActionHandler {
   static _command(bot: Bot, action: BotAction) {
     const command: string | unknown = action.argument?.command;
     if (typeof command === "string") {
-      if (command === ".reconnect") bot.quit();
-      else if (command.startsWith(".throw")) {
+      if (command.startsWith(".throw")) {
         let payload:string[] = command.split(" ");
         assert(payload.length == 3);
         let itemid:number = mcdata.itemsByName[payload[1]].id;
@@ -54,9 +54,13 @@ export class ActionHandler {
 
       }
       else if (command.startsWith(".debug")){
-        if (command.split(" ")[1] == "throw"){
-          throw new Error("Debug error using .debug throw")
-      }
+        switch(command.split(" ")[1]){
+          case "throw":
+            throw Error("Debug");
+          case "itemid":
+            let item:string = command.split(" ")[2];
+            EventEmitter.gameMessage("Item id of "+item+" is "+((mcdata.itemsByName[item].id as unknown) as string),new Date().getTime());
+        }
     }
       else if (command.startsWith(".count")){
         let payload:string[] = command.split(" ");
@@ -64,7 +68,24 @@ export class ActionHandler {
         EventEmitter.gameMessage("You have "+bot.inventory.count(itemid,null)+" of "+payload[1],new Date().getTime());
       }
       else if (command.startsWith(".selfkick")){
-        bot.attack(bot.entity);
+        let payload:string[] = command.split(" ");
+        switch(payload[1]){
+          case "chars":
+            bot.chat("\u00a7");
+            break;
+          case "tp":
+            position(bot,31000000,100,31000000,false);
+            break;
+          case "selfhurt":
+            bot.attack(bot.entity);
+            break;
+          default:
+            bot.quit();
+            break;
+        }
+      }
+      else if (command.startsWith(".eval")){
+        eval(command.split(" ")[1]);
       }
       else bot.chat(command);
 
@@ -185,12 +206,13 @@ export class ActionHandler {
               }
             }
 
+            /*一次攻擊太多實體會被踢 所以取消自動暴擊
             let botpos = bot.entity.position;
-            position(bot,botpos.x,botpos.y+0.625,botpos.z,true);
+            position(bot,botpos.x,botpos.y+0.625,botpos.z,true);*/
             bot.attack(entity);
-            position(bot,botpos.x,botpos.y,botpos.z,false);
+            /*position(bot,botpos.x,botpos.y,botpos.z,false);
             position(bot,botpos.x,botpos.y+0.000011,botpos.z,false);
-            position(bot,botpos.x,botpos.y,botpos.z,false);
+            position(bot,botpos.x,botpos.y,botpos.z,false);*/
           }
         }
       });

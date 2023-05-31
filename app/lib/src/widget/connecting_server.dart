@@ -115,7 +115,7 @@ class _Connecting extends StatelessWidget {
               return const AlertDialog(
                 title: Text('錯誤'),
                 content:
-                    Text('無法連線到廢土伺服器\n請檢查帳號密碼是否正確，如果正確，請稍後再試。\n如仍然失敗請聯繫作者'),
+                    Text('無法連線到廢土伺服器\n請檢查帳號密碼是否正確，如果正確，請稍後再試。\n可以嘗試終止"better-mcfallout-bot-core(.exe)"/node(.exe)(debug)\n如仍然失敗請聯繫作者'),
                 actions: [ConfirmButton()],
               );
             }
