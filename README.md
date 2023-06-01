@@ -10,7 +10,7 @@ Discord 社群: https://discord.gg/WJSnhPzcgs
 
 ## [立即下載](#-下載)   
 
-![image](https://user-images.githubusercontent.com/48402225/182155275-dc162aae-85ca-44a4-80d6-cef10a9bb55b.png)
+![image](https://github.com/Dasupergrasskakjd/Better-MCFallout-Bot/assets/106623583/13f7698e-a5cd-422c-baf3-300f9339dadb)
 
 ## 🎮 下載
 本軟體支援 Windows、Linux、macOS 作業系統，另外僅支援 64 位元的電腦。
@@ -45,14 +45,17 @@ Discord 社群: https://discord.gg/WJSnhPzcgs
 自動丟棄不重要的物品，保留重要物品，像是武器、不死圖騰、食物、裝備，在刷突襲塔的時候很有用
 
 ### 自動重新連線
-自動重新連線伺服器，如果突然斷線或者廢土伺服器當機，會每 30 秒自動重新連線一次，若失敗超過 10 次則自動暫停
+自動重新連線伺服器，如果突然斷線或者廢土伺服器當機，會每 30 秒自動重新連線一次
+
+### 自動存入綠寶石
+自動使用/bank存入綠寶石
 
 ### 多重開啟
 同時啟動多個不同帳號的機器人，達成效益最大化！
 
 ## 🪟 截圖
 ![image](https://user-images.githubusercontent.com/48402225/182106836-05185041-ecea-424f-833c-512fe81abd4a.png)
-![image](https://user-images.githubusercontent.com/48402225/182161060-941173f2-8147-4a29-aee6-b85e9ad03dae.png)
+![image](https://github.com/Dasupergrasskakjd/Better-MCFallout-Bot/assets/106623583/f106d12b-f0cb-48c9-a805-a39626f7aabc)
 
 ## ⚙️ 開發
 注意：這是給開發者看的，如果您是使用者請看 [這裡](#-下載)
@@ -82,6 +85,7 @@ macOS
 ```shell
 bash script/dev_macos.sh
 ```
+使用 flutter run(debug)/flutter build --release
 
 ### Technologies
 [Flutter](https://flutter.dev)  
