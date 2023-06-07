@@ -108,7 +108,6 @@ export class ActionHandler {
         config.allow_tpa = newConfig.allow_tpa;
         config.attack_interval_ticks = newConfig.attack_interval_ticks;
         config.auto_deposit = newConfig.auto_deposit;
-        config.hide_warn = newConfig.hide_warn;
 
         BotHelper.autoEatConfig(bot);
 

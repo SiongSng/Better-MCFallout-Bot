@@ -36,7 +36,7 @@ class _SettingsPageState extends State<SettingsPage> {
         TextEditingController(text: appConfig.attackIntervalTicks.toString());
 
     super.initState();
-    analytics.pageView('Settings');
+    //analytics.pageView('Settings');
   }
 
   @override
@@ -80,18 +80,6 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             const Text('機器人設定', style: TextStyle(fontSize: 18)),
-            
-            Tooltip(
-              message: '隱藏"你的道具欄至少要有 2格 的空格，才能在不具有容器權限的私人領地 撿取或合成物品"',
-              child: SwitchListTile(
-                  value: appConfig.hideWarn,
-                  onChanged: (value) {
-                    setState(() {
-                      appConfig.hideWarn = value;
-                    });
-                  },
-                  title: const Text('隱藏警告')),
-            ),
             Tooltip(
               message: '自動存入綠寶石',
               child: SwitchListTile(
