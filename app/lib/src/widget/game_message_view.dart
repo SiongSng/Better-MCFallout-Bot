@@ -25,6 +25,9 @@ class _GameMessageViewState extends State<GameMessageView> {
     super.initState();
 
     BotCore.instance!.whenEventStream<GameMessageEvent>().listen((event) {
+      bool isHealth = event.message.startsWith('目標生命 : ❤❤❤❤❤❤❤❤❤❤');
+      if (isHealth && appConfig.hideHealth) return;
+
       messages.add(event);
     });
 

@@ -81,6 +81,17 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             const Text('機器人設定', style: TextStyle(fontSize: 18)),
             Tooltip(
+              message: '隱藏廢土伺服器中遊戲訊息會有的目標生命顯示，讓界面更加簡潔',
+              child: SwitchListTile(
+                  value: appConfig.hideHealth,
+                  onChanged: (value) {
+                    setState(() {
+                      appConfig.hideHealth = value;
+                    });
+                  },
+                  title: const Text('隱藏目標生命顯示')),
+            ),
+            Tooltip(
               message: '自動存入綠寶石',
               child: SwitchListTile(
                 value: appConfig.autoDeposit,

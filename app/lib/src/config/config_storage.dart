@@ -52,6 +52,10 @@ class ConfigStorage {
   set tradePublicity(String? value) =>
       ConfigHelper.set<String>('trade_publicity', value);
 
+  bool get hideHealth =>
+      ConfigHelper.get<bool>('hide_health', defaultValue: true)!;
+  set hideHealth(bool value) => ConfigHelper.set<bool>('hide_health', value);
+
   List<String> get allowTpa =>
       ConfigHelper.get<List>('allow_tpa', defaultValue: [])!.cast();
   set allowTpa(List<String> value) =>
