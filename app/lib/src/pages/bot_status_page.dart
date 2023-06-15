@@ -280,12 +280,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                 ),
                 const SizedBox(width: 8),
                 TextButton(
-                    onPressed: () {
-                      if (commandController.text == ".leave" || commandController.text == ".quit"){
-                        widget.bot.disconnect();
-                        Navigator.pop(context);
-                      }
-                      else {widget.bot.runCommand(commandController.text);}
+                    onPressed: () {widget.bot.runCommand(commandController.text);
                       commandController.text = '';
                     },
                     child: const Text('執行')),
