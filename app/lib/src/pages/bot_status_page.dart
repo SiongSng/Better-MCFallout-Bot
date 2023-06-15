@@ -228,7 +228,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                           height: 50,
                           child: Tooltip(
                             message:
-                                '自動使用/bank存入綠寶石',
+                                '自動存入身上的綠寶石',
                             child: SwitchListTile(
                                 value: autoDeposit,
                                 onChanged: (value) {
