@@ -238,7 +238,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                                   appConfig.autoDeposit = autoDeposit;
                                   widget.bot.updateConfig();
                                 },
-                                title: const Text('自動存入')),
+                                title: const Text('自動存綠')),
                           ),
                         ),
                       ],
