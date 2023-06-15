@@ -204,14 +204,7 @@ export class ActionHandler {
                 }
               }
             }
-
-            /*一次攻擊太多實體會被踢 所以取消自動暴擊
-            let botpos = bot.entity.position;
-            position(bot,botpos.x,botpos.y+0.625,botpos.z,true);*/
             bot.attack(entity);
-            /*position(bot,botpos.x,botpos.y,botpos.z,false);
-            position(bot,botpos.x,botpos.y+0.000011,botpos.z,false);
-            position(bot,botpos.x,botpos.y,botpos.z,false);*/
           }
         }
       });
