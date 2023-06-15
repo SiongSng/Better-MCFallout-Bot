@@ -273,11 +273,7 @@ class _BotStatusPageState extends State<BotStatusPage> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10))),
                     onEditingComplete: () {
-                      if (commandController.text == ".leave" || commandController.text == ".quit"){
-                        widget.bot.disconnect();
-                        Navigator.pop(context);
-                      }
-                      else {widget.bot.runCommand(commandController.text);}
+                      widget.bot.runCommand(commandController.text);
                       commandController.text = '';
                     },
                   ),
