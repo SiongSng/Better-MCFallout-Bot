@@ -5,12 +5,14 @@ class ConnectingServer extends StatefulWidget {
   final Account account;
   final bool reconnect;
   final int reconnectTimes;
+  final String disconnectReason;
 
   const ConnectingServer(
       {Key? key,
       required this.account,
       this.reconnect = false,
-      this.reconnectTimes = 0})
+      this.reconnectTimes = 0,
+      this.disconnectReason="None"})
       : super(key: key);
 
   @override
@@ -63,7 +65,7 @@ class _ConnectingServerState extends State<ConnectingServer> {
                     account: accountStorage.get(widget.account.uuid)!,
                     reconnectTimes: widget.reconnectTimes);
 
-                return _Connecting(bot: bot, reconnect: widget.reconnect);
+                return _Connecting(bot: bot, reconnect: widget.reconnect,disconnectReason: widget.disconnectReason);
               }
             } else {
               return AlertDialog(
@@ -84,10 +86,12 @@ class _Connecting extends StatelessWidget {
     Key? key,
     required this.bot,
     required this.reconnect,
+    this.disconnectReason="None"
   }) : super(key: key);
 
   final BotCore bot;
   final bool reconnect;
+  final String disconnectReason;
 
   @override
   Widget build(BuildContext context) {
@@ -111,14 +115,14 @@ class _Connecting extends StatelessWidget {
               return const AlertDialog(
                 title: Text('錯誤'),
                 content:
-                    Text('無法連線到廢土伺服器\n請檢查帳號密碼是否正確，如果正確，請稍後再試。\n如仍然失敗請聯繫作者'),
+                    Text('無法連線到廢土伺服器\n請檢查帳號密碼是否正確，如果正確，請稍後再試。\n可以嘗試終止"better-mcfallout-bot-core(.exe)"/node(.exe)(debug)\n如仍然失敗請聯繫作者'),
                 actions: [ConfirmButton()],
               );
             }
           } else {
             return AlertDialog(
               title: reconnect
-                  ? const Text('由於與伺服器斷線，正在重新連線中...')
+                  ? Text('由於與伺服器斷線，正在重新連線中...\n(斷線原因:$disconnectReason)')
                   : const Text('連線廢土伺服器中...'),
               content: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

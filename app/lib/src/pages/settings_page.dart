@@ -36,7 +36,7 @@ class _SettingsPageState extends State<SettingsPage> {
         TextEditingController(text: appConfig.attackIntervalTicks.toString());
 
     super.initState();
-    analytics.pageView('Settings');
+    //analytics.pageView('Settings');
   }
 
   @override
@@ -90,6 +90,18 @@ class _SettingsPageState extends State<SettingsPage> {
                     });
                   },
                   title: const Text('隱藏目標生命顯示')),
+            ),
+            Tooltip(
+              message: '自動存入身上的綠寶石',
+              child: SwitchListTile(
+                value: appConfig.autoDeposit,
+                onChanged:(value) {
+                  setState(() {
+                    appConfig.autoDeposit = value;
+                  });
+                },
+                title: const Text('自動存入綠寶石'),
+              )
             ),
             TextFormField(
               decoration: const InputDecoration(

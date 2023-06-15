@@ -5,12 +5,12 @@ import { MinecraftItem } from "@/model/minecraft_item";
 import { Item } from "prismarine-item";
 import { config } from "@/index";
 
+
 export class BotHelper {
   static async onSpawn(bot: Bot) {
     let end = false;
 
     // Auto eat
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (bot as any).autoEat.options = {
       eatingTimeout: 8,
       startAt: 18, // If the bot has less food points than that number, it will start eating.
@@ -75,13 +75,16 @@ export class BotHelper {
   static async throwItems(bot: Bot) {
     const inventory = bot.inventory;
 
-    const bannedItem = [
+    var bannedItem = [
+      // Valuables
+
+      "enchanted_book",
+
       // Weapons
       "bow",
       "arrow",
       "iron_sword",
       "diamond_sword",
-      "golden_sword",
       "spectral_arrow",
       "tipped_arrow",
       "trident",
@@ -187,13 +190,39 @@ export class BotHelper {
     ];
 
     async function toss(items: Item[]) {
+      let emerald_count = 0
+      if (config.auto_deposit && !bannedItem.includes("emerald")){
+        bannedItem.push("emerald")
+      }
+      else if (!config.auto_deposit && bannedItem.includes("emerald"))
+      {
+        delete bannedItem[bannedItem.indexOf("emerald")]
+      }
       for (const item of items) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const isEating: boolean = (bot as any).autoEat.isEating;
 
         if (config.auto_throw && !isEating) {
           if (!bannedItem.includes(item.name)) {
             await bot.tossStack(item);
+          }
+          else if (item.name == "totem_of_undying"){
+            var totems = items.filter((item)=>item.name=="totem_of_undying");
+            var totem_count = totems.length;
+            if (config.auto_deposit && totem_count >= 9){
+              await bot.tossStack(item);
+            }
+          }
+        }
+        if (item.name == "emerald"){
+          emerald_count += item.count;
+          if (emerald_count >= 1728){
+            bot.chat("/bank");
+            bot.once("windowOpen", (window) => {
+              bot.simpleClick.leftMouse(30)
+              // @ts-ignore
+              window.close();
+            });
+            emerald_count = 0
           }
         }
       }
@@ -225,7 +254,6 @@ export class BotHelper {
   }
 
   static autoEatConfig(bot: Bot) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const autoEat = (bot as any).autoEat;
 
     if (bot.food == 20 || !config.auto_eat) {

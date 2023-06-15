@@ -111,13 +111,20 @@ class BotCore {
     final config = _getConfig();
 
     if (kDebugMode) {
+      _logger.info(account.toJson().toString());
       /// Run the core in debug mode (without compiling to the executable)
       final workingDirectory = join(dirname(Directory.current.path), 'core');
-      await Process.run('yarn', ['build'],
-          workingDirectory: workingDirectory);
+      // Fixed not being able to call yarn shell script
+      if(Platform.isWindows){
+      await Process.run('cmd', ['/C','yarn','build'],
+          workingDirectory: workingDirectory);}
+      else{
+        await Process.run('yarn',['build'],workingDirectory: workingDirectory);
+      }
       process = await Process.start(
           'node', ['dist/index.js', json.encode(config)],
           workingDirectory: workingDirectory);
+      _logger.info(json.encode(config));
     } else {
       process =
           await Process.start(_getExecutablePath(), [json.encode(config)]);
@@ -148,6 +155,7 @@ class BotCore {
         for (final String json in jsonList) {
           if (json.isEmpty) return;
           final RawEvent event = RawEvent.fromJson(json);
+          _logger.info(event);
 
           final handledEvent = _eventHandler(event);
           if (handledEvent != null) {
@@ -204,6 +212,7 @@ class BotCore {
 
   void _executeAction(BotAction action) {
     process.stdin.writeln(json.encode(action.toMap()));
+    _logger.info(json.encode(action.toMap()));
   }
 
   void _logging() {
@@ -217,6 +226,7 @@ class BotCore {
 
     whenEvent<ErrorLogEvent>((event) {
       _logger.severe(event.message);
+      throw Exception(event.message);
     });
   }
 
@@ -232,6 +242,7 @@ class BotCore {
         'trade_publicity': appConfig.tradePublicity,
         'allow_tpa': appConfig.allowTpa,
         'attack_interval_ticks': appConfig.attackIntervalTicks,
+        'auto_deposit':appConfig.autoDeposit,
       };
 
   String _getExecutablePath() {

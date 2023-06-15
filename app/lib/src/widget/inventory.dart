@@ -66,7 +66,7 @@ class _InventoryItemState extends State<InventoryItem> {
         message: '${widget.item.count} 個 ${widget.item.displayName}',
         child: NetworkImage(
             src:
-                'https://raw.githubusercontent.com/SiongSng/mc-icons/master/pics/${widget.item.name}.png',
+                'https://raw.githubusercontent.com/Dasupergrasskakjd/mc-icons/master/pics/${widget.item.name}.png',
             width: 30,
             height: 30,
             fit: BoxFit.contain,

@@ -1,3 +1,3 @@
-script/build_core_windows.sh
+script/build_core_windows.bat
 
 flutter run --debug

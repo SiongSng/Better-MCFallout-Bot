@@ -7,3 +7,4 @@ echo "[Info] Building the app"
 flutter build windows --release
 
 echo "[Info] Done"
+cd build/windows/runner/release
