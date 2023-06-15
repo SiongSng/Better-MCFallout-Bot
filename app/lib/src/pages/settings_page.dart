@@ -92,7 +92,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: const Text('隱藏目標生命顯示')),
             ),
             Tooltip(
-              message: '自動存入綠寶石',
+              message: '自動存入身上的綠寶石',
               child: SwitchListTile(
                 value: appConfig.autoDeposit,
                 onChanged:(value) {
